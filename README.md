@@ -2,7 +2,7 @@
 
 
 
-##Get Started Developing
+### Get Started Developing
 Our dev environment of choice is Andriod Studio and we are using Unity for Android.
 
 1. Download [Git](https://git-scm.com/downloads), [Github Desktop](https://desktop.github.com/), [Sourcetree](https://www.sourcetreeapp.com/), etc.
