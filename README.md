@@ -18,4 +18,5 @@ Our dev environment of choice is Andriod Studio and we are using Unity for Andro
 2. (Sourcetree only) Select the files you want to commit via 'stage selected' and/or 'stage all'
 3. Give your commit a message (required) and description (optional) and press Commit.
 4. You still need to push your changes to the repository. First, run a 'pull' to see if any changes had been made since you last pulled. Then presh 'push' to submit your changes. *If you don't push, your changes aren't actually sent off of your computer*
-  - If you encounter a conflict, you will have to resolve it before you push. Ask Rob on how to deal with this, and/or create a new branch and push your changes to that branch instead for review later.
+  - If you encounter an error like [this](https://gist.github.com/budak7273/11263d4a88483189532e38d4d1d8947c), then changes have been made since you last pulled. Go back and pull from the repository, then try to push again.
+  - If you encounter a conflict, you will have to resolve it before you push. Ask Rob on how to deal with this, and/or create a new branch and push your changes to that branch instead for review later. DO NOT use 'force push.'
