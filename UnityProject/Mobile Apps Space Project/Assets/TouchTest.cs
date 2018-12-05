@@ -16,5 +16,14 @@ public class TouchTest : MonoBehaviour {
         {
             gameObject.GetComponent<Animator>().enabled = !gameObject.GetComponent<Animator>().enabled;
         }
-	}
+
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position)), new Vector2(0f, 0f));
+            if (hit.collider != null)
+            {
+                Debug.Log("Touched it");
+            }
+        }
+    }
 }
