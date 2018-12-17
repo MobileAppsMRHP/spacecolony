@@ -1,0 +1,23 @@
+Lesson 2 Tasks:
+If you get stuck, google.
+1. Create a new branch with your own name as the branch name. You might have to go on a google adventure to figure out how to do this with your software, or just poke around until you find the button.
+2. Switch to (called 'checkout') the new branch you just created.
+3. Edit the file you made in lesson 1 with a change of your choice.
+4. Commit and push this change to your branch.
+5. Switch to the Master branch.
+6. Open the file you made in lesson 1. If done correctly, you should NOT see the change you just made in step 3.
+7. Make a change to the file, a different change from the one you made in step 3 so you can eventually tell them apart.
+8. Commit and push this change to the master branch.
+9. Merge your branch with the master branch. Again, you might have to google this, or just poke around in the UI till you find it.
+	- You will encounter an error while doing this. This is called a merge conflict.
+
+In the process of completeing these steps, you've learned...
+- How to create a branch
+- How to switch active branches
+	+ Uncommited changes will be deleted (at least in Sourcetree) when you do this
+	+ If you have uncommited changes you wish to keep, you will need to 'stash' them. Once you're done on the other branch, you'll have to open the git console and 'git stash pop' to get your changes back. Long story short - try to avoid changing branches when you have uncommitted changes.
+- How to make changes on different branches
+- Changing to another branch changes the files you have on your computer
+- How to merge branches
+- How to resolve merge conflicts
+- 
