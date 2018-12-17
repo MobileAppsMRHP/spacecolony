@@ -1,0 +1,11 @@
+Lesson 1 Tasks:
+If you get stuck, google.
+1. Create a new file in this folder with your own name as the file name.
+2. Commit and push this change.
+3. Modify the contents of the 'change me' file with something funny. Feel free to look at the edits other people have made.
+3. Commit and push this change.
+
+In the process of completeing these steps, you've learned...
+- How to commit a new file.
+- How to commit changes to a file.
+- How to push changes.
