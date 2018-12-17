@@ -1,5 +1,5 @@
 # spacecolony
-Mobile Apps project. A space colony simulation game for mobile made in Unity.
+Mobile Apps project. A 2D top-down space exploration simulation game for mobile made in Unity.
 
 
 ## Get Started Developing
