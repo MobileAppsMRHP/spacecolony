@@ -1,5 +1,5 @@
 Lesson 2 Tasks:
-If you get stuck, google.
+If you get stuck, google, or ask me for help on discord.
 1. Create a new branch with your own name as the branch name. You might have to go on a google adventure to figure out how to do this with your software, or just poke around until you find the button.
 2. Switch to (called 'checkout') the new branch you just created.
 3. Edit the file you made in lesson 1 with a change of your choice.
@@ -9,9 +9,13 @@ If you get stuck, google.
 7. Make a change to the file, a different change from the one you made in step 3 so you can eventually tell them apart.
 8. Commit and push this change to the master branch.
 9. Merge your branch with the master branch. Again, you might have to google this, or just poke around in the UI till you find it.
-	- You will encounter an error while doing this. This is called a merge conflict.
+	- You will encounter an error while doing this. This is called a merge conflict. You will have to either...
+		* Allow git to deal with the conflict itself (doesn't always work)
+		* Pick which version (of the two branches you're merging) of the file(s) to stick with, discarding the other
+		* There are more tools that I'm not aware of yet to deal with this. Hopefully we won't encounter any issues.
+10. Your branch has now been merged into master and can be deleted. Delete the branch you created.
 
-In the process of completeing these steps, you've learned...
+In the process of completing these steps, you've learned...
 - How to create a branch
 - How to switch active branches
 	+ Uncommited changes will be deleted (at least in Sourcetree) when you do this
@@ -19,5 +23,7 @@ In the process of completeing these steps, you've learned...
 - How to make changes on different branches
 - Changing to another branch changes the files you have on your computer
 - How to merge branches
+	+ We probably won't have to do this, but this might change.
 - How to resolve merge conflicts
-- 
+	+ Hopefully we won't encounter any of these.
+- Switching branches can change some time depending on how many files need to be changes
