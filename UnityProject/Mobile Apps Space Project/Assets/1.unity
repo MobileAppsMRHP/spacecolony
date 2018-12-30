@@ -294,6 +294,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoomMin: 1
   zoomMax: 5
+  zoomRate: 0.02
+  isZooming: 0
 --- !u!1 &311295047
 GameObject:
   m_ObjectHideFlags: 0
