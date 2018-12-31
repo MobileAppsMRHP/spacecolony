@@ -7,7 +7,6 @@ public class CamZoom : MonoBehaviour {
     public float zoomMax;
     public float zoomRate;
     public bool isZooming;
-    Vector3[] touchInitialLocation = new Vector3[2];
     
 
 	// Use this for initialization
