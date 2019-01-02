@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//I got the code from the tutorial: https://www.youtube.com/watch?v=Gt1PLvRf8rY
 public class ButtonBranch : MonoBehaviour {
     public class ButtonScale
     {
@@ -24,21 +25,42 @@ public class ButtonBranch : MonoBehaviour {
 
         void SetNewButtonSize()
         {
-            newButtonSize.x = (referenceButtonSize.x * Screen.width) / referenceScreenSize.x;
+            newButtonSize.x = (referenceButtonSize.x * Screen.width) / referenceScreenSize.x; //ratio
             if (mode == ScaleMode.MatchWidthHeight)
             {
                 newButtonSize.y = newButtonSize.x;
             }
             else if (mode == ScaleMode.IndependentWidthHeight)
             {
-                newButtonSize.y = (referenceButtonSize.y * Screen.height) / referenceScreenSize.y;
+                newButtonSize.y = (referenceButtonSize.y * Screen.height) / referenceScreenSize.y; //ratio
             }
         }
     }
 
+    [System.Serializable]
+    public class RevealSettings
+    {
 
-	// Use this for initialization
-	void Start () {
+    }
+
+    [System.Serializable]
+    public class LinearSpawner
+    {
+
+    }
+    [System.Serializable]
+    public class CircularSpawner
+    {
+
+    }
+
+    public GameObject[] buttonRefs;
+
+    public enum ScaleMode { MatchWidthHeight, IndependentWidthHeight}
+    public Vector2 referenceButtonSize;
+    public Vector2 referenceScreenSize;
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
