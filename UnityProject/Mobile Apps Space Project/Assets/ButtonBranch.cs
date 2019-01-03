@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//I got the code from the tutorial: https://www.youtube.com/watch?v=Gt1PLvRf8rY
+//I got the code from the tutorial: https://www.youtube.com/watch?v=Gt1PLvRf8rY and https://www.youtube.com/watch?v=T4s312Evmbk&list=PL4CCSwmU04MhI6oeuUZ-NRvhEye65PlFx&index=5
 public class ButtonBranch : MonoBehaviour {
     public class ButtonScale
     {
@@ -40,32 +40,153 @@ public class ButtonBranch : MonoBehaviour {
     [System.Serializable]
     public class RevealSettings
     {
-
+        public enum RevealOption { Linear, Circular};
+        public RevealOption option;
+        public float moveSpeed = 0.01f;
+        public float fadeSpeed = 5f;
+        public bool revealOnStart = false;
+        [HideInInspector]
+        public bool opening = false;
+        [HideInInspector]
+        public bool ending = false;
     }
 
     [System.Serializable]
     public class LinearSpawner
     {
+        public enum RevealStyle { SlideToPosition, FadeInAtPosition};
+        public RevealStyle revealStyle;
+        public Vector2 direction = new Vector2(0, 1); //slide down
+        public float baseSpacing = 5f;
+        public int NumOffset = 0; //How many button spaces offset, needed sometimes when there are multiple branches
+        [HideInInspector]
+        public float spacing = 5f;
 
+        public void FitSpacingToScreenSize(Vector2 refScreenSize) //adjusts spacing for different screen sizes
+        {
+            float refScreenFloat = (refScreenSize.x + refScreenSize.y) / 2;
+            float screenFloat = (Screen.width + Screen.height) / 2;
+            spacing = (baseSpacing * screenFloat) / refScreenFloat;
+        }
     }
     [System.Serializable]
     public class CircularSpawner
     {
+        public enum RevealStyle { SlideToPosition, FadeInAtPosition };
+        public RevealStyle revealStyle;
+        public Angle angle;
+        public float baseDistFromBrancher = 20f;
+        [HideInInspector]
+        public float distFromBrancher = 0f;
 
+        [System.Serializable]
+        public struct Angle { public float minAngle; public float maxAngle; } //struct is a value type that can hold a group of variable and even methods
+
+        public void FitDistanceToScreenSize(Vector2 refScreenSize) //adjusts distances for different screen sizes
+        {
+            float refScreenFloat = (refScreenSize.x + refScreenSize.y) / 2;
+            float screenFloat = (Screen.width + Screen.height) / 2;
+            distFromBrancher = (baseDistFromBrancher * screenFloat) / refScreenFloat;
+        }
     }
 
-    public GameObject[] buttonRefs;
+    public GameObject[] buttonRefs; //prefabs
+    [HideInInspector]
+    public List<GameObject> buttons;
 
     public enum ScaleMode { MatchWidthHeight, IndependentWidthHeight}
+    public ScaleMode mode;
     public Vector2 referenceButtonSize;
     public Vector2 referenceScreenSize;
+
+    ButtonScale buttonScale = new ButtonScale();
+    public RevealSettings revealSettings = new RevealSettings();
+    public LinearSpawner linSpawner = new LinearSpawner();
+    public CircularSpawner circSpawner = new CircularSpawner();
+
+    float lastScreenWidth = 0f;
+    float lastScreenHeight = 0f;
+
     // Use this for initialization
     void Start () {
-		
+        buttons = new List<GameObject>();
+        buttonScale = new ButtonScale();
+        lastScreenHeight = Screen.height;
+        lastScreenWidth = Screen.width;
+        buttonScale.Initialize(referenceButtonSize, referenceScreenSize, (int)mode);
+        circSpawner.FitDistanceToScreenSize(buttonScale.referenceScreenSize);
+        linSpawner.FitSpacingToScreenSize(buttonScale.referenceScreenSize);
+        SpawnButtons();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (Screen.width != lastScreenWidth || Screen.height != lastScreenHeight)
+        {
+            lastScreenHeight = Screen.height;
+            lastScreenWidth = Screen.width;
+            buttonScale.Initialize(referenceButtonSize, referenceScreenSize, (int)mode);
+            circSpawner.FitDistanceToScreenSize(buttonScale.referenceScreenSize);
+            linSpawner.FitSpacingToScreenSize(buttonScale.referenceScreenSize);
+            SpawnButtons();
+        }
+
+        if (revealSettings.opening)
+        {
+            if (!revealSettings.spawned)
+                SpawnButtons();
+
+            switch (revealSettings.option) //like a if statement. This switch statement determines the reveal style.
+            {
+                case RevealSettings.RevealOption.Linear:
+                    switch (linSpawner.revealStyle)
+                    {
+                        case LinearSpawner.RevealStyle.SlideToPosition: RevealLinearlyNormal(); break;
+                        case LinearSpawner.RevealStyle.FadeInAtPosition: RevealLinearlyFade(); break;
+                    }
+
+                    break;
+                    
+                case RevealSettings.RevealOption.Circular:
+                    switch (circSpawner.revealStyle)
+                    {
+                        case CircularSpawner.RevealStyle.SlideToPosition: RevealCircularNormal(); break;
+                        case CircularSpawner.RevealStyle.FadeInAtPosition: RevealCircularFade(); break;
+                    }
+
+                    break;
+            }
+        }
 	}
+
+    public void SpawnButtons()
+    {
+        revealSettings.opening = true;
+        //clear button list
+        for (int i = buttons.Count; i >= 0; i--)
+            Destroy(buttons[i]);
+        buttons.Clear();
+
+        ClearCommonButtonBranchers(); //clears any other button brancher that has the same parent
+
+        for (int i=0; i<buttonRefs.Length; i++)
+        {
+            GameObject b = Instantiate(buttonRefs[i] as GameObject);
+        }
+    }
+
+    void ClearCommonButtonBranchers()
+    {
+        GameObject[] branchers = GameObject.FindGameObjectsWithTag("ButtonBrancher");
+        foreach (GameObject brancher in branchers)
+        {
+            if (brancher.transform.parent == transform.parent) //checks to see if it is the same parent
+            {
+                ButtonBranch bb = brancher.GetComponent<ButtonBranch>();
+                for (int i = bb.buttons.Count; i >= 0; i--)
+                    Destroy(bb.buttons[i]);
+                bb.buttons.Clear();
+            }
+        }
+    }
 }
