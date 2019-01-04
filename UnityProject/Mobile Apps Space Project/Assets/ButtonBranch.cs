@@ -133,7 +133,7 @@ public class ButtonBranch : MonoBehaviour {
 
         if (revealSettings.opening)
         {
-            if (!revealSettings.spawned)
+            //if (!revealSettings.spawned)
                 SpawnButtons();
 
             switch (revealSettings.option) //like a if statement. This switch statement determines the reveal style.
@@ -172,7 +172,95 @@ public class ButtonBranch : MonoBehaviour {
         for (int i=0; i<buttonRefs.Length; i++)
         {
             GameObject b = Instantiate(buttonRefs[i] as GameObject);
+            b.transform.SetParent(transform); // make button child of button branch
+            b.transform.position = transform.position;
+            if (linSpawner.revealStyle == LinearSpawner.RevealStyle.FadeInAtPosition || circSpawner.revealStyle == CircularSpawner.RevealStyle.FadeInAtPosition)
+            {
+                Color c = b.GetComponent<Image>().color;
+                c.a = 0; //Set button color alpha value to 0
+                b.GetComponent<Image>().color = c;
+
+                if (b.GetComponentInChildren<Text>()) //Set button text color alpha value to 0
+                {
+                    c = b.GetComponentInChildren<Text>().color;
+                    c.a = 0;
+                    b.GetComponentInChildren<Text>().color = c;
+                }
+            }
         }
+    }
+
+    void RevealLinearlyNormal()
+    {
+        for (int i=0; i<buttonRefs.Length; i++)
+        {
+            Vector3 targetPos; //position for button to move toward
+            RectTransform buttonRect = buttons[i].GetComponent<RectTransform>();
+            //set size
+            buttonRect.sizeDelta = new Vector2(buttonScale.newButtonSize.x, buttonScale.newButtonSize.y); //width of the button
+            //set pos
+            targetPos.x = linSpawner.direction.x * ((i + linSpawner.NumOffset) * (buttonRect.sizeDelta.x + linSpawner.baseSpacing)) + transform.position.x;
+            targetPos.y = linSpawner.direction.y * ((i + linSpawner.NumOffset) * (buttonRect.sizeDelta.y + linSpawner.baseSpacing)) + transform.position.y;
+            targetPos.z = 0;
+
+            buttonRect.position = Vector3.Lerp(buttonRect.position, targetPos, revealSettings.moveSpeed * Time.deltaTime);
+        }
+    }
+
+    void RevealLinearlyFade()
+    {
+        for (int i = 0; i < buttonRefs.Length; i++)
+        {
+            Vector3 targetPos; //position for button to move toward
+            RectTransform buttonRect = buttons[i].GetComponent<RectTransform>();
+            //set size
+            buttonRect.sizeDelta = new Vector2(buttonScale.newButtonSize.x, buttonScale.newButtonSize.y); //width of the button
+            //set pos
+            targetPos.x = linSpawner.direction.x * ((i + linSpawner.NumOffset) * (buttonRect.sizeDelta.x + linSpawner.baseSpacing)) + transform.position.x;
+            targetPos.y = linSpawner.direction.y * ((i + linSpawner.NumOffset) * (buttonRect.sizeDelta.y + linSpawner.baseSpacing)) + transform.position.y;
+            targetPos.z = 0;
+
+            ButtonFader previousButtonFader;
+            if (i > 0)
+                previousButtonFader = buttons[i - 1].GetComponent<ButtonFader>(); //To prevent the next button from fading if the previous button hasn't finieshed fading yet
+            else
+                previousButtonFader = null; //First button in the list
+            ButtonFader buttonFader = buttons[i].GetComponent<ButtonFader>();
+
+            if (previousButtonFader)
+            {
+                if (previousButtonFader.faded) //When the previous button is done fading
+                {
+                    buttons[i].transform.position = targetPos;
+                    if (buttonFader)
+                    {
+                        buttonFader.Fade(revealSettings.fadeSpeed);
+                    }
+                    else
+                        Debug.LogError("You forgot to set a ButtonFader to button number " + i);
+                }
+            }
+            else
+            {
+                buttons[i].transform.position = targetPos;
+                if (buttonFader)
+                {
+                    buttonFader.Fade(revealSettings.fadeSpeed);
+                }
+                else
+                    Debug.LogError("You forgot to set a ButtonFader to button number " + i);
+            }
+        }
+    }
+
+    void RevealCircularNormal()
+    {
+
+    }
+
+    void RevealCircularFade()
+    {
+
     }
 
     void ClearCommonButtonBranchers()
