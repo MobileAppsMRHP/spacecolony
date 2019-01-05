@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 //I got the code from the tutorial: https://www.youtube.com/watch?v=Gt1PLvRf8rY and https://www.youtube.com/watch?v=T4s312Evmbk&list=PL4CCSwmU04MhI6oeuUZ-NRvhEye65PlFx&index=5
+//also from https://www.youtube.com/watch?v=Y5PK_znTiQ8&index=8&list=PL4CCSwmU04MhI6oeuUZ-NRvhEye65PlFx
 public class ButtonBranch : MonoBehaviour {
     public class ButtonScale
     {
@@ -255,12 +256,69 @@ public class ButtonBranch : MonoBehaviour {
 
     void RevealCircularNormal()
     {
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            float angleDist = circSpawner.angle.maxAngle - circSpawner.angle.minAngle;
+            float targetAngle = circSpawner.angle.minAngle + (angleDist / buttons.Count) * i; //finds the angle to put the button
+            Vector3 targetPos = transform.position + Vector3.right * circSpawner.distFromBrancher; //find position, start from right of spawner
+            targetPos = RotatePointAroundPivot(targetPos, transform.position, targetAngle);
+            RectTransform buttonRect = buttons[i].GetComponent<RectTransform>();
+            buttonRect.sizeDelta = new Vector2(buttonScale.newButtonSize.x, buttonScale.newButtonSize.y); //resize button
 
+            buttonRect.position = Vector3.Lerp(buttonRect.position, targetPos, revealSettings.moveSpeed * Time.deltaTime);
+        }
     }
 
     void RevealCircularFade()
     {
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            float angleDist = circSpawner.angle.maxAngle - circSpawner.angle.minAngle;
+            float targetAngle = circSpawner.angle.minAngle + (angleDist / buttons.Count) * i; //finds the angle to put the button
+            Vector3 targetPos = transform.position + Vector3.right * circSpawner.distFromBrancher; //find position, start from right of spawner
+            targetPos = RotatePointAroundPivot(targetPos, transform.position, targetAngle);
+            RectTransform buttonRect = buttons[i].GetComponent<RectTransform>();
+            buttonRect.sizeDelta = new Vector2(buttonScale.newButtonSize.x, buttonScale.newButtonSize.y); //resize button
 
+            ButtonFader previousButtonFader;
+            if (i > 0)
+                previousButtonFader = buttons[i - 1].GetComponent<ButtonFader>(); //To prevent the next button from fading if the previous button hasn't finieshed fading yet
+            else
+                previousButtonFader = null; //First button in the list
+            ButtonFader buttonFader = buttons[i].GetComponent<ButtonFader>();
+
+            if (previousButtonFader)
+            {
+                if (previousButtonFader.faded) //When the previous button is done fading
+                {
+                    buttons[i].transform.position = targetPos;
+                    if (buttonFader)
+                    {
+                        buttonFader.Fade(revealSettings.fadeSpeed);
+                    }
+                    else
+                        Debug.LogError("You forgot to set a ButtonFader to button number " + i);
+                }
+            }
+            else
+            {
+                buttons[i].transform.position = targetPos;
+                if (buttonFader)
+                {
+                    buttonFader.Fade(revealSettings.fadeSpeed);
+                }
+                else
+                    Debug.LogError("You forgot to set a ButtonFader to button number " + i);
+            }
+        }
+    }
+
+    Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, float angle)
+    {
+        Vector3 targetPoint = point - pivot;
+        targetPoint = Quaternion.Euler(0, 0, angle) * targetPoint;
+        targetPoint += pivot;
+        return targetPoint;
     }
 
     void ClearCommonButtonBranchers()
