@@ -49,7 +49,7 @@ public class ButtonBranch : MonoBehaviour {
         [HideInInspector]
         public bool opening = false;
         [HideInInspector]
-        public bool ending = false;
+        public bool spawned = false;
     }
 
     [System.Serializable]
@@ -57,7 +57,7 @@ public class ButtonBranch : MonoBehaviour {
     {
         public enum RevealStyle { SlideToPosition, FadeInAtPosition};
         public RevealStyle revealStyle;
-        public Vector2 direction = new Vector2(0, 1); //slide down
+        public Vector2 direction = new Vector2(0, 0); //slide down
         public float baseSpacing = 5f;
         public int NumOffset = 0; //How many button spaces offset, needed sometimes when there are multiple branches
         [HideInInspector]
@@ -117,7 +117,8 @@ public class ButtonBranch : MonoBehaviour {
         buttonScale.Initialize(referenceButtonSize, referenceScreenSize, (int)mode);
         circSpawner.FitDistanceToScreenSize(buttonScale.referenceScreenSize);
         linSpawner.FitSpacingToScreenSize(buttonScale.referenceScreenSize);
-        SpawnButtons();
+        if (revealSettings.revealOnStart)
+            SpawnButtons();
 	}
 	
 	// Update is called once per frame
@@ -134,7 +135,7 @@ public class ButtonBranch : MonoBehaviour {
 
         if (revealSettings.opening)
         {
-            //if (!revealSettings.spawned)
+            if (!revealSettings.spawned)
                 SpawnButtons();
 
             switch (revealSettings.option) //like a if statement. This switch statement determines the reveal style.
@@ -164,7 +165,7 @@ public class ButtonBranch : MonoBehaviour {
     {
         revealSettings.opening = true;
         //clear button list
-        for (int i = buttons.Count; i >= 0; i--)
+        for (int i = buttons.Count-1; i >= 0; i--)
             Destroy(buttons[i]);
         buttons.Clear();
 
@@ -188,7 +189,9 @@ public class ButtonBranch : MonoBehaviour {
                     b.GetComponentInChildren<Text>().color = c;
                 }
             }
+            buttons.Add(b);
         }
+        revealSettings.spawned = true;
     }
 
     void RevealLinearlyNormal()
@@ -329,7 +332,7 @@ public class ButtonBranch : MonoBehaviour {
             if (brancher.transform.parent == transform.parent) //checks to see if it is the same parent
             {
                 ButtonBranch bb = brancher.GetComponent<ButtonBranch>();
-                for (int i = bb.buttons.Count; i >= 0; i--)
+                for (int i = bb.buttons.Count-1; i >= 0; i--)
                     Destroy(bb.buttons[i]);
                 bb.buttons.Clear();
             }
