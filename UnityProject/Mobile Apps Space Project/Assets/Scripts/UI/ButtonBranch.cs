@@ -130,10 +130,11 @@ public class ButtonBranch : MonoBehaviour {
             buttonScale.Initialize(referenceButtonSize, referenceScreenSize, (int)mode);
             circSpawner.FitDistanceToScreenSize(buttonScale.referenceScreenSize);
             linSpawner.FitSpacingToScreenSize(buttonScale.referenceScreenSize);
-            SpawnButtons();
+            if (revealSettings.spawned)
+                SpawnButtons();
         }
 
-        if (revealSettings.opening)
+        if (revealSettings.opening)//revealSettings.opening)
         {
             if (!revealSettings.spawned)
                 SpawnButtons();

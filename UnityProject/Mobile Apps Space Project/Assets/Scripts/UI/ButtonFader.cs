@@ -26,7 +26,7 @@ public class ButtonFader : MonoBehaviour {
         if (startFade)
         {
             Fade(speed);
-            if (buttonColor.a > 0)
+            if (buttonColor.a > 1)
                 faded = true;
         }
 	}

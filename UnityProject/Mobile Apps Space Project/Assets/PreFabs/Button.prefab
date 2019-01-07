@@ -61,30 +61,34 @@ MonoBehaviour:
   buttonRefs:
   - {fileID: 1574265812914018, guid: 3665180602ddb71488b84e7a91278d84, type: 2}
   - {fileID: 1845150185635102, guid: c50d2f652bceb8c44b5a4837c48c7109, type: 2}
-  buttons: []
+  - {fileID: 1762674855355888, guid: b08a3c61cced60c4abbfa9e02c6886c9, type: 2}
+  - {fileID: 1762674855355888, guid: b08a3c61cced60c4abbfa9e02c6886c9, type: 2}
+  buttons:
+  - {fileID: 0}
+  - {fileID: 0}
   mode: 1
-  referenceButtonSize: {x: 160, y: 30}
+  referenceButtonSize: {x: 160, y: 80}
   referenceScreenSize: {x: 800, y: 800}
   revealSettings:
     option: 0
     moveSpeed: 1
-    fadeSpeed: 5
+    fadeSpeed: 0.01
     revealOnStart: 0
     opening: 0
     spawned: 0
   linSpawner:
-    revealStyle: 0
+    revealStyle: 1
     direction: {x: 1, y: 0}
     baseSpacing: 2
-    NumOffset: 1
-    spacing: 5
+    NumOffset: 2
+    spacing: 0.755
   circSpawner:
     revealStyle: 0
     angle:
       minAngle: 0
-      maxAngle: 0
-    baseDistFromBrancher: 20
-    distFromBrancher: 0
+      maxAngle: 50
+    baseDistFromBrancher: 400
+    distFromBrancher: 7.55
 --- !u!114 &114172550634377254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -215,7 +219,7 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1021763309547982}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -223,11 +227,11 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 44}
   m_SizeDelta: {x: 202, y: 55.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0}
 --- !u!224 &224473375931428630
 RectTransform:
   m_ObjectHideFlags: 1
