@@ -70,20 +70,20 @@ MonoBehaviour:
   referenceButtonSize: {x: 160, y: 80}
   referenceScreenSize: {x: 800, y: 800}
   revealSettings:
-    option: 0
+    option: 1
     moveSpeed: 1
     fadeSpeed: 0.01
     revealOnStart: 0
     opening: 0
     spawned: 0
   linSpawner:
-    revealStyle: 1
+    revealStyle: 0
     direction: {x: 1, y: 0}
     baseSpacing: 2
     NumOffset: 2
     spacing: 0.755
   circSpawner:
-    revealStyle: 0
+    revealStyle: 1
     angle:
       minAngle: 0
       maxAngle: 50
@@ -229,7 +229,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 44}
+  m_AnchoredPosition: {x: -0.007507324, y: 54.778885}
   m_SizeDelta: {x: 202, y: 55.5}
   m_Pivot: {x: 0, y: 0}
 --- !u!224 &224473375931428630
