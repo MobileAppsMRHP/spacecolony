@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114696899939477842}
   - component: {fileID: 114068565764735902}
   m_Layer: 5
-  m_Name: Button
+  m_Name: MainScreenButtonBrancher
   m_TagString: ButtonBrancher
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
