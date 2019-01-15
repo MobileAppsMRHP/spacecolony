@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "802276543754",
+    "firebase_url": "https://mobileappsmrhp-spacecolony.firebaseio.com",
+    "project_id": "mobileappsmrhp-spacecolony",
+    "storage_bucket": "mobileappsmrhp-spacecolony.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802276543754:android:812fe3a23a0421b8",
+        "android_client_info": {
+          "package_name": "com.MRHP.SpaceshipGame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802276543754-okq47df9h9phhogmeflop1tt7j78mr7i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBJceQH_tlQl273Pa8RoJt-2X5lHFuJr8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
