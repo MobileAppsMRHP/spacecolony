@@ -5,6 +5,11 @@ using UnityEngine;
 public class Crew : MonoBehaviour {
     string name;
     string role;
+    struct skillLevel
+    {
+        int cooking;
+        int piloting;
+    }
 	// Use this for initialization
 	void Start () {
 		

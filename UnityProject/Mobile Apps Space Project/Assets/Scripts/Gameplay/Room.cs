@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Room : MonoBehaviour {
     enum RoomType { Food, Bridge};
+    int peopleLimit;
+    int roomLevel;
 	// Use this for initialization
 	void Start () {
 		
