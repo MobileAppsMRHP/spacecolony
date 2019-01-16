@@ -39,6 +39,24 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: UI Effects Layer
+    uniqueID: 3072501149
+    locked: 0
+  - name: UI Layer
+    uniqueID: 2155575865
+    locked: 0
+  - name: Effects Layer
+    uniqueID: 1905850095
+    locked: 0
+  - name: People Layer
+    uniqueID: 2592732529
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Rooms Layer
+    uniqueID: 3050068097
+    locked: 0
+  - name: Background Layer
+    uniqueID: 468641377
     locked: 0
