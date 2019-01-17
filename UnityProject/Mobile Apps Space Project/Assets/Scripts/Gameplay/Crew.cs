@@ -5,13 +5,18 @@ using UnityEngine;
 public class Crew : MonoBehaviour {
     string name;
     string role;
-    float progressToLevel;
+    int skillPoints;
+    float progressToNextLevel;
+    Skills skills;
+
+    public bool newCharacter;
 
     struct Skills
     {
         int cooking;
-        int piloting;
-
+        int navigation;
+        int medical;
+        int fighting;
 
     }
 	// Use this for initialization
@@ -24,25 +29,47 @@ public class Crew : MonoBehaviour {
 		
 	}
 
-    public Crew(string name, string role)
+    public Crew(string name, string role, int[] skills)
     {
         this.name = name;
         this.role = role;
+        for (int i=0; i < skills.Length; i++)
+        {
 
+        }
     }
 
-    public string getName()
+    public string GetName()
     {
         return name;
     }
 
-    public string getRole()
+    public string GetRole()
     {
         return role;
     }
 
-    public void changeRole(string newRole)
+    public void ChangeRole(string newRole)
     {
         role = newRole;
     }
+
+    public bool NextLevel()
+    {
+        if (progressToNextLevel > 100)
+        {
+            progressToNextLevel = -100;
+            skillPoints += 3;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public float nextLevelProgress()
+    {
+        return progressToNextLevel;
+    }
+
+    
 }
