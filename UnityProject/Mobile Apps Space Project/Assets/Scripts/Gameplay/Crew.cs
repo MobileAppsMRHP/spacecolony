@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class Crew : MonoBehaviour {
 
-    private string name;
-    private string role;
-    private int skillPoints;
-    private float progressToNextLevel;
-    private SharedStructs.Skills skills;
+    public string crewName;
+    public string role;
+    public int skillPoints;
+    public float progressToNextLevel;
+    public Shared.Skills skills;
 
-    public bool newCharacter;
+    //public bool newCharacter;
 
 	// Use this for initialization
 	void Start () {
@@ -24,24 +24,24 @@ public class Crew : MonoBehaviour {
 		
 	}
 
-    public Crew(string name, string role, int[] skills)
+    public Crew(string crewName, string role, Shared.Skills skills)
     {
-        this.name = name;
+        this.crewName = crewName;
         this.role = role;
         this.skillPoints = 0;
         this.progressToNextLevel = 0;
 
-        this.skills = new SharedStructs.Skills();
+        //this.skills = skills; // new SharedStructs.Skills();
 
-        for (int i=0; i < skills.Length; i++)
+        /*for (int i=0; i < skills.Length; i++)
         {
             //this.skills[i] = skills[i];
-        }
+        }*/
     }
 
     public string GetName()
     {
-        return name;
+        return crewName;
     }
 
     public string GetRole()
@@ -66,10 +66,16 @@ public class Crew : MonoBehaviour {
             return false;
     }
 
-    public float nextLevelProgress()
+    public float NextLevelProgress()
     {
         return progressToNextLevel;
     }
+
+    public string Serialize()
+    { //rob test method
+        return JsonUtility.ToJson(this);
+    }
+
 
     
 }

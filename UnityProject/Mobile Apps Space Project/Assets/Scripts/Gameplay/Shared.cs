@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class SharedStructs {
+public static class Shared {
 
    public struct Skills
     {
@@ -10,6 +10,16 @@ public static class SharedStructs {
         int navigation;
         int medical;
         int fighting;
+    }
+
+    public enum roles
+    {
+        unassigned,
+        pilot,
+        cook,
+        farmer,
+        explorer,
+        lifesupport
     }
 
 }
