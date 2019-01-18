@@ -2,23 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class Crew : MonoBehaviour {
-    string name;
-    string role;
-    int skillPoints;
-    float progressToNextLevel;
-    Skills skills;
+
+    private string name;
+    private string role;
+    private int skillPoints;
+    private float progressToNextLevel;
+    private SharedStructs.Skills skills;
 
     public bool newCharacter;
 
-    struct Skills
-    {
-        int cooking;
-        int navigation;
-        int medical;
-        int fighting;
-
-    }
 	// Use this for initialization
 	void Start () {
 		
@@ -33,9 +28,14 @@ public class Crew : MonoBehaviour {
     {
         this.name = name;
         this.role = role;
+        this.skillPoints = 0;
+        this.progressToNextLevel = 0;
+
+        this.skills = new SharedStructs.Skills();
+
         for (int i=0; i < skills.Length; i++)
         {
-
+            //this.skills[i] = skills[i];
         }
     }
 
