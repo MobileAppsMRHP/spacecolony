@@ -12,7 +12,7 @@ public static class Shared {
         int fighting;
     }
 
-    public enum roles
+    public enum Roles
     {
         unassigned,
         pilot,
