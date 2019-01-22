@@ -47,7 +47,7 @@ public class DatabaseManager : MonoBehaviour {
 		
 	}
 
-    //Get a datavase value
+    //Run this to get a datavase value
     public object GetValueOnce(string reference)
     {
         //Since the database ref could be storing any number of things, you'll need to use System.Convert to convert it to the needed type, I think. - Rob
