@@ -12,15 +12,34 @@ public class DatabaseManager : MonoBehaviour {
     //written with the guidance of https://firebase.google.com/docs/database/unity/retrieve-data
 
     private FirebaseDatabase instance;
-    private DatabaseReference rootRef; 
+    //private DatabaseReference rootRef; 
 
+
+    //Start Singleton handling from https://gamedev.stackexchange.com/a/116010
+    private static DatabaseManager _instance;
+    public static DatabaseManager Instance { get { return _instance; } }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+    //End singleton handling from https://gamedev.stackexchange.com/a/116010
+
+    
     // Use this for initialization
     void Start () {
         // Set this before calling into the realtime database.
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://mobileappsmrhp-spacecolony.firebaseio.com/");
 
         instance = FirebaseDatabase.DefaultInstance;
-        rootRef = instance.RootReference;
+        //rootRef = instance.RootReference;
     }
 	
 	// Update is called once per frame
