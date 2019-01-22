@@ -30,4 +30,9 @@ public class GameManager : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void addFood(int num)
+    {
+        food += num;
+    }
 }
