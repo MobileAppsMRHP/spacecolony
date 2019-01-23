@@ -6,6 +6,7 @@ public class Room : MonoBehaviour {
     enum RoomType { Food, Bridge};
     int peopleLimit;
     int roomLevel;
+    List<Crew> crewInThisRoom;
 	// Use this for initialization
 	void Start () {
 		
@@ -15,4 +16,10 @@ public class Room : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    void ChangeCrew(Crew member)
+    {
+        //make a check to see if that crew is in that list.
+        crewInThisRoom.Remove(member);
+    }
 }
