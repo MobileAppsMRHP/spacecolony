@@ -60,7 +60,8 @@ public class DatabaseManager : MonoBehaviour {
               if (task.IsFaulted)
                 {
                     // Handle the error...
-                    Debug.LogWarning("Data retrival error when prompting for data at reference: " + reference + ", returning null instead.");
+                    if (GameManager.debugLevel >= 1)
+                        Debug.LogError("Data retrival error when prompting for data at reference: " + reference + ", returning null instead.");
                 }
               else if (task.IsCompleted)
                 {
@@ -69,10 +70,39 @@ public class DatabaseManager : MonoBehaviour {
               else
                 {
                     //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
-                    Debug.LogWarning("Task error when prompting for data at reference: " + reference);
+                    if(GameManager.debugLevel >= 1)
+                        Debug.LogError("Task error when prompting for data at reference: " + reference);
                 }
           });
 
         return output;
+    }
+
+    //
+    public object GetValueListener(string reference)
+    {
+        //TODO: Make this based off of the example on the website
+        return null;
+    }
+
+    //TODO: return error codes needed?
+    public void SetValueAsync(string reference, object thing)
+    {
+        if (GameManager.debugLevel >= 4)
+        {
+            Debug.Log("Overwriting data at " + reference + " with " + thing.ToString());
+        }
+        instance.GetReference(reference).SetValueAsync(thing);
+    }
+
+    //TODO: return error codes needed?
+    public void SetJsonAsyc(string reference, object thing)
+    {
+        string json = JsonUtility.ToJson(thing);
+        if (GameManager.debugLevel >= 4)
+        {
+            Debug.Log("Overwriting JSON at: " + reference + " with: " + json);
+        }
+        instance.GetReference(reference).SetRawJsonValueAsync(json);
     }
 }
