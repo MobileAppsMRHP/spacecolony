@@ -7,14 +7,14 @@ using Firebase.Unity.Editor;
 
 using UnityEngine;
 
-public class DatabaseManager : MonoBehaviour {
+public class DatabaseManager {
 
     //written with the guidance of https://firebase.google.com/docs/database/unity/retrieve-data
 
     private FirebaseDatabase instance;
     //private DatabaseReference rootRef; 
 
-
+        /*
     //Start Singleton handling from https://gamedev.stackexchange.com/a/116010
     private static DatabaseManager _instance;
     public static DatabaseManager Instance { get { return _instance; } }
@@ -23,7 +23,8 @@ public class DatabaseManager : MonoBehaviour {
     {
         if (_instance != null && _instance != this)
         {
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+            Debug.LogError("A second database manager was created! Unexpected behaviour will ensue.");
         }
         else
         {
@@ -31,10 +32,10 @@ public class DatabaseManager : MonoBehaviour {
         }
     }
     //End singleton handling from https://gamedev.stackexchange.com/a/116010
-
+        */
     
     // Use this for initialization
-    void Start () {
+    public DatabaseManager() {
         // Set this before calling into the realtime database.
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://mobileappsmrhp-spacecolony.firebaseio.com/");
 
@@ -42,10 +43,12 @@ public class DatabaseManager : MonoBehaviour {
         //rootRef = instance.RootReference;
     }
 	
+    /*
 	// Update is called once per frame
 	void Update () {
 		
 	}
+    */
 
     //Run this to get a datavase value
     public object GetValueOnce(string reference)
