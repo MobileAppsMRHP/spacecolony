@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance = null; //singleton pattern
 
+    private static DatabaseManager dbman = null;
+
     private void Start()
     {
         DisplayLoadingScreen();
@@ -58,7 +60,8 @@ public class GameManager : MonoBehaviour
     //TODO: make this actually load database values, initalize crew and resources, etc.
     public void LoadDatabaseValues()
     {
-
+        dbman = new DatabaseManager();
+        Debug.Log(dbman.GetValueOnce("testing-data/food"));
     }
 
     //TODO: make this actually display a loading screen
