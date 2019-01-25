@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SwitchScreenOnZoom : MonoBehaviour {
-    public GameObject camera;
+    public GameObject activeCamera;
     public float zoomValueMax;
     public float zoomValueMin;
     float currentZoomValue;
 	// Use this for initialization
 	void Start () {
-        currentZoomValue = camera.GetComponent<Camera>().orthographicSize;
+        currentZoomValue = activeCamera.GetComponent<Camera>().orthographicSize;
 	}
 	
 	// Update is called once per frame
