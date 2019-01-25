@@ -5,7 +5,7 @@ using UnityEngine;
 public class UserAuthentication : MonoBehaviour {
 
 	// Use this for initialization
-	void Start () {
+	public void Start () {
         Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;//import API thorugh default instance of class 
     }
 	
@@ -14,7 +14,7 @@ public class UserAuthentication : MonoBehaviour {
 		
 	}
 
-    void Authenticate()//trades in google token for firebase credentials. made with help from https://firebase.google.com/docs/auth/unity/google-signin?authuser=0
+    public void Authenticate()//trades in google token for firebase credentials. made with help from https://firebase.google.com/docs/auth/unity/google-signin?authuser=0
     {
         Firebase.Auth.Credential credential =
     Firebase.Auth.GoogleAuthProvider.GetCredential(googleIdToken, googleAccessToken);
@@ -35,8 +35,13 @@ public class UserAuthentication : MonoBehaviour {
                 newUser.DisplayName, newUser.UserId);
         });
     }
-     void signOut(Firebase.Auth.FirebaseUser user)//signs out user 
+     public void signOut( Firebase.Auth.FirebaseAuth auth)//signs out user 
     {
-        user.SignOut();
+        auth.SignOut();
+    }
+
+    public string getUsername(Firebase.Auth.FirebaseUser user)//returns the signed in users username
+    {
+        return user.DisplayName; 
     }
 }
