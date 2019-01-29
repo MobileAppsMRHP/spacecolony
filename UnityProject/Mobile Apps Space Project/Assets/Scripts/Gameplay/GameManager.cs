@@ -67,9 +67,10 @@ public class GameManager : MonoBehaviour
     //TODO: make this actually load database values, initalize crew and resources, etc.
     public void LoadDatabaseValues()
     {
+        Debug.Log("test");
         dbman = new DatabaseManager();
 
-        Debug.Log("Food value: " + dbman.GetValueOnce("testing-data").ToString());
+        /*Debug.Log("Food value: " + */dbman.GetValueOnce("testing-data")/*);*/;
     }
 
     //TODO: make this actually display a loading screen

@@ -58,6 +58,8 @@ public class DatabaseManager {
         //Since the database ref could be storing any number of things, you'll need to use System.Convert to convert it to the needed type, I think. - Rob
         // https://docs.microsoft.com/en-us/dotnet/api/system.convert?view=netframework-4.7.2
 
+        Debug.Log("GetValOnce called");
+
         object output = null;
         bool worked = false;
 
@@ -79,8 +81,10 @@ public class DatabaseManager {
                     GameManager.DebugLog("Task error when prompting for data at reference: " + reference, 1);
                 }
           });
-        if(worked)
-            GameManager.DebugLog("A value was requested: " + reference + " with the value " + output, 4);
+        if (worked)
+            GameManager.DebugLog("A value was requested at: " + reference + " with the value " + output, 4);
+        else
+            GameManager.DebugLog("GetValOnce did not set flag worked", 4);
         return output;
     }
 
