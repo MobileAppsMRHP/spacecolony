@@ -41,6 +41,8 @@ public class DatabaseManager {
 
         instance = FirebaseDatabase.DefaultInstance;
         //rootRef = instance.RootReference;
+
+        GameManager.DebugLog("Database Manager initialized", 3);
     }
 	
     /*
@@ -57,27 +59,28 @@ public class DatabaseManager {
         // https://docs.microsoft.com/en-us/dotnet/api/system.convert?view=netframework-4.7.2
 
         object output = null;
+        bool worked = false;
 
         instance.GetReference(reference).GetValueAsync()
             .ContinueWith(task => {
               if (task.IsFaulted)
                 {
                     // Handle the error...
-                    if (GameManager.debugLevel >= 1)
-                        Debug.LogError("Data retrival error when prompting for data at reference: " + reference + ", returning null instead.");
+                    GameManager.DebugLog("Data retrival error when prompting for data at reference: " + reference + ", returning null instead.", 1);
                 }
               else if (task.IsCompleted)
                 {
                     output = task.Result.GetValue(false);
+                    worked = true;
                 }
               else
                 {
                     //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
-                    if(GameManager.debugLevel >= 1)
-                        Debug.LogError("Task error when prompting for data at reference: " + reference);
+                    GameManager.DebugLog("Task error when prompting for data at reference: " + reference, 1);
                 }
           });
-
+        if(worked)
+            GameManager.DebugLog("A value was requested: " + reference + " with the value " + output, 4);
         return output;
     }
 
@@ -91,10 +94,7 @@ public class DatabaseManager {
     //TODO: return error codes needed?
     public void SetValueAsync(string reference, object thing)
     {
-        if (GameManager.debugLevel >= 4)
-        {
-            Debug.Log("Overwriting data at " + reference + " with " + thing.ToString());
-        }
+        GameManager.DebugLog("Overwriting data at " + reference + " with " + thing.ToString(), 4);
         instance.GetReference(reference).SetValueAsync(thing);
     }
 
@@ -102,10 +102,9 @@ public class DatabaseManager {
     public void SetJsonAsyc(string reference, object thing)
     {
         string json = JsonUtility.ToJson(thing);
-        if (GameManager.debugLevel >= 4)
-        {
-            Debug.Log("Overwriting JSON at: " + reference + " with: " + json);
-        }
+        GameManager.DebugLog("Overwriting JSON at: " + reference + " with: " + json, 4);
         instance.GetReference(reference).SetRawJsonValueAsync(json);
     }
+
+
 }
