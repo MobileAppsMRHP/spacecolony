@@ -29,6 +29,11 @@ public class DragAndDrop : MonoBehaviour//, IDragHandler,  IEndDragHandler
             Vector2 cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = new Vector2(cursorPos.x, cursorPos.y);
         }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            selected = false;
+        }
 	}
 
     void OnMouseOver()
@@ -36,6 +41,15 @@ public class DragAndDrop : MonoBehaviour//, IDragHandler,  IEndDragHandler
         if (Input.GetMouseButtonDown(0))
         {
             selected = true;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        Debug.Log(collision.gameObject.tag);
+        if (!selected)
+        {
+            transform.position = collision.transform.position;
         }
     }
 }

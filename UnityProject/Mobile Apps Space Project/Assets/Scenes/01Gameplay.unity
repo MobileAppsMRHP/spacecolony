@@ -204,6 +204,10 @@ Prefab:
       propertyPath: m_Name
       value: Room-temp Bridge
       objectReference: {fileID: 0}
+    - target: {fileID: 1180773634941354, guid: 67c1a16393de4054bada52027b027547, type: 2}
+      propertyPath: m_TagString
+      value: Room
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 67c1a16393de4054bada52027b027547, type: 2}
   m_IsPrefabParent: 0
@@ -1073,7 +1077,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -15.500015}
+  m_AnchoredPosition: {x: 0, y: -15.5}
   m_SizeDelta: {x: 199.07, y: 77.8}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1612117483
@@ -1900,6 +1904,10 @@ Prefab:
       propertyPath: m_Name
       value: Room-temp Food Production
       objectReference: {fileID: 0}
+    - target: {fileID: 1180773634941354, guid: 67c1a16393de4054bada52027b027547, type: 2}
+      propertyPath: m_TagString
+      value: Room
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 67c1a16393de4054bada52027b027547, type: 2}
   m_IsPrefabParent: 0
@@ -2052,7 +2060,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
