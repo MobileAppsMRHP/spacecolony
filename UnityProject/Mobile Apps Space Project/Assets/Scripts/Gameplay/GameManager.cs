@@ -12,14 +12,19 @@ public class GameManager : MonoBehaviour
 
     public bool isLoading = false; //indicates to other things if the game is loading
 
-    public const int debugLevel = 4; //increase this value to log more debug messages
+    public const byte debugLevel = 255; //increase this value to log more debug messages
     //higher number includes more logs, so picking 2 includes both 1 and 2's output
     //0: no debug log messages ever
     //1: log errors only
     //2: log warnings
-    //3: 
+    //3: log info
     //4: log every database value change
     //5: 
+    //6: 
+    //7: 
+    //255: log EEEEVERYTHING
+
+    public RuntimePlatform running_on;
 
     public static GameManager instance = null; //singleton pattern
 
@@ -27,6 +32,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        running_on = Application.platform;
+        DebugLog("Running on a " + running_on, 3);
         DisplayLoadingScreen();
         LoadDatabaseValues();
         HideLoadingScreen();
@@ -52,7 +59,7 @@ public class GameManager : MonoBehaviour
 		
 	}
 
-    public void addFood(int num)
+    public void AddFood(int num)
     {
         food += num;
     }
@@ -60,8 +67,10 @@ public class GameManager : MonoBehaviour
     //TODO: make this actually load database values, initalize crew and resources, etc.
     public void LoadDatabaseValues()
     {
+        Debug.Log("test");
         dbman = new DatabaseManager();
-        Debug.Log(dbman.GetValueOnce("testing-data/food"));
+
+        /*Debug.Log("Food value: " + */dbman.GetValueOnce("testing-data")/*);*/;
     }
 
     //TODO: make this actually display a loading screen
@@ -76,5 +85,16 @@ public class GameManager : MonoBehaviour
     {
         isLoading = false;
 
+    }
+
+    public static void DebugLog(string message, byte debugLevelToDisplayAt)
+    {
+        if (debugLevel >= debugLevelToDisplayAt)
+            Debug.Log(message);
+    }
+
+    public static void DebugLog(string message) //overloaded
+    {
+        DebugLog(message, 0);
     }
 }
