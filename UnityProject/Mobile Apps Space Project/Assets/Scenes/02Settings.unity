@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 82640080}
   - component: {fileID: 82640079}
   m_Layer: 5
-  m_Name: Text
+  m_Name: NotifiText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -749,7 +749,7 @@ GameObject:
   - component: {fileID: 676953172}
   - component: {fileID: 676953171}
   m_Layer: 5
-  m_Name: Text
+  m_Name: StatusText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -770,8 +770,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 170, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 189.5, y: 0}
+  m_SizeDelta: {x: 199, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &676953171
 MonoBehaviour:
@@ -1134,6 +1134,7 @@ GameObject:
   - component: {fileID: 1757061514}
   - component: {fileID: 1757061513}
   - component: {fileID: 1757061512}
+  - component: {fileID: 1757061515}
   m_Layer: 5
   m_Name: Notifications
   m_TagString: Untagged
@@ -1199,7 +1200,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1757061513}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1757061515}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1757061513
@@ -1235,6 +1247,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1757061510}
+--- !u!114 &1757061515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1757061510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7a53984e025b024c904727045123f94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textShowed: {fileID: 82640079}
+  tracker: 1
 --- !u!1 &1927792205
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,6 +1272,7 @@ GameObject:
   - component: {fileID: 1927792209}
   - component: {fileID: 1927792208}
   - component: {fileID: 1927792207}
+  - component: {fileID: 1927792211}
   m_Layer: 5
   m_Name: Log Out
   m_TagString: Untagged
@@ -1323,7 +1349,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1927792209}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1927792211}
+        m_MethodName: changeWord
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: LOGGED OFF
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1927792209
@@ -1359,6 +1396,19 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1927792205}
+--- !u!114 &1927792211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1927792205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7a53984e025b024c904727045123f94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textShowed: {fileID: 676953171}
+  tracker: 1
 --- !u!1 &2003116195
 GameObject:
   m_ObjectHideFlags: 0
