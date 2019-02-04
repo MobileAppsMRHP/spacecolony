@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class DatabaseManager {
 
+    public static int maximumTimeout = 10000;
+
     //written with the guidance of https://firebase.google.com/docs/database/unity/retrieve-data
 
     private FirebaseDatabase instance;
@@ -52,39 +54,52 @@ public class DatabaseManager {
 	}
     */
 
+    private IEnumerator Test()
+    {
+
+    }
+
     //Run this to get a datavase value
     public object GetValueOnce(string reference)
     {
         //Since the database ref could be storing any number of things, you'll need to use System.Convert to convert it to the needed type, I think. - Rob
         // https://docs.microsoft.com/en-us/dotnet/api/system.convert?view=netframework-4.7.2
 
-        Debug.Log("GetValOnce called");
-
         object output = null;
-        bool worked = false;
+        bool busy = true;
+        int timeBusy = 0;
+
+        GameManager.DebugLog("Handling request for data at " + reference + "...", 4);
 
         instance.GetReference(reference).GetValueAsync()
             .ContinueWith(task => {
               if (task.IsFaulted)
-                {
-                    // Handle the error...
-                    GameManager.DebugLog("Data retrival error when prompting for data at reference: " + reference + ", returning null instead.", 1);
-                }
+              {
+                // Handle the error...
+                GameManager.DebugLog("Data retrival error when prompting for data at reference: " + reference + ", returning null instead.", 1);
+              }
               else if (task.IsCompleted)
-                {
-                    output = task.Result.GetValue(false);
-                    worked = true;
-                }
+              {
+                output = task.Result.GetValue(false);
+                    Debug.Log("got value: " + output);
+              }
               else
-                {
-                    //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
-                    GameManager.DebugLog("Task error when prompting for data at reference: " + reference, 1);
-                }
-          });
-        if (worked)
-            GameManager.DebugLog("A value was requested at: " + reference + " with the value " + output, 4);
+              {
+                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
+                GameManager.DebugLog("Task error when prompting for data at reference: " + reference, 1);
+              }
+              busy = false;
+            });
+
+        while (busy && timeBusy < maximumTimeout) //wait until maximum cutoff reached 
+        {
+            timeBusy++;
+            
+        }
+        if (timeBusy >= maximumTimeout)
+            GameManager.DebugLog("DatabaseManager exceeded maximum timeout while handling request for " + reference, 1);
         else
-            GameManager.DebugLog("GetValOnce did not set flag worked", 4);
+            GameManager.DebugLog("Requested for " + reference + " completed after " + timeBusy + " time counts with the value " + output, 4);
         return output;
     }
 
