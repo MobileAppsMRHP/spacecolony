@@ -46,7 +46,7 @@ public class DatabaseManager {
 
         GameManager.DebugLog("Database Manager initialized", 3);
     }
-	
+
     /*
 	// Update is called once per frame
 	void Update () {
@@ -54,10 +54,21 @@ public class DatabaseManager {
 	}
     */
 
-    private IEnumerator Test()
-    {
 
+    private class DatabaseGetUtility
+    {
+        public bool IsBusy { get; private set; }
+        public object returnValue { get; private set; }
+
+        public IEnumerator LoadDataAsync()
+        {
+            IsBusy = true;
+            yield return new WaitForSeconds(2);
+            IsBusy = false;
+        }
     }
+
+    
 
     //Run this to get a datavase value
     public object GetValueOnce(string reference)
@@ -70,6 +81,8 @@ public class DatabaseManager {
         int timeBusy = 0;
 
         GameManager.DebugLog("Handling request for data at " + reference + "...", 4);
+
+        DatabaseGetUtility utility = new DatabaseGetUtility();
 
         instance.GetReference(reference).GetValueAsync()
             .ContinueWith(task => {
@@ -90,6 +103,8 @@ public class DatabaseManager {
               }
               busy = false;
             });
+
+
 
         while (busy && timeBusy < maximumTimeout) //wait until maximum cutoff reached 
         {
@@ -127,3 +142,4 @@ public class DatabaseManager {
 
 
 }
+
