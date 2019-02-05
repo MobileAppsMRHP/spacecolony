@@ -67,10 +67,9 @@ public class GameManager : MonoBehaviour
     //TODO: make this actually load database values, initalize crew and resources, etc.
     public void LoadDatabaseValues()
     {
-        Debug.Log("test");
         dbman = new DatabaseManager();
 
-        /*Debug.Log("Food value: " + */dbman.GetValueOnce("testing-data")/*);*/;
+        Debug.Log("Food value: " + dbman.GetValueOnce("testing-data/food").ToString());
     }
 
     //TODO: make this actually display a loading screen
@@ -90,7 +89,10 @@ public class GameManager : MonoBehaviour
     public static void DebugLog(string message, byte debugLevelToDisplayAt)
     {
         if (debugLevel >= debugLevelToDisplayAt)
-            Debug.Log(message);
+            if(debugLevelToDisplayAt == 1)
+                Debug.LogError(message);
+            else
+                Debug.Log(message);
     }
 
     public static void DebugLog(string message) //overloaded
