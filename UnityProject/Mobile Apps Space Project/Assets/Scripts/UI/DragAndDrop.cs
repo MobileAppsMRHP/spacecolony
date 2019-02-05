@@ -3,19 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragAndDrop : MonoBehaviour//, IDragHandler,  IEndDragHandler
+public class DragAndDrop : MonoBehaviour
 { 
     private bool selected;
-
-    /*public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = Input.mousePosition;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        transform.localPosition = Vector3.zero;
-    }*/
 
     // Use this for initialization
     void Start () {
@@ -29,27 +19,24 @@ public class DragAndDrop : MonoBehaviour//, IDragHandler,  IEndDragHandler
             Vector2 cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = new Vector2(cursorPos.x, cursorPos.y);
         }
-
-        if (Input.GetMouseButtonUp(0))
+        if (selected && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
             selected = false;
+            Debug.Log("touch ended");
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(0f, 0f), 0, 0); //do a raycast to see what they hit
+            Debug.Log(hit.collider.tag);
+            if (hit.collider.tag == "Room") //if it hit something, anything, ....
+            {
+                Debug.Log("Room dropped"); //log that something was hit by the touch event
+                Debug.Log(hit.collider);
+                transform.position = hit.collider.transform.position;
+            }
         }
 	}
 
-    void OnMouseOver()
+    private void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(0))
-        {
             selected = true;
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        Debug.Log(collision.gameObject.tag);
-        if (!selected)
-        {
-            transform.position = collision.transform.position;
-        }
     }
 }
