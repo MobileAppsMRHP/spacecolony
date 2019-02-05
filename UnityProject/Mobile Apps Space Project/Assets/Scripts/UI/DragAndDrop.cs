@@ -39,4 +39,14 @@ public class DragAndDrop : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
             selected = true;
     }
+
+    private void OnTriggerStay2D(Collider collider)
+    {
+        Debug.Log(collider.tag);
+        if (collider.tag == "Room") //if it hit something, anything, ....
+        {
+            Debug.Log("Room dropped"); //log that something was hit by the touch event
+            transform.position = collider.transform.position;
+        }
+    }
 }
