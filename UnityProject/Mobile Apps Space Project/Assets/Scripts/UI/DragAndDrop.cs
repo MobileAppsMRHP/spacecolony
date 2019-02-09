@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class DragAndDrop : MonoBehaviour
 {
-    public GameObject camera;
+    public GameObject mainCamera;
     private bool selected;
 
     // Use this for initialization
@@ -24,7 +24,7 @@ public class DragAndDrop : MonoBehaviour
         {
             selected = false;
             Debug.Log("touch ended");
-            camera.GetComponent<CamPan>().stopPan = false;
+            mainCamera.GetComponent<CamPan>().characterSelected = false;
         }
 	}
 
@@ -33,7 +33,7 @@ public class DragAndDrop : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             selected = true;
-            camera.GetComponent<CamPan>().stopPan = true;
+            mainCamera.GetComponent<CamPan>().characterSelected = true;
         }
     }
 
