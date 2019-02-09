@@ -208,6 +208,11 @@ Prefab:
       propertyPath: m_TagString
       value: Room
       objectReference: {fileID: 0}
+    - target: {fileID: 61701641567232668, guid: 67c1a16393de4054bada52027b027547,
+        type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 67c1a16393de4054bada52027b027547, type: 2}
   m_IsPrefabParent: 0
@@ -316,11 +321,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 304703333}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 600e716af1731174bbc98cd4aa5d0ad1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stopPan: 0
 --- !u!114 &304703339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,7 +423,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 311295047}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.07, y: 3.14, z: 0}
+  m_LocalPosition: {x: 4.8, y: 3.988, z: 0}
   m_LocalScale: {x: 4.044925, y: 4.044925, z: 4.044925}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1962,6 +1968,7 @@ GameObject:
   - component: {fileID: 2113374075}
   - component: {fileID: 2113374073}
   - component: {fileID: 2113374074}
+  - component: {fileID: 2113374076}
   m_Layer: 0
   m_Name: crew walk 1
   m_TagString: Player
@@ -2107,3 +2114,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fde06dc4e7cea14da1fc79273b888d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camera: {fileID: 304703333}
+--- !u!50 &2113374076
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2113374068}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

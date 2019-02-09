@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CamPan : MonoBehaviour {
+    public bool stopPan;
     bool zooming;
     Vector3 touchInitialLocation;
 	// Use this for initialization
@@ -18,7 +19,7 @@ public class CamPan : MonoBehaviour {
             touchInitialLocation = Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position));
         }
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved && !zooming)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved && !zooming && !stopPan)
         {
             Vector3 changeDirection = touchInitialLocation - Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position));
             Camera.main.transform.position += changeDirection;

@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class DragAndDrop : MonoBehaviour
-{ 
+{
+    public GameObject camera;
     private bool selected;
 
     // Use this for initialization
@@ -23,29 +24,24 @@ public class DragAndDrop : MonoBehaviour
         {
             selected = false;
             Debug.Log("touch ended");
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(0f, 0f), 0, 0); //do a raycast to see what they hit
-            Debug.Log(hit.collider.tag);
-            if (hit.collider.tag == "Room") //if it hit something, anything, ....
-            {
-                Debug.Log("Room dropped"); //log that something was hit by the touch event
-                Debug.Log(hit.collider);
-                transform.position = hit.collider.transform.position;
-            }
+            camera.GetComponent<CamPan>().stopPan = false;
         }
 	}
 
     private void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(0))
+        {
             selected = true;
+            camera.GetComponent<CamPan>().stopPan = true;
+        }
     }
 
-    private void OnTriggerStay2D(Collider collider)
+    void OnTriggerStay2D(Collider2D collider)
     {
-        Debug.Log(collider.tag);
-        if (collider.tag == "Room") //if it hit something, anything, ....
+        if (collider.tag == "Room") //
         {
-            Debug.Log("Room dropped"); //log that something was hit by the touch event
+            Debug.Log("Room dropped"); //
             transform.position = collider.transform.position;
         }
     }
