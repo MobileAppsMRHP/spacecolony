@@ -9,11 +9,13 @@ using UnityEngine;
 
 public class DatabaseManager {
 
-    public static int maximumTimeout = 10000;
+    //public static int maximumTimeout = 10000;
 
     //written with the guidance of https://firebase.google.com/docs/database/unity/retrieve-data
 
     private FirebaseDatabase instance;
+    private string user_string;
+
     //private DatabaseReference rootRef; 
 
         /*
@@ -37,9 +39,11 @@ public class DatabaseManager {
         */
     
     // Use this for initialization
-    public DatabaseManager() {
+    public DatabaseManager(string UserID) {
         // Set this before calling into the realtime database.
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://mobileappsmrhp-spacecolony.firebaseio.com/");
+
+        user_string = UserID;
 
         instance = FirebaseDatabase.DefaultInstance;
         //rootRef = instance.RootReference;
@@ -100,7 +104,7 @@ public class DatabaseManager {
     
 
     //Run this to get a datavase value
-    public object GetValueOnce(string reference)
+    /*public object GetValueOnce(string reference)
     {
         //Since the database ref could be storing any number of things, you'll need to use System.Convert to convert it to the needed type, I think. - Rob
         // https://docs.microsoft.com/en-us/dotnet/api/system.convert?view=netframework-4.7.2
@@ -115,7 +119,7 @@ public class DatabaseManager {
 
         //utility.LoadDataAsyncAwait(reference);
 
-        var result = AsyncContext
+        //var result = AsyncContext
 
         instance.GetReference(reference).GetValueAsync()
             .ContinueWith(task => {
@@ -127,7 +131,7 @@ public class DatabaseManager {
               else if (task.IsCompleted)
               {
                 output = task.Result.GetValue(false);
-                    Debug.Log("got value: " + output);
+                Debug.Log("got value: " + output);
               }
               else
               {
@@ -149,9 +153,23 @@ public class DatabaseManager {
         else
             GameManager.DebugLog("Requested for " + reference + " completed after " + timeBusy + " time counts with the value " + output, 4);
         return output;
+    }*/
+
+    public void LoadCrew()
+    {
+        
     }
 
-    //
+    public void LoadRooms()
+    {
+
+    }
+
+    public void LoadResources()
+    {
+
+    }
+
     public object GetValueListener(string reference)
     {
         //TODO: Make this based off of the example on the website

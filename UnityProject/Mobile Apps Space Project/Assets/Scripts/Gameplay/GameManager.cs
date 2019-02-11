@@ -69,9 +69,13 @@ public class GameManager : MonoBehaviour
     //TODO: make this actually load database values, initalize crew and resources, etc.
     public void LoadDatabaseValues()
     {
-        dbman = new DatabaseManager();
+        dbman = new DatabaseManager("User1"); //TODO: get actual user uuid from auth
 
-        Debug.Log("Food value: " + dbman.GetValueOnce("testing-data/food").ToString());
+        dbman.LoadCrew();
+        dbman.LoadRooms();
+        dbman.LoadResources();
+
+        //Debug.Log("Food value: " + dbman.GetValueOnce("testing-data/food").ToString());
     }
 
     //TODO: make this actually display a loading screen
