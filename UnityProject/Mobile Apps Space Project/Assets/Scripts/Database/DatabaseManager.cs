@@ -58,7 +58,6 @@ public class DatabaseManager {
 	}
     */
 
-
     /*private class DatabaseGetUtility
     {
         public bool IsBusy { get; private set; }
@@ -100,8 +99,6 @@ public class DatabaseManager {
             return 
         }
     }*/
-
-    
 
     //Run this to get a datavase value
     /*public object GetValueOnce(string reference)

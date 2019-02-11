@@ -34,9 +34,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        DisplayLoadingScreen();
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, 3);
-        DisplayLoadingScreen();
+        SetupResourcesList();
         LoadDatabaseValues();
         HideLoadingScreen();
     }
@@ -61,10 +62,18 @@ public class GameManager : MonoBehaviour
 		
 	}
 
-    public void AddFood(int num)
+    public void SetupResourcesList()
+    {
+        resources.Add(new KeyValuePair<string, int>("food", 0));
+        resources.Add(new KeyValuePair<string, int>("water", 0));
+        resources.Add(new KeyValuePair<string, int>("energy", 0));
+        resources.Add(new KeyValuePair<string, int>("money", 0));
+    }
+
+    /*public void AddFood(int num)
     {
         food += num;
-    }
+    }*/
 
     //TODO: make this actually load database values, initalize crew and resources, etc.
     public void LoadDatabaseValues()
