@@ -5,10 +5,12 @@ public class GameManager : MonoBehaviour
 {
 
     public List<Crew> crewMembers;
-    public float food;
+    public List<KeyValuePair<string, int>> resources;
+
+    /*public float food;
     public float energy;
     public float water;
-    public float money;
+    public float money;*/
 
     public bool isLoading = false; //indicates to other things if the game is loading
 
