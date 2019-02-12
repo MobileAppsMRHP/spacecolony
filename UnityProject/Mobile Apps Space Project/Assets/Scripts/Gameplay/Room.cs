@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Room : MonoBehaviour {
     enum RoomType { Food, Bridge};
-    int peopleLimit;
+    public int peopleLimit;
     int roomLevel;
     List<Crew> crewInThisRoom;
 	// Use this for initialization
@@ -21,5 +21,28 @@ public class Room : MonoBehaviour {
     {
         //make a check to see if that crew is in that list.
         crewInThisRoom.Remove(member);
+    }
+
+    public bool SpacesAvailable()
+    {
+        if (crewInThisRoom.Count < peopleLimit)
+            return true;
+        else
+            return false;
+    }
+
+    public float SpacesLeft()
+    {
+        return peopleLimit - crewInThisRoom.Count;
+    }
+
+    public void AddPerson(Crew newCrew)
+    {
+        crewInThisRoom.Add(newCrew);
+    }
+
+    public void RemovePerson(Crew crewToRemove)
+    {
+        crewInThisRoom.Remove(crewToRemove);
     }
 }

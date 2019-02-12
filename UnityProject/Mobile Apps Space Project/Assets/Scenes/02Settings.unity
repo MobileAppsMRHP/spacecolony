@@ -1202,11 +1202,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1757061515}
-        m_MethodName: 
+        m_MethodName: ChangeWordNotification
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1271,7 +1271,6 @@ GameObject:
   - component: {fileID: 1927792210}
   - component: {fileID: 1927792209}
   - component: {fileID: 1927792208}
-  - component: {fileID: 1927792207}
   - component: {fileID: 1927792211}
   m_Layer: 5
   m_Name: Log Out
@@ -1300,17 +1299,6 @@ RectTransform:
   m_AnchoredPosition: {x: -50, y: 11.2}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1927792207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1927792205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 180896318f8b8644fbbb1ddf6d264c92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1927792208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1351,8 +1339,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1927792211}
-        m_MethodName: changeWord
-        m_Mode: 5
+        m_MethodName: ChangeWordStatus
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
