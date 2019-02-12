@@ -3,19 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragAndDrop : MonoBehaviour//, IDragHandler,  IEndDragHandler
-{ 
+public class DragAndDrop : MonoBehaviour
+{
+    public GameObject mainCamera;
     private bool selected;
-
-    /*public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = Input.mousePosition;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        transform.localPosition = Vector3.zero;
-    }*/
 
     // Use this for initialization
     void Start () {
@@ -29,27 +20,31 @@ public class DragAndDrop : MonoBehaviour//, IDragHandler,  IEndDragHandler
             Vector2 cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = new Vector2(cursorPos.x, cursorPos.y);
         }
-
-        if (Input.GetMouseButtonUp(0))
+        if (selected && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
             selected = false;
+            Debug.Log("touch ended");
+            mainCamera.GetComponent<CamPan>().characterSelected = false;
         }
 	}
 
-    void OnMouseOver()
+    private void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(0))
         {
             selected = true;
+            mainCamera.GetComponent<CamPan>().characterSelected = true;
         }
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    void OnTriggerStay2D(Collider2D collider)
     {
-        Debug.Log(collision.gameObject.tag);
-        if (!selected)
+        
+        if (collider.tag == "Room" && collider.gameObject.GetComponent<Room>().SpacesAvailable()) //
         {
-            transform.position = collision.transform.position;
+            Debug.Log("Room dropped"); //
+            transform.position = collider.transform.position;
+            collider.gameObject.GetComponent<Room>().AddPerson(gameObject.GetComponent<Crew>());
         }
     }
 }

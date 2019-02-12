@@ -83,8 +83,6 @@ public class GameManager : MonoBehaviour
         dbman.LoadCrew();
         dbman.LoadRooms();
         dbman.LoadResources();
-
-        //Debug.Log("Food value: " + dbman.GetValueOnce("testing-data/food").ToString());
     }
 
     //TODO: make this actually display a loading screen
