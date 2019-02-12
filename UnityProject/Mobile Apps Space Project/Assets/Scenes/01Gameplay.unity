@@ -592,6 +592,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ffd39ad4115ab70499506c7c787a5289, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &785634569 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114543948148715002, guid: ffd39ad4115ab70499506c7c787a5289,
+    type: 2}
+  m_PrefabInternal: {fileID: 650614064}
+  m_Script: {fileID: 11500000, guid: fe6ee61ca72cdb54693148b641aeb290, type: 3}
 --- !u!1001 &872100969
 Prefab:
   m_ObjectHideFlags: 0
@@ -1239,7 +1245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 92023498}
-  displayText: {fileID: 0}
+  displayText: {fileID: 1612117483}
 --- !u!1 &1631473174
 GameObject:
   m_ObjectHideFlags: 0
@@ -1966,6 +1972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peopleLimit: 0
+  crewInThisRoom: []
 --- !u!1 &2102461782 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1180773634941354, guid: 67c1a16393de4054bada52027b027547,
@@ -1983,6 +1990,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peopleLimit: 2
+  crewInThisRoom:
+  - {fileID: 785634569}
 --- !u!114 &2113374072 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114287706632852490, guid: ffd39ad4115ab70499506c7c787a5289,
