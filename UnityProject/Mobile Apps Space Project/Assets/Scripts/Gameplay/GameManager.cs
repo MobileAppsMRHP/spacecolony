@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.DefaultControls;
 
 public class GameManager : MonoBehaviour
 {
 
-    public List<Crew> crewMembers;
-    public List<KeyValuePair<string, int>> resources;
+    private List<Crew> CrewMembers { get; set; }
+    private Dictionary<string, int> Resources { get; set; }
 
     /*public float food;
     public float energy;
     public float water;
     public float money;*/
 
-    public bool isLoading = false; //indicates to other things if the game is loading
+    public bool IsLoading = false; //indicates to other things if the game is loading
 
     public const byte debugLevel = 255; //increase this value to log more debug messages
     //higher number includes more logs, so picking 2 includes both 1 and 2's output
@@ -64,10 +65,10 @@ public class GameManager : MonoBehaviour
 
     public void SetupResourcesList()
     {
-        resources.Add(new KeyValuePair<string, int>("food", 0));
-        resources.Add(new KeyValuePair<string, int>("water", 0));
-        resources.Add(new KeyValuePair<string, int>("energy", 0));
-        resources.Add(new KeyValuePair<string, int>("money", 0));
+        Resources.Add("food", 0);
+        Resources.Add("water", 0);
+        Resources.Add("energy", 0);
+        Resources.Add("money", 0);
     }
 
     /*public void AddFood(int num)
@@ -88,14 +89,14 @@ public class GameManager : MonoBehaviour
     //TODO: make this actually display a loading screen
     public void DisplayLoadingScreen()
     {
-        isLoading = true;
+        IsLoading = true;
 
     }
 
     //TODO: make this actually display a loading screen
     public void HideLoadingScreen()
     {
-        isLoading = false;
+        IsLoading = false;
 
     }
 
