@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.DefaultControls;
 
 public class GameManager : MonoBehaviour
 {
 
-    public List<Crew> crewMembers;
-    public float food;
+    private List<Crew> CrewMembers { get; set; }
+    public Dictionary<string, int> Resources; // { get; set; }
+
+    /*public float food;
     public float energy;
     public float water;
-    public float money;
+    public float money;*/
 
-    public bool isLoading = false; //indicates to other things if the game is loading
+    public bool IsLoading = false; //indicates to other things if the game is loading
 
     public const byte debugLevel = 255; //increase this value to log more debug messages
     //higher number includes more logs, so picking 2 includes both 1 and 2's output
@@ -32,9 +35,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        DisplayLoadingScreen();
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, 3);
-        DisplayLoadingScreen();
+        SetupResourcesList();
         LoadDatabaseValues();
         HideLoadingScreen();
     }
@@ -59,30 +63,40 @@ public class GameManager : MonoBehaviour
 		
 	}
 
-    public void AddFood(int num)
+    public void SetupResourcesList()
+    {
+        Resources.Add("food", 0);
+        Resources.Add("water", 0);
+        Resources.Add("energy", 0);
+        Resources.Add("money", 0);
+    }
+
+    /*public void AddFood(int num)
     {
         food += num;
-    }
+    }*/
 
     //TODO: make this actually load database values, initalize crew and resources, etc.
     public void LoadDatabaseValues()
     {
-        dbman = new DatabaseManager();
+        dbman = new DatabaseManager("User1"); //TODO: get actual user uuid from auth
 
-        Debug.Log("Food value: " + dbman.GetValueOnce("testing-data/food").ToString());
+        dbman.LoadCrew();
+        dbman.LoadRooms();
+        dbman.LoadResources();
     }
 
     //TODO: make this actually display a loading screen
     public void DisplayLoadingScreen()
     {
-        isLoading = true;
+        IsLoading = true;
 
     }
 
     //TODO: make this actually display a loading screen
     public void HideLoadingScreen()
     {
-        isLoading = false;
+        IsLoading = false;
 
     }
 
