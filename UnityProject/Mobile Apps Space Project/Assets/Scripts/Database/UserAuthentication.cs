@@ -1,22 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public class UserAuthentication : MonoBehaviour {
-
-	// Use this for initialization
-	public void Start () {
+    Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;//import API thorugh default instance of class 
+                                                                                 // Use this for initialization
+    public void Start () {
        
     }
 	
 	// Update is called once per frame
-	void Update () {
-		
+    //using here to exit game when escape key id pressed
+	public virtual void Update () {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
 	}
 
     public void Authenticate()//trades in google token for firebase credentials. made with help from https://firebase.google.com/docs/auth/unity/google-signin?authuser=0
     {
-        Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;//import API thorugh default instance of class 
         Firebase.Auth.Credential credential = //REPLACE THESE ACCESS TOKENS LATER
             Firebase.Auth.GoogleAuthProvider.GetCredential("googleIdToken", "googleAccessToken");
             auth.SignInWithCredentialAsync(credential).ContinueWith(task => {
