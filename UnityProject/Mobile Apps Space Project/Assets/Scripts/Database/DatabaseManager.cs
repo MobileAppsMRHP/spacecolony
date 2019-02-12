@@ -167,11 +167,11 @@ public class DatabaseManager {
 
     }
 
-    public object GetValueListener(string reference)
+    /*public object GetValueListener(string reference)
     {
         //TODO: Make this based off of the example on the website
         return null;
-    }
+    }*/
 
     //TODO: return error codes needed?
     public void SetValueAsync(string reference, object thing)

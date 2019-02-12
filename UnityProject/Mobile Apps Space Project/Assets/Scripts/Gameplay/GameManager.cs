@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
 
     private List<Crew> CrewMembers { get; set; }
-    private Dictionary<string, int> Resources { get; set; }
+    public Dictionary<string, int> Resources; // { get; set; }
 
     /*public float food;
     public float energy;
