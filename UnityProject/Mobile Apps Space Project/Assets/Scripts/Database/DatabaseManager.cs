@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using Firebase;
 using Firebase.Database;
 using Firebase.Unity.Editor;
@@ -46,7 +46,7 @@ public class DatabaseManager {
 
         GameManager.DebugLog("Database Manager initialized", 3);
     }
-	
+
     /*
 	// Update is called once per frame
 	void Update () {
@@ -54,10 +54,50 @@ public class DatabaseManager {
 	}
     */
 
-    private IEnumerator Test()
-    {
 
-    }
+    /*private class DatabaseGetUtility
+    {
+        public bool IsBusy { get; private set; }
+        public object returnValue { get; private set; }
+
+        public IEnumerator LoadDataAsync()
+        {
+            IsBusy = true;
+            yield return new WaitForSeconds(2);
+            IsBusy = false;
+        }
+
+        async Task LoadDataAsyncAwait(string reference)
+        {
+            object output = null;
+
+            Task.
+
+            Task afterRequest => {
+                if (afterRequest.IsFaulted)
+                {
+                    // Handle the error...
+                    GameManager.DebugLog("Data retrival error when prompting for data at reference: " + reference + ", returning null instead.", 1);
+                }
+                else if (afterRequest.IsCompleted)
+                {
+                    output = afterRequest.Result.GetValue(false);
+                    Debug.Log("got value: " + output);
+                }
+                else
+                {
+                    //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
+                    GameManager.DebugLog("Task error when prompting for data at reference: " + reference, 1);
+                }
+            }
+
+            await instance.GetReference(reference).GetValueAsync()
+            .ContinueWith(afterRequest);
+            return 
+        }
+    }*/
+
+    
 
     //Run this to get a datavase value
     public object GetValueOnce(string reference)
@@ -70,6 +110,12 @@ public class DatabaseManager {
         int timeBusy = 0;
 
         GameManager.DebugLog("Handling request for data at " + reference + "...", 4);
+
+        //DatabaseGetUtility utility = new DatabaseGetUtility();
+
+        //utility.LoadDataAsyncAwait(reference);
+
+        var result = AsyncContext
 
         instance.GetReference(reference).GetValueAsync()
             .ContinueWith(task => {
@@ -90,6 +136,8 @@ public class DatabaseManager {
               }
               busy = false;
             });
+
+
 
         while (busy && timeBusy < maximumTimeout) //wait until maximum cutoff reached 
         {
@@ -127,3 +175,4 @@ public class DatabaseManager {
 
 
 }
+
