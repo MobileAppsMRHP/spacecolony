@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Firebase.Database;
 using UnityEngine;
 
 
@@ -74,6 +75,13 @@ public class Crew : MonoBehaviour {
     public string Serialize()
     { //rob test method
         return JsonUtility.ToJson(this);
+    }
+
+    public void DatabaseValueChanged(object sender, ValueChangedEventArgs args)
+    {
+        string json = args.Snapshot.GetRawJsonValue();
+        GameManager.DebugLog("Overwrote crew member " + this.name + " with JSON from database: " + json, 4);
+        JsonUtility.FromJsonOverwrite(json, this);
     }
 
 

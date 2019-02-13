@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public float water;
     public float money;*/
 
-    public bool IsLoading = false; //indicates to other things if the game is loading
+    private bool IsLoading = false; //indicates to other things if the game is loading
 
     public const byte debugLevel = 255; //increase this value to log more debug messages
     //higher number includes more logs, so picking 2 includes both 1 and 2's output
@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
         Resources.Add("water", 0);
         Resources.Add("energy", 0);
         Resources.Add("money", 0);
+        DebugLog("Done setting up resrouces list",3);
     }
 
     /*public void AddFood(int num)
