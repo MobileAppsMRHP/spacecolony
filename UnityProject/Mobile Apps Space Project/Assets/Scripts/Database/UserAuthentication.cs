@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 public class UserAuthentication : MonoBehaviour {
     Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;//import API thorugh default instance of class 
-                                                                                 // Use this for initialization
+    protected bool fetchingToken = false;                                                                            // Use this for initialization
     public void Start () {
        
     }
@@ -40,7 +40,7 @@ public class UserAuthentication : MonoBehaviour {
                     newUser.DisplayName, newUser.UserId);
             });
     }
-     public void signOut( Firebase.Auth.FirebaseAuth auth)//signs out user 
+     public void SignOut( Firebase.Auth.FirebaseAuth auth)//signs out user 
     {
         auth.SignOut();
     }
@@ -48,5 +48,14 @@ public class UserAuthentication : MonoBehaviour {
     public string getUsername(Firebase.Auth.FirebaseUser user)//returns the signed in users username
     {
         return user.DisplayName; 
+    }
+
+    public void TrackTokenChanges(object sender, System.EventArgs eventargs)//tracks changes to user auth token 
+    {
+        Firebase.Auth.FirebaseAuth senderAuth = sender as Firebase.Auth.FirebaseAuth;
+        if (senderAuth == auth && fetchingToken==false)
+        {
+            senderAuth.CurrentUser.TokenAsync(false).ContinueWith(Task => print(string.Format("Token[0:8] = {0}", Task.Result.Substring(0, 8))));
+         }
     }
 }
