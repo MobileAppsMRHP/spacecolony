@@ -45,6 +45,9 @@ public class DragAndDrop : MonoBehaviour
             Debug.Log("Room dropped"); //
             transform.position = collider.transform.position;
             collider.gameObject.GetComponent<Room>().AddPerson(gameObject.GetComponent<Crew>());
+            GetComponent<Crew>().GetCurrentRoom().RemovePerson(GetComponent<Crew>());
+            GetComponent<Crew>().ChangeCurrentRoom(collider.gameObject.GetComponent<Room>());
         }
+
     }
 }
