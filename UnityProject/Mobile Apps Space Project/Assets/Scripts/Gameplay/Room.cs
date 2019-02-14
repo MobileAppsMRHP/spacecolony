@@ -6,7 +6,7 @@ public class Room : MonoBehaviour {
     enum RoomType { Food, Bridge};
     public int peopleLimit;
     int roomLevel;
-    List<Crew> crewInThisRoom;
+    public List<Crew> crewInThisRoom;
 	// Use this for initialization
 	void Start () {
 		

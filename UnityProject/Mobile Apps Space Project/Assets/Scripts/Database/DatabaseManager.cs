@@ -154,7 +154,7 @@ public class DatabaseManager {
 
     public void LoadCrew()
     {
-        instance.GetReference(user_string).Child("Crew").ValueChanged += Crew.DatabaseValueChanged;
+        //instance.GetReference(user_string).Child("Crew").ValueChanged += Crew.DatabaseValueChanged;
     }
 
     public void LoadRooms()

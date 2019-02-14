@@ -12,6 +12,6 @@ using UnityEngine.SceneManagement;
 
         public void QuitSettings()
         {
-            //SceneManager.LoadScene("02Settings");  //Go to last scene
+            SceneManager.LoadScene("01Gameplay");  //Go to last scene
         }
     }
