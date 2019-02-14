@@ -5,13 +5,8 @@ using static UnityEngine.UI.DefaultControls;
 public class GameManager : MonoBehaviour
 {
 
-    private List<Crew> CrewMembers { get; set; }
-    public Dictionary<string, int> Resources; // { get; set; }
-
-    /*public float food;
-    public float energy;
-    public float water;
-    public float money;*/
+    public List<Crew> CrewMembers;
+    private Dictionary<string, int> Resources; //{ get; }
 
     private bool IsLoading = false; //indicates to other things if the game is loading
 
@@ -65,11 +60,31 @@ public class GameManager : MonoBehaviour
 
     public void SetupResourcesList()
     {
-        Resources.Add("food", 0);
-        Resources.Add("water", 0);
-        Resources.Add("energy", 0);
-        Resources.Add("money", 0);
+        Resources = new Dictionary<string, int>();
+        /*{
+            { "food", 0 },
+            { "water", 0 },
+            { "energy", 0 },
+            { "money", 0 }
+        };*/
         DebugLog("Done setting up resrouces list",3);
+    }
+
+    public int GetResource(string key)
+    {
+        if(Resources.ContainsKey(key))
+            return Resources[key];
+        else
+        {
+            DebugLog("A resource " + key + " was requested that was not present in the resources list.", 2);
+            return 0;
+        }
+    }
+
+    public int SetResource(string key, int value)
+    {
+        Resources[key] = value;
+        return Resources[key];
     }
 
     /*public void AddFood(int num)

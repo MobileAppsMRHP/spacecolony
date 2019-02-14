@@ -8,12 +8,13 @@ public class TextUpdate : MonoBehaviour {
     public Text displayText;
 	// Use this for initialization
 	void Start () {
+        gameManager = GameManager.instance; //drag-and-drop set didnt seem to work?
         displayText = GetComponent<Text>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(gameManager);
-        displayText.text = "" + gameManager.Resources["food"];
+        //Debug.Log(gameManager);
+        displayText.text = "" + gameManager.GetResource("food");
 	}
 }
