@@ -12,6 +12,8 @@ public class Crew : MonoBehaviour {
     public float progressToNextLevel;
     public Shared.Skills skills;
 
+    Room currentRoom;
+
     //public bool newCharacter;
 
 	// Use this for initialization
@@ -76,6 +78,14 @@ public class Crew : MonoBehaviour {
         return JsonUtility.ToJson(this);
     }
 
+    public Room GetCurrentRoom()
+    {
+        return currentRoom;
+    }
 
+    public void ChangeCurrentRoom(Room newRoom)
+    {
+        currentRoom = newRoom;
+    }
     
 }
