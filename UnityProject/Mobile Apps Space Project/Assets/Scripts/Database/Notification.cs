@@ -13,12 +13,12 @@ public class Notification : MonoBehaviour {
     }
 	
 	
-	public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
+	public void OnTokenReceived(object sender, TokenReceivedEventArgs token)
     {
         Debug.Log("Received Regestration Token: " + token.Token);
 	}
 
-    public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
+    public void OnMessageReceived(object sender, MessageReceivedEventArgs e)
     {
         Debug.Log("Received a new message form: " + e.Message.From);
     }
