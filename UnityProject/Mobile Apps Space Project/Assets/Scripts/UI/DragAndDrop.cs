@@ -7,6 +7,7 @@ public class DragAndDrop : MonoBehaviour
 {
     public GameObject mainCamera;
     private bool selected;
+    Vector3 initialPosition;
 
     // Use this for initialization
     void Start () {
@@ -34,6 +35,7 @@ public class DragAndDrop : MonoBehaviour
         {
             selected = true;
             mainCamera.GetComponent<CamPan>().characterSelected = true;
+            initialPosition = transform.position;
         }
     }
 
@@ -47,6 +49,10 @@ public class DragAndDrop : MonoBehaviour
             collider.gameObject.GetComponent<Room>().AddPerson(gameObject.GetComponent<Crew>());
             GetComponent<Crew>().GetCurrentRoom().RemovePerson(GetComponent<Crew>());
             GetComponent<Crew>().ChangeCurrentRoom(collider.gameObject.GetComponent<Room>());
+        }
+        else
+        {
+            transform.position = initialPosition;
         }
 
     }

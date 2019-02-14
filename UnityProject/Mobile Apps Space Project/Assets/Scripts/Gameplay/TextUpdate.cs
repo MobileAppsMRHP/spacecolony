@@ -14,6 +14,6 @@ public class TextUpdate : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Debug.Log(gameManager);
-        displayText.text = "" + gameManager.Resources["food"];
+        //displayText.text = "" + gameManager.Resources["food"];
 	}
 }

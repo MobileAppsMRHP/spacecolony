@@ -13,7 +13,7 @@ public class Crew : MonoBehaviour {
     public float progressToNextLevel;
     public Shared.Skills skills;
 
-    Room currentRoom;
+    public Room currentRoom;
 
     //public bool newCharacter;
 
