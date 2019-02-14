@@ -58,4 +58,21 @@ public class UserAuthentication : MonoBehaviour {
             senderAuth.CurrentUser.TokenAsync(false).ContinueWith(Task => print(string.Format("Token[0:8] = {0}", Task.Result.Substring(0, 8))));
          }
     }
+
+  //eventually we can use the method below to sign in with google or other provider credntials
+    /* public Task SigninWithEmailCredentialAsync()
+    {
+        if (signInAndFetchProfile)
+        {
+            return auth.SignInAndRetrieveDataWithCredentialAsync(
+              Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
+                HandleSignInWithSignInResult);
+        }
+        else
+        {
+            return auth.SignInWithCredentialAsync(
+              Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
+                HandleSignInWithUser);
+        }
+    }*/
 }
