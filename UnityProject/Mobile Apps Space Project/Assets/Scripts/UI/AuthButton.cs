@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ChangeButton : MonoBehaviour {
+public class AuthButton : MonoBehaviour {
 
     public Text textShowed = null;
     public bool tracker = true;
