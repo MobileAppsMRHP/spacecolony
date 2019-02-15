@@ -45,7 +45,7 @@ public class DatabaseManager {
 
         user_string = UserID;
 
-        instance = FirebaseDatabase.DefaultInstance;
+        //instance = FirebaseDatabase.DefaultInstance; //THIS LINE ENABLED CAUSES CRASHES - issue with when pranay imported packages?
         //rootRef = instance.RootReference;
 
         GameManager.DebugLog("Database Manager initialized", 3);

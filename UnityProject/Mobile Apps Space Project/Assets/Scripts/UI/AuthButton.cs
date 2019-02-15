@@ -9,20 +9,6 @@ public class AuthButton : MonoBehaviour {
     public bool tracker = true;
     protected static UserAuthentication auth = new UserAuthentication();
 
-    public void ChangeWordNotification()
-    {
-        if (tracker)
-        {
-            textShowed.text = "Off";
-            tracker = false;
-        }
-        else
-        {
-            textShowed.text = "On";
-            tracker = true;
-        }
-    }
-
     public void ChangeWordStatus()
     {
         if (tracker)
