@@ -7,6 +7,7 @@ public class AuthButton : MonoBehaviour {
 
     public Text textShowed = null;
     public bool tracker = true;
+    protected static UserAuthentication auth = new UserAuthentication();
 
     public void ChangeWordNotification()
     {
@@ -31,8 +32,8 @@ public class AuthButton : MonoBehaviour {
         }
         else
         {
-            textShowed.text = "Logged On";
-            tracker = true;
+            auth.SigninWithEmailCredentialAsync();
+            textShowed.text = "Logged in";
         }
     }
 }
