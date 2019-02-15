@@ -8,20 +8,6 @@ public class AuthButton : MonoBehaviour {
     public Text textShowed = null;
     public bool tracker = true;
 
-    public void ChangeWordNotification()
-    {
-        if (tracker)
-        {
-            textShowed.text = "Off";
-            tracker = false;
-        }
-        else
-        {
-            textShowed.text = "On";
-            tracker = true;
-        }
-    }
-
     public void ChangeWordStatus()
     {
         if (tracker)
