@@ -13,8 +13,6 @@ public class Crew : MonoBehaviour {
     public float progressToNextLevel;
     public Shared.Skills skills;
 
-    public Room currentRoom;
-
     //public bool newCharacter;
 
 	// Use this for initialization
@@ -85,16 +83,6 @@ public class Crew : MonoBehaviour {
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " with JSON from database: " + json, 4);
         JsonUtility.FromJsonOverwrite(json, this);
-    }
-
-    public Room GetCurrentRoom()
-    {
-        return currentRoom;
-    }
-
-    public void ChangeCurrentRoom(Room newRoom)
-    {
-        currentRoom = newRoom;
     }
     
 }

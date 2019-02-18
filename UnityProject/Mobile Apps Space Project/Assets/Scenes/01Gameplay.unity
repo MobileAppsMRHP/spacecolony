@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -214,15 +214,11 @@ Prefab:
       propertyPath: m_Name
       value: Room-temp Bridge
       objectReference: {fileID: 0}
-    - target: {fileID: 1180773634941354, guid: 67c1a16393de4054bada52027b027547, type: 2}
-      propertyPath: m_TagString
-      value: Room
-      objectReference: {fileID: 0}
-    - target: {fileID: 61701641567232668, guid: 67c1a16393de4054bada52027b027547,
+    - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: crewInThisRoom.Array.data[0]
+      value: 
+      objectReference: {fileID: 785634569}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 67c1a16393de4054bada52027b027547, type: 2}
   m_IsPrefabParent: 0
@@ -564,11 +560,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4080509806050146, guid: ffd39ad4115ab70499506c7c787a5289, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -0.685
+      value: -0.866
       objectReference: {fileID: 0}
     - target: {fileID: 4080509806050146, guid: ffd39ad4115ab70499506c7c787a5289, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 2.186
+      value: 2.406
       objectReference: {fileID: 0}
     - target: {fileID: 4080509806050146, guid: ffd39ad4115ab70499506c7c787a5289, type: 2}
       propertyPath: m_LocalPosition.z
@@ -604,6 +600,16 @@ Prefab:
       propertyPath: currentRoom
       value: 
       objectReference: {fileID: 2102461783}
+    - target: {fileID: 50973051253796186, guid: ffd39ad4115ab70499506c7c787a5289,
+        type: 2}
+      propertyPath: m_Simulated
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 61641564297663824, guid: ffd39ad4115ab70499506c7c787a5289,
+        type: 2}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ffd39ad4115ab70499506c7c787a5289, type: 2}
   m_IsPrefabParent: 0
@@ -819,6 +825,11 @@ Prefab:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 261794252}
+    - target: {fileID: 114353142693554334, guid: 0e4e64049e338354d97ea6b676bebdb2,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e4e64049e338354d97ea6b676bebdb2, type: 2}
   m_IsPrefabParent: 0
@@ -1027,6 +1038,106 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1213067977}
+--- !u!1 &1280892188
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1280892191}
+  - component: {fileID: 1280892190}
+  - component: {fileID: 1280892189}
+  m_Layer: 0
+  m_Name: SPoW_82318_01
+  m_TagString: Background
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!61 &1280892189
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1280892188}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 20, y: 15}
+    newSize: {x: 20, y: 15}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 20, y: 15}
+  m_EdgeRadius: 0
+--- !u!212 &1280892190
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1280892188}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 468641377
+  m_SortingLayer: -2
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: d74779526398a684a8db624e3fec34ca, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 20, y: 15}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+--- !u!4 &1280892191
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1280892188}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.58, y: 1.03, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1612117481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1705,6 +1816,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
+        type: 2}
+      propertyPath: crewInThisRoom.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4952384370962232, guid: 67c1a16393de4054bada52027b027547, type: 2}
       propertyPath: m_LocalPosition.x
       value: 1.183
@@ -1741,50 +1857,16 @@ Prefab:
       propertyPath: m_Name
       value: Room-temp Food Production
       objectReference: {fileID: 0}
-    - target: {fileID: 1180773634941354, guid: 67c1a16393de4054bada52027b027547, type: 2}
-      propertyPath: m_TagString
-      value: Room
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114864710342572286, guid: 67c1a16393de4054bada52027b027547, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 67c1a16393de4054bada52027b027547, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &2071605409 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1180773634941354, guid: 67c1a16393de4054bada52027b027547,
-    type: 2}
-  m_PrefabInternal: {fileID: 2071605408}
---- !u!114 &2071605410
+--- !u!114 &2102461783 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2071605409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a2ff8a516a9ad41968e603407b80b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  peopleLimit: 0
-  crewInThisRoom: []
---- !u!1 &2102461782 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1180773634941354, guid: 67c1a16393de4054bada52027b027547,
+  m_PrefabParentObject: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
     type: 2}
   m_PrefabInternal: {fileID: 256221472}
---- !u!114 &2102461783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2102461782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61a2ff8a516a9ad41968e603407b80b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  peopleLimit: 2
-  crewInThisRoom:
-  - {fileID: 785634569}
 --- !u!114 &2113374072 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114287706632852490, guid: ffd39ad4115ab70499506c7c787a5289,
