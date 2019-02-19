@@ -9,7 +9,7 @@ public class AuthButton : MonoBehaviour {
     protected static UserAuthentication auth;
 
     void Awake(){
-         textShowed= null;
+         textShowed.text="Logged Off";
          tracker = true;
          auth= new UserAuthentication();
 }
@@ -18,7 +18,6 @@ public class AuthButton : MonoBehaviour {
     {
         if (tracker)
         {
-            textShowed.text = "Logged Off";
             tracker = false;
         }
         else
