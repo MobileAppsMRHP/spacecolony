@@ -13,7 +13,7 @@ public class UserAuthentication : MonoBehaviour {
     private string phoneAuthVerificationId;
 
     // Use this for initialization
-    public void Start () {
+     void Awake() {
        
     }
 	
