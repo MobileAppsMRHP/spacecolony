@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ButtonBrancher
   - Room
+  - Background
   layers:
   - Default
   - TransparentFX

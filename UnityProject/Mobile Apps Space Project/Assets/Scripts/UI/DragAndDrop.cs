@@ -6,8 +6,10 @@ using UnityEngine.EventSystems;
 public class DragAndDrop : MonoBehaviour
 {
     public GameObject mainCamera;
-    private bool selected;
+    public bool selected;
     Vector3 initialPosition;
+    public Room currentRoom;
+    bool inRoom;
 
     // Use this for initialization
     void Start () {
@@ -36,21 +38,23 @@ public class DragAndDrop : MonoBehaviour
             selected = true;
             mainCamera.GetComponent<CamPan>().characterSelected = true;
             initialPosition = transform.position;
+            inRoom = false;
         }
     }
 
     void OnTriggerStay2D(Collider2D collider)
     {
         
-        if (collider.tag == "Room" && collider.gameObject.GetComponent<Room>().SpacesAvailable()) //
+        if (collider.tag == "Room" && collider.gameObject.GetComponent<Room>().SpacesAvailable() && !collider.gameObject.GetComponent<Room>().crewInThisRoom.Contains(GetComponent<Crew>())) //
         {
             Debug.Log("Room dropped"); //
             transform.position = collider.transform.position;
             collider.gameObject.GetComponent<Room>().AddPerson(gameObject.GetComponent<Crew>());
-            GetComponent<Crew>().GetCurrentRoom().RemovePerson(GetComponent<Crew>());
-            GetComponent<Crew>().ChangeCurrentRoom(collider.gameObject.GetComponent<Room>());
+            //GetComponent<Crew>().GetCurrentRoom().RemovePerson(GetComponent<Crew>());
+            currentRoom = collider.gameObject.GetComponent<Room>();
+            inRoom = true;
         }
-        else
+        else if(collider.tag == "Background" && !inRoom)
         {
             transform.position = initialPosition;
         }

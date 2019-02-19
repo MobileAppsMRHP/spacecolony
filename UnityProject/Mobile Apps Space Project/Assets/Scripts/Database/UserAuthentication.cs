@@ -5,7 +5,14 @@ using System.Threading.Tasks;
 
 public class UserAuthentication : MonoBehaviour {
     Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;//import API thorugh default instance of class 
-    protected bool fetchingToken = false;                                                                            // Use this for initialization
+    protected bool fetchingToken = false;
+    protected bool signInAndFetchProfile = true;
+    protected string email = "";
+    protected string password = "";
+    // The verification id needed along with the sent code for phone authentication.
+    private string phoneAuthVerificationId;
+
+    // Use this for initialization
     public void Start () {
        
     }
@@ -59,8 +66,8 @@ public class UserAuthentication : MonoBehaviour {
          }
     }
 
-  //eventually we can use the method below to sign in with google or other provider credntials
-    /* public Task SigninWithEmailCredentialAsync()
+  //eventually we can use the method below to sign in with google or other provider credentials
+    public Task SigninWithEmailCredentialAsync()
     {
         if (signInAndFetchProfile)
         {
@@ -74,5 +81,63 @@ public class UserAuthentication : MonoBehaviour {
               Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
                 HandleSignInWithUser);
         }
-    }*/
+    }
+
+    // Called when a sign-in without fetching profile data completes.
+    void HandleSignInWithUser(Task<Firebase.Auth.FirebaseUser> task)
+    {
+        if (task.IsCompleted)
+        {
+            print(string.Format("{0} signed in", task.Result.DisplayName));
+        }
+    }
+
+    // Called when a sign-in with profile data completes.
+    void HandleSignInWithSignInResult(Task<Firebase.Auth.SignInResult> task)
+    {
+        if (task.IsCompleted)
+        {
+            DisplaySignInResult(task.Result, 1);
+        }
+    }
+
+    // Display user information reported by the firebase auth sign in
+    protected void DisplaySignInResult(Firebase.Auth.SignInResult result, int indentLevel)
+    {
+        string indent = new string(' ', indentLevel * 2);
+        var metadata = result.Meta;
+        if (metadata != null)
+        {
+            print(string.Format("{0}Created: {1}", indent, metadata.CreationTimestamp));
+            print(string.Format("{0}Last Sign-in: {1}", indent, metadata.LastSignInTimestamp));
+        }
+        var info = result.Info;
+        if (info != null)
+        {
+            print(string.Format("{0}Additional User Info:", indent));
+            print(string.Format("{0}  User Name: {1}", indent, info.UserName));
+            print(string.Format("{0}  Provider ID: {1}", indent, info.ProviderId));
+            DisplayProfile<string>(info.Profile, indentLevel + 1);
+        }
+    }
+
+    // Display additional user profile information.
+    protected void DisplayProfile<T>(IDictionary<T, object> profile, int indentLevel)
+    {
+        string indent = new string(' ', indentLevel * 2);
+        foreach (var kv in profile)
+        {
+            var valueDictionary = kv.Value as IDictionary<object, object>;
+            if (valueDictionary != null)
+            {
+                print(string.Format("{0}{1}:", indent, kv.Key));
+                DisplayProfile<object>(valueDictionary, indentLevel + 1);
+            }
+            else
+            {
+                print(string.Format("{0}{1}: {2}", indent, kv.Key, kv.Value));
+            }
+        }
+    }
+
 }
