@@ -16,7 +16,7 @@ public class DatabaseManager {
     private FirebaseDatabase instance;
     private string user_string;
 
-    //private DatabaseReference rootRef; 
+    private DatabaseReference rootRef; 
 
         /*
     //Start Singleton handling from https://gamedev.stackexchange.com/a/116010
@@ -45,8 +45,8 @@ public class DatabaseManager {
 
         user_string = UserID;
 
-        //instance = FirebaseDatabase.DefaultInstance; //THIS LINE ENABLED CAUSES CRASHES - issue with when pranay imported packages?
-        //rootRef = instance.RootReference;
+        instance = FirebaseDatabase.DefaultInstance;
+        rootRef = instance.RootReference;
 
         GameManager.DebugLog("Database Manager initialized", 3);
     }
