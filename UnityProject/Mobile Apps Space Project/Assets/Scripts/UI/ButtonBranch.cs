@@ -50,6 +50,7 @@ public class ButtonBranch : MonoBehaviour {
         public bool opening = false;
         [HideInInspector]
         public bool spawned = false;
+        public bool currentlyOpened = false;
     }
 
     [System.Serializable]
@@ -169,30 +170,34 @@ public class ButtonBranch : MonoBehaviour {
         for (int i = buttons.Count-1; i >= 0; i--)
             Destroy(buttons[i]);
         buttons.Clear();
-
-        ClearCommonButtonBranchers(); //clears any other button brancher that has the same parent
-
-        for (int i=0; i<buttonRefs.Length; i++)
+        if (!revealSettings.currentlyOpened)
         {
-            GameObject b = Instantiate(buttonRefs[i] as GameObject);
-            b.transform.SetParent(transform); // make button child of button branch
-            b.transform.position = transform.position;
-            if (linSpawner.revealStyle == LinearSpawner.RevealStyle.FadeInAtPosition || circSpawner.revealStyle == CircularSpawner.RevealStyle.FadeInAtPosition)
+            ClearCommonButtonBranchers(); //clears any other button brancher that has the same parent
+            for (int i = 0; i < buttonRefs.Length; i++)
             {
-                Color c = b.GetComponent<Image>().color;
-                c.a = 0; //Set button color alpha value to 0
-                b.GetComponent<Image>().color = c;
-
-                if (b.GetComponentInChildren<Text>()) //Set button text color alpha value to 0
+                GameObject b = Instantiate(buttonRefs[i] as GameObject);
+                b.transform.SetParent(transform); // make button child of button branch
+                b.transform.position = transform.position;
+                if (linSpawner.revealStyle == LinearSpawner.RevealStyle.FadeInAtPosition || circSpawner.revealStyle == CircularSpawner.RevealStyle.FadeInAtPosition)
                 {
-                    c = b.GetComponentInChildren<Text>().color;
-                    c.a = 0;
-                    b.GetComponentInChildren<Text>().color = c;
+                    Color c = b.GetComponent<Image>().color;
+                    c.a = 0; //Set button color alpha value to 0
+                    b.GetComponent<Image>().color = c;
+
+                    if (b.GetComponentInChildren<Text>()) //Set button text color alpha value to 0
+                    {
+                        c = b.GetComponentInChildren<Text>().color;
+                        c.a = 0;
+                        b.GetComponentInChildren<Text>().color = c;
+                    }
                 }
+                buttons.Add(b);
             }
-            buttons.Add(b);
+            revealSettings.spawned = true;
+            revealSettings.currentlyOpened = true;
         }
-        revealSettings.spawned = true;
+        else
+            revealSettings.currentlyOpened = false;
     }
 
     void RevealLinearlyNormal()
