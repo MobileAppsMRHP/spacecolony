@@ -4,16 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class AuthButton : MonoBehaviour {
+    public Text textShowed;
+    public bool tracker;
+    protected static UserAuthentication auth;
 
-    public Text textShowed = null;
-    public bool tracker = true;
-    protected static UserAuthentication auth = new UserAuthentication();
+    void Awake(){
+         textShowed.text="Logged Off";
+         tracker = true;
+         auth= new UserAuthentication();
+}
 
     public void ChangeWordStatus()
     {
         if (tracker)
         {
-            textShowed.text = "Logged Off";
             tracker = false;
         }
         else
