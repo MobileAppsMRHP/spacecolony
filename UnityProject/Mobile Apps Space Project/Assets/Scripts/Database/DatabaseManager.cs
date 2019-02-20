@@ -13,10 +13,10 @@ public class DatabaseManager {
 
     //written with the guidance of https://firebase.google.com/docs/database/unity/retrieve-data
 
-    private FirebaseDatabase instance;
-    private string user_string;
+    public FirebaseDatabase instance;
+    //public string user_string;
 
-    private DatabaseReference rootRef; 
+    public DatabaseReference rootRef; 
 
         /*
     //Start Singleton handling from https://gamedev.stackexchange.com/a/116010
@@ -39,11 +39,11 @@ public class DatabaseManager {
         */
     
     // Use this for initialization
-    public DatabaseManager(string UserID) {
+    public DatabaseManager(/*string UserID*/) {
         // Set this before calling into the realtime database.
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://mobileappsmrhp-spacecolony.firebaseio.com/");
 
-        user_string = UserID;
+        //user_string = UserID;
 
         instance = FirebaseDatabase.DefaultInstance;
         rootRef = instance.RootReference;
@@ -154,7 +154,7 @@ public class DatabaseManager {
 
     public void LoadCrew()
     {
-        //instance.GetReference(user_string).Child("Crew").ValueChanged += Crew.DatabaseValueChanged;
+        //Crew.LoadCrew(this);
     }
 
     public void LoadRooms()
