@@ -10,8 +10,13 @@ using UnityEngine.SceneManagement;
             SceneManager.LoadScene("02Settings");
         }
 
-        public void QuitSettings()
+        public void GameScreen()
         {
-        SceneManager.LoadSceneAsync("01Gameplay");
+        SceneManager.LoadScene("01Gameplay");
         }
+
+    public void TitleScreen()
+    {
+        SceneManager.LoadScene("00TitleScreen");
     }
+}
