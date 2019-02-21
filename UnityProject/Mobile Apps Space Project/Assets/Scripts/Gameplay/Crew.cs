@@ -19,7 +19,8 @@ public class Crew : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        FirebaseDatabase.DefaultInstance.GetReference("testing-data").Child(this.crewName).SetRawJsonValueAsync(JsonUtility.ToJson(this));
+        //FirebaseDatabase.DefaultInstance.GetReference("testing-data").Child(this.crewName).SetRawJsonValueAsync(JsonUtility.ToJson(this));
+        GameManager.DebugLog("I exist!");
 	}
 	
 	// Update is called once per frame

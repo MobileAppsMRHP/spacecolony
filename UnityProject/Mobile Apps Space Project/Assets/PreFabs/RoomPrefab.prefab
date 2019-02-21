@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114864710342572286}
   - component: {fileID: 114918558709920864}
   m_Layer: 0
-  m_Name: Room-temp
+  m_Name: RoomPrefab
   m_TagString: Room
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,6 +81,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   peopleLimit: 2
   crewInThisRoom: []
+  crewLocations: []
 --- !u!114 &114918558709920864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -95,6 +96,7 @@ MonoBehaviour:
   peopleLimit: 2
   crewInThisRoom:
   - {fileID: 0}
+  crewLocations: []
 --- !u!212 &212310903063762346
 SpriteRenderer:
   m_ObjectHideFlags: 1

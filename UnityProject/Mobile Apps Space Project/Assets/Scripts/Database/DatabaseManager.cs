@@ -152,10 +152,10 @@ public class DatabaseManager {
         return output;
     }*/
 
-    public void LoadCrew()
+    /*public void LoadCrew()
     {
         //Crew.LoadCrew(this);
-    }
+    }*/
 
     public void LoadRooms()
     {
