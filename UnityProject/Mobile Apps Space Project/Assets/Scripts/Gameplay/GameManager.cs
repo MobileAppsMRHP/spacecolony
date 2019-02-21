@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null; //singleton pattern
 
     private static DatabaseManager dbman = null;
+    public CrewSpawner crewCreator;
 
     public string user_string = "StillLoading";
 
@@ -106,9 +107,16 @@ public class GameManager : MonoBehaviour
     {
         dbman = new DatabaseManager();
 
-        dbman.LoadCrew();
+        //dbman.LoadCrew();
+        LoadCrew();
+
         dbman.LoadRooms();
         dbman.LoadResources();
+    }
+
+    void LoadCrew()
+    {
+        crewCreator.CreateCrewMember();
     }
 
     //TODO: make this actually display a loading screen

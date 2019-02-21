@@ -19,7 +19,8 @@ public class Crew : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        FirebaseDatabase.DefaultInstance.GetReference("testing-data").Child(this.crewName).SetRawJsonValueAsync(JsonUtility.ToJson(this));
+        //FirebaseDatabase.DefaultInstance.GetReference("testing-data").Child(this.crewName).SetRawJsonValueAsync(JsonUtility.ToJson(this));
+        GameManager.DebugLog("I exist!");
 	}
 	
 	// Update is called once per frame
@@ -105,6 +106,7 @@ public class Crew : MonoBehaviour {
                    Debug.Log("got Crew members data for " + GameManager.instance.user_string);
                    foreach (var item in task.Result.Children)
                    {
+                       //Instantiate(CrewMemberPrefab, )
                        //System.EventHandler<ValueChangedEventArgs> EventHandler = FirebaseDatabase.DefaultInstance.GetReference(dbman.user_string).Child("Crew").ValueChanged;
                        //GameManager.instance.CrewMembers.Add(new Crew(item.GetRawJsonValue(), EventHandler));
                    }
