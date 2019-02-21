@@ -105,6 +105,7 @@ public class Crew : MonoBehaviour {
                    Debug.Log("got Crew members data for " + GameManager.instance.user_string);
                    foreach (var item in task.Result.Children)
                    {
+                       //Instantiate(CrewMemberPrefab, )
                        //System.EventHandler<ValueChangedEventArgs> EventHandler = FirebaseDatabase.DefaultInstance.GetReference(dbman.user_string).Child("Crew").ValueChanged;
                        //GameManager.instance.CrewMembers.Add(new Crew(item.GetRawJsonValue(), EventHandler));
                    }
