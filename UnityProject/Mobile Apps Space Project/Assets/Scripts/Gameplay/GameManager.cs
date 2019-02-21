@@ -28,11 +28,15 @@ public class GameManager : MonoBehaviour
 
     private static DatabaseManager dbman = null;
 
+    public string user_string = "StillLoading";
+
     private void Start()
     {
         DisplayLoadingScreen();
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, 3);
+        Authenticate();
+        user_string = "User1"; //TODO: get actual from auth
         SetupResourcesList();
         LoadDatabaseValues();
         HideLoadingScreen();
@@ -57,6 +61,11 @@ public class GameManager : MonoBehaviour
 	void Update () {
 		
 	}
+
+    public void Authenticate()
+    {
+        //call auth stuff here
+    }
 
     public void SetupResourcesList()
     {
@@ -95,7 +104,7 @@ public class GameManager : MonoBehaviour
     //TODO: make this actually load database values, initalize crew and resources, etc.
     public void LoadDatabaseValues()
     {
-        dbman = new DatabaseManager("User1"); //TODO: get actual user uuid from auth
+        dbman = new DatabaseManager();
 
         dbman.LoadCrew();
         dbman.LoadRooms();

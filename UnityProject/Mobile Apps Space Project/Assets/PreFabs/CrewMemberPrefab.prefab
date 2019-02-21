@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 114543948148715002}
   - component: {fileID: 50973051253796186}
   m_Layer: 0
-  m_Name: crew walk 1
+  m_Name: CrewMemberPrefab
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,6 +147,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
+  selected: 0
+  currentRoom: {fileID: 0}
 --- !u!212 &212572942157471790
 SpriteRenderer:
   m_ObjectHideFlags: 1
