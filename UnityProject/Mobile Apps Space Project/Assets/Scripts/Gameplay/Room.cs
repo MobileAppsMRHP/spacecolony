@@ -7,6 +7,7 @@ public class Room : MonoBehaviour {
     public int peopleLimit;
     int roomLevel;
     public List<Crew> crewInThisRoom;
+    public List<Vector3> crewLocations;
 	// Use this for initialization
 	void Start () {
 		
