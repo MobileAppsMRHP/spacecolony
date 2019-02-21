@@ -7,9 +7,10 @@ public class Room : MonoBehaviour {
     public int peopleLimit;
     int roomLevel;
     public List<Crew> crewInThisRoom;
-    public List<Vector3> crewLocations;
+    public List<GameObject> crewLocations;
 	// Use this for initialization
 	void Start () {
+        
 		
 	}
 	
@@ -45,5 +46,11 @@ public class Room : MonoBehaviour {
     public void RemovePerson(Crew crewToRemove)
     {
         crewInThisRoom.Remove(crewToRemove);
+    }
+
+    public Vector3 CrewIntoPosition(Crew crewToMove)
+    {
+        int index = crewInThisRoom.IndexOf(crewToMove);
+        return crewLocations[index].transform.position;
     }
 }
