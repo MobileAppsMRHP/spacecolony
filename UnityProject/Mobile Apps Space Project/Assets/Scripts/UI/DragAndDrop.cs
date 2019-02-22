@@ -53,7 +53,7 @@ public class DragAndDrop : MonoBehaviour
         if (collider.tag == "Room") //
         {
             Debug.Log("Room dropped"); //
-            transform.position = collider.transform.position;
+            transform.position = collider.GetComponent<Room>().CrewIntoPosition(GetComponent<Crew>());
             inRoom = true;
         }
         else if(collider.tag == "Background" && !inRoom)
