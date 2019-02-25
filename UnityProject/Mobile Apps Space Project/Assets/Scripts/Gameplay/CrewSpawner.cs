@@ -18,6 +18,7 @@ public class CrewSpawner : MonoBehaviour {
 
     public void CreateCrewMember()
     {
-        Crew newCrewMember = Instantiate(prefab, this.transform); //create new crew member prefab at the prefab
+        Crew newCrewMember = Instantiate(prefab, this.transform); //create new crew member prefab at the spawner
+        GameManager.instance.CrewMembers.Add(newCrewMember);
     }
 }

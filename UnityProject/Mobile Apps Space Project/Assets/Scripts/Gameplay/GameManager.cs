@@ -6,9 +6,10 @@ public class GameManager : MonoBehaviour
 {
 
     public List<Crew> CrewMembers;
+    public List<Room> Rooms;
     private Dictionary<string, int> Resources; //{ get; }
 
-    private bool IsLoading = false; //indicates to other things if the game is loading
+    private bool IsLoading; //indicates to other things if the game is loading
 
     public const byte debugLevel = 255; //increase this value to log more debug messages
     //higher number includes more logs, so picking 2 includes both 1 and 2's output
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     private static DatabaseManager dbman = null;
     public CrewSpawner crewCreator;
+    public RoomSpawner roomCreator;
 
     public string user_string = "StillLoading";
 
@@ -44,24 +46,24 @@ public class GameManager : MonoBehaviour
     }
 
     // Use this for initialization
-    void Awake () { //Only initializes once
-		if (instance == null)
+    void Awake() { //Only initializes once
+        if (instance == null)
         {
             instance = this;
         }
-        else if(instance != this)
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
 
         DontDestroyOnLoad(gameObject);
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+    }
 
     public void Authenticate()
     {
@@ -77,12 +79,12 @@ public class GameManager : MonoBehaviour
             { "energy", 0 },
             { "money", 0 }
         };*/
-        DebugLog("Done setting up resrouces list",3);
+        DebugLog("Done setting up resrouces list", 3);
     }
 
     public int GetResource(string key)
     {
-        if(Resources.ContainsKey(key))
+        if (Resources.ContainsKey(key))
             return Resources[key];
         else
         {
@@ -107,16 +109,20 @@ public class GameManager : MonoBehaviour
     {
         dbman = new DatabaseManager();
 
-        //dbman.LoadCrew();
+        LoadRooms();
         LoadCrew();
 
-        dbman.LoadRooms();
         dbman.LoadResources();
     }
 
     void LoadCrew()
     {
         crewCreator.CreateCrewMember();
+    }
+
+    void LoadRooms()
+    {
+        roomCreator.CreateRoom();
     }
 
     //TODO: make this actually display a loading screen
