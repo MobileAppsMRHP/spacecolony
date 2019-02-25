@@ -70,13 +70,13 @@ public class GameManager : MonoBehaviour
 
     public void SetupResourcesList()
     {
-        Resources = new Dictionary<string, int>();
-        /*{
+        Resources = new Dictionary<string, int>()
+        {
             { "food", 0 },
             { "water", 0 },
             { "energy", 0 },
             { "money", 0 }
-        };*/
+        };
         DebugLog("Done setting up resrouces list",3);
     }
 
