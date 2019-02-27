@@ -82,7 +82,7 @@ public class Crew : MonoBehaviour {
 
     public bool NextLevel()
     {
-        if (progressToNextLevel > 100)
+        if (GetComponent<DragAndDrop>().inRoom && progressToNextLevel > 100)
         {
             progressToNextLevel = -100;
             skillPoints += 3;
@@ -92,10 +92,11 @@ public class Crew : MonoBehaviour {
             return false;
     }
 
-    public float NextLevelProgress()
+    public void IncreaseSkill()
     {
-        return progressToNextLevel;
+
     }
+
 
     public string Serialize()
     { //rob test method
@@ -149,4 +150,5 @@ public class Crew : MonoBehaviour {
         JsonUtility.FromJsonOverwrite(json, this);
     }
     
+
 }
