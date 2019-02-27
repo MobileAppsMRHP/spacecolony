@@ -9,7 +9,7 @@ public class DragAndDrop : MonoBehaviour
     public bool selected;
     Vector3 initialPosition;
     public Room currentRoom;
-    bool inRoom;
+    public bool inRoom;
 
     // Use this for initialization
     void Start () {
@@ -56,7 +56,7 @@ public class DragAndDrop : MonoBehaviour
             transform.position = collider.GetComponent<Room>().CrewIntoPosition(GetComponent<Crew>());
             inRoom = true;
         }
-        else if(collider.tag == "Background" && !inRoom)
+        else if(collider.tag == "Background" && inRoom)
         {
             transform.position = initialPosition;
         }
