@@ -44,14 +44,14 @@ public class DragAndDrop : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collider)
     {
-        if (!collider.gameObject.GetComponent<Room>().crewInThisRoom.Contains(GetComponent<Crew>()) && collider.gameObject.GetComponent<Room>().SpacesAvailable())
-        {
-            collider.gameObject.GetComponent<Room>().AddPerson(gameObject.GetComponent<Crew>());
-            currentRoom.RemovePerson(GetComponent<Crew>());
-            currentRoom = collider.gameObject.GetComponent<Room>();
-        }
         if (collider.tag == "Room") //
         {
+            if (!collider.gameObject.GetComponent<Room>().crewInThisRoom.Contains(GetComponent<Crew>()) && collider.gameObject.GetComponent<Room>().SpacesAvailable())
+            {
+                collider.gameObject.GetComponent<Room>().AddPerson(gameObject.GetComponent<Crew>());
+                currentRoom.RemovePerson(GetComponent<Crew>());
+                currentRoom = collider.gameObject.GetComponent<Room>();
+            }
             Debug.Log("Room dropped"); //
             transform.position = collider.GetComponent<Room>().CrewIntoPosition(GetComponent<Crew>());
             inRoom = true;
