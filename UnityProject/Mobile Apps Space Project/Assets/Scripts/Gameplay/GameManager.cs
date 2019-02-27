@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Firebase.Database;
+using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.UI.DefaultControls;
 
@@ -118,7 +119,28 @@ public class GameManager : MonoBehaviour
 
     void LoadCrew()
     {
-        crewCreator.CreateCrewMember();
+        //crewCreator.CreateCrewMember();
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Crew/").GetValueAsync().ContinueWith(task =>
+       {
+           if (task.IsFaulted)
+           {
+               // Handle the error...
+               DebugLog("Data retrival error when prompting for crew data!", 1);
+           }
+           else if (task.IsCompleted)
+           {
+               foreach(DataSnapshot crewMember in task.Result.Children)
+               {
+                   DebugLog("Found crewmember with ID " + crewMember.Key, 4);
+                   crewCreator.CreateCrewMember(crewMember.Key);
+               }
+           }
+           else
+           {
+               //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
+               DebugLog("Task error when prompting for crew data", 1);
+           }
+       });
     }
 
     void LoadRooms()

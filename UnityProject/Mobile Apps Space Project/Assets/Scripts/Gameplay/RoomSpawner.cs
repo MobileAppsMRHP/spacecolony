@@ -19,5 +19,6 @@ public class RoomSpawner : MonoBehaviour {
     public void CreateRoom()
     {
         Room newRoom = Instantiate(prefab, this.transform); //create new room prefab at the spawner
+        GameManager.instance.Rooms.Add(newRoom);
     }
 }

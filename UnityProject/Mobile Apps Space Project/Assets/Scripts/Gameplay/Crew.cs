@@ -13,14 +13,21 @@ public class Crew : MonoBehaviour {
     public float progressToNextLevel;
     public Shared.Skills skills;
 
-    private GameManager gameManager;
+    public string identifier = "_BLANK"; //don't change this! only fresh crew members get this changed by the code
+
+    //private GameManager gameManager;
 
     //public bool newCharacter;
 
 	// Use this for initialization
-	void Start () {
+	public void CrewCreatorStart (string identifier) {
+        this.identifier = identifier;
         //FirebaseDatabase.DefaultInstance.GetReference("testing-data").Child(this.crewName).SetRawJsonValueAsync(JsonUtility.ToJson(this));
-        GameManager.DebugLog("I exist!");
+        GameManager.DebugLog("I exist! " + identifier);
+        //FreshCrewSetup();
+        //SerializeWrite();
+        
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier).ValueChanged += HandleValueChanged;
 	}
 	
 	// Update is called once per frame
@@ -28,7 +35,7 @@ public class Crew : MonoBehaviour {
 		
 	}
 
-    public Crew(string crewName, string role, Shared.Skills skills)
+    /*public Crew(string crewName, string role, Shared.Skills skills)
     {
         gameManager = GameManager.instance;
         this.crewName = crewName;
@@ -38,18 +45,24 @@ public class Crew : MonoBehaviour {
 
         //this.skills = skills; // new SharedStructs.Skills();
 
-        /*for (int i=0; i < skills.Length; i++)
-        {
-            //this.skills[i] = skills[i];
-        }*/
         
-    }
+    }*/
 
-    public Crew(string rawJson, System.EventHandler<ValueChangedEventArgs> EventHandler)
+    /*public Crew(string rawJson, System.EventHandler<ValueChangedEventArgs> EventHandler)
     {
         gameManager = GameManager.instance;
         EventHandler += HandleValueChanged;
         JsonUtility.FromJsonOverwrite(rawJson, this);
+    }*/
+
+    public void FreshCrewSetup()
+    {
+        //setup unique crew identifier
+        System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc); //from https://answers.unity.com/questions/417939/how-can-i-get-the-time-since-the-epoch-date-in-uni.html
+        int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
+        identifier = "" + cur_time;
+
+
     }
 
     public string GetName()
@@ -87,6 +100,11 @@ public class Crew : MonoBehaviour {
     public string Serialize()
     { //rob test method
         return JsonUtility.ToJson(this);
+    }
+
+    public void SerializeWrite()
+    {
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew").Child(identifier).SetRawJsonValueAsync(JsonUtility.ToJson(this));
     }
 
     public void LoadCrew(DatabaseManager dbman)

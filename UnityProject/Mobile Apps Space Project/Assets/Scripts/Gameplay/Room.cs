@@ -21,7 +21,7 @@ public class Room : MonoBehaviour {
     int roomLevel;
     public List<Crew> crewInThisRoom;
     public List<GameObject> crewLocations;
-    private List<RequiredResources> UpgradeResources;
+    public List<RequiredResources> UpgradeResources;
     public RoomType roomType;
     // Use this for initialization
     void Start () {
