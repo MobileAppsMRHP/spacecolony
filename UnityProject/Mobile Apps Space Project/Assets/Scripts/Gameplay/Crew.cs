@@ -32,7 +32,7 @@ public class Crew : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        IncreaseExperience();
 	}
 
     /*public Crew(string crewName, string role, Shared.Skills skills)
@@ -84,7 +84,7 @@ public class Crew : MonoBehaviour {
     {
         if (GetComponent<DragAndDrop>().inRoom && progressToNextLevel > 100)
         {
-            progressToNextLevel = -100;
+            progressToNextLevel -= 100;
             skillPoints += 3;
             return true;
         }
@@ -95,6 +95,14 @@ public class Crew : MonoBehaviour {
     public void IncreaseSkill()
     {
 
+    }
+
+    void IncreaseExperience()
+    {
+        if (GetComponent<DragAndDrop>().inRoom)
+        {
+            progressToNextLevel += 0.01f * Time.deltaTime;
+        }
     }
 
 
