@@ -202,7 +202,7 @@ public class ButtonBranch : MonoBehaviour {
 
     void RevealLinearlyNormal()
     {
-        for (int i=0; i<buttonRefs.Length; i++)
+        for (int i=0; i<buttons.Count; i++)
         {
             Vector3 targetPos; //position for button to move toward
             RectTransform buttonRect = buttons[i].GetComponent<RectTransform>();
@@ -219,7 +219,7 @@ public class ButtonBranch : MonoBehaviour {
 
     void RevealLinearlyFade()
     {
-        for (int i = 0; i < buttonRefs.Length; i++)
+        for (int i = 0; i < buttons.Count; i++)
         {
             Vector3 targetPos; //position for button to move toward
             RectTransform buttonRect = buttons[i].GetComponent<RectTransform>();
