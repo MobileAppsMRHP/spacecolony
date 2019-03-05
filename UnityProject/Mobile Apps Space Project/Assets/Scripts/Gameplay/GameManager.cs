@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
                foreach(DataSnapshot crewMember in task.Result.Children)
                {
                    DebugLog("Found crewmember with ID " + crewMember.Key, 4);
-                   crewCreator.CreateCrewMember(crewMember.Key);
+                   CrewMembers.Add(SpawnCrew(crewMember.Key));
                }
            }
            else
@@ -141,6 +141,16 @@ public class GameManager : MonoBehaviour
                DebugLog("Task error when prompting for crew data", 1);
            }
        });
+    }
+
+    private Crew SpawnCrew(string identifier)
+    {
+        Crew newCrewMember = Instantiate(crewCreator.prefab); //create new crew member prefab at the spawner
+
+        newCrewMember.SendMessage("CrewCreatorStart", identifier);
+        Debug.Log("Created crew member with ID " + identifier);
+
+        return newCrewMember;
     }
 
     void LoadRooms()
