@@ -20,8 +20,12 @@ public class Crew : MonoBehaviour {
     //public bool newCharacter;
 
 	// Use this for initialization
-	public void CrewCreatorStart (string identifier) {
+	public void CrewCreatorStart (string identifier /*List<object> data*/)
+    {
+        //this.identifier = (string)data[0];
         this.identifier = identifier;
+        //CrewSpawner spawner = (CrewSpawner)data[1];
+        //transform.position = Vector3.MoveTowards(transform.position, spawner.transform.position, 1); //go to spawner
         //FirebaseDatabase.DefaultInstance.GetReference("testing-data").Child(this.crewName).SetRawJsonValueAsync(JsonUtility.ToJson(this));
         GameManager.DebugLog("I exist! " + identifier);
         //FreshCrewSetup();

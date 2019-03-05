@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
                foreach(DataSnapshot crewMember in task.Result.Children)
                {
                    DebugLog("Found crewmember with ID " + crewMember.Key, 4);
-                   CrewMembers.Add(SpawnCrew(crewMember.Key));
+                   SpawnCrew(crewMember.Key /*new List<object> { crewMember.Key, crewCreator }*/);
                }
            }
            else
@@ -143,15 +143,23 @@ public class GameManager : MonoBehaviour
        });
     }
 
-    private Crew SpawnCrew(string identifier)
-    {
-        Crew newCrewMember = Instantiate(crewCreator.prefab); //create new crew member prefab at the spawner
+    private void SpawnCrew(string identifier /*List<object> data*/)
+    { //expected data format:
+            // string           identifer string
+            // CrewCreator      spawner to teleport to upon spawning
+        DebugLog("Spawning crew member via dispatch...");
+        UnityMainThreadDispatcher.Instance().Enqueue(() => {
+            //Debug.Log("This is executed from the main thread");
+            Crew newCrewMember = Instantiate(crewCreator.prefab);
 
-        newCrewMember.SendMessage("CrewCreatorStart", identifier);
-        Debug.Log("Created crew member with ID " + identifier);
+            newCrewMember.SendMessage("CrewCreatorStart", identifier /*data*/);
+            Debug.Log("Created crew member with ID " + identifier /*(string)data[0]*/);
 
-        return newCrewMember;
+            CrewMembers.Add(newCrewMember);
+        });
+
     }
+        
 
     void LoadRooms()
     {
