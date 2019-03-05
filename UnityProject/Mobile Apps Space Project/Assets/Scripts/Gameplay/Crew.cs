@@ -92,9 +92,13 @@ public class Crew : MonoBehaviour {
             return false;
     }
 
-    public void IncreaseSkill()
+    public void IncreaseSkill(int skillNum)
     {
-
+        switch (skillNum)
+        {
+            case 1:
+                break;
+        }
     }
 
     void IncreaseExperience()
