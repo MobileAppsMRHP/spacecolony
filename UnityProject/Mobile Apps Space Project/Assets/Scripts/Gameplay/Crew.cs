@@ -11,7 +11,11 @@ public class Crew : MonoBehaviour {
     public string role;
     public int skillPoints;
     public float progressToNextLevel;
-    public Shared.Skills skills;
+
+    public int cooking;
+    public int navigation;
+    public int medical;
+    public int fighting;
 
     public string identifier = "_BLANK"; //don't change this! only fresh crew members get this changed by the code
 
@@ -101,6 +105,16 @@ public class Crew : MonoBehaviour {
         switch (skillNum)
         {
             case 1:
+                cooking++;
+                break;
+            case 2:
+                navigation++;
+                break;
+            case 3:
+                medical++;
+                break;
+            case 4:
+                fighting++;
                 break;
         }
     }
