@@ -52,7 +52,8 @@ public class DragAndDrop : MonoBehaviour
         Room droppedRoom = collider.gameObject.GetComponent<Room>();
         Crew droppedCrew = GetComponent<Crew>();
 
-        Debug.Log("Running collision with " + collider.ToString());
+        Debug.Log("Running collision with " + collider.ToString() + " and " + GetComponent<Crew>().name);
+        
         if (collider.tag == "Room")
         {
             if (!droppedRoom.crewInThisRoom.Contains(droppedCrew) && droppedRoom.SpacesAvailable())
@@ -61,7 +62,6 @@ public class DragAndDrop : MonoBehaviour
                 oldRoom.RemovePerson(droppedCrew); //remove the crew member from the room it is currently in
                 droppedCrew.currentRoom = droppedRoom; //set the current room to the room the crew member got moved to
             }
-            //Debug.Log("Room dropped"); //
             transform.position = droppedRoom.CrewIntoPosition(droppedCrew);
             inRoom = true;
            droppedCrew.currentRoom = droppedRoom; //add the crew memeber to the room's list of the crew it contains
