@@ -13,6 +13,8 @@ public class Crew : MonoBehaviour {
     public float progressToNextLevel;
     public Shared.Skills skills;
 
+    public Room currentRoom;
+
     public string identifier = "_BLANK"; //don't change this! only fresh crew members get this changed by the code
 
     //private GameManager gameManager;

@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/* 
+    Handles collisions of crew members with rooms and the backdrop elements, moving them from room to room
+     */
+
 public class DragAndDrop : MonoBehaviour
 {
     public GameObject mainCamera;
     public bool selected;
     Vector3 initialPosition;
-    public Room currentRoom;
+    //public Room currentRoom;
     public bool inRoom;
 
     // Use this for initialization
@@ -44,20 +48,25 @@ public class DragAndDrop : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collider)
     {
+        Room oldRoom = GetComponent<Crew>().currentRoom;
+        Room droppedRoom = collider.gameObject.GetComponent<Room>();
+        Crew droppedCrew = GetComponent<Crew>();
+
         Debug.Log("Running collision with " + collider.ToString());
-        if (collider.tag == "Room") //
+        if (collider.tag == "Room")
         {
-            if (!collider.gameObject.GetComponent<Room>().crewInThisRoom.Contains(GetComponent<Crew>()) && collider.gameObject.GetComponent<Room>().SpacesAvailable())
-            {
-                collider.gameObject.GetComponent<Room>().AddPerson(gameObject.GetComponent<Crew>());
-                currentRoom.RemovePerson(GetComponent<Crew>());
-                currentRoom = collider.gameObject.GetComponent<Room>();
+            if (!droppedRoom.crewInThisRoom.Contains(droppedCrew) && droppedRoom.SpacesAvailable())
+            { //if the room does not already contain this crew member && the room has spaces avalible
+                droppedRoom.AddPerson(droppedCrew); //add the crew member to the new room
+                oldRoom.RemovePerson(droppedCrew); //remove the crew member from the room it is currently in
+                droppedCrew.currentRoom = droppedRoom; //set the current room to the room the crew member got moved to
             }
             //Debug.Log("Room dropped"); //
-            transform.position = collider.GetComponent<Room>().CrewIntoPosition(GetComponent<Crew>());
+            transform.position = droppedRoom.CrewIntoPosition(droppedCrew);
             inRoom = true;
+           droppedCrew.currentRoom = droppedRoom; //add the crew memeber to the room's list of the crew it contains
         }
-        else if(collider.tag == "Background" && inRoom)
+        else if(collider.tag == "Background" && inRoom) //if it was dropped on a background object, don't move it anywhere.
         {
             transform.position = initialPosition;
         }
