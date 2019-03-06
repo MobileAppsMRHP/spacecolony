@@ -13,13 +13,13 @@ public static class Shared {
 
     };*/
 
-   public struct Skills
+   /*public struct Skills
     {
         int cooking;
         int navigation;
         int medical;
         int fighting;
-    }
+    }*/
 
     public enum Roles
     {
