@@ -7,12 +7,13 @@ public class AuthButton : MonoBehaviour {
     public Text textShowed;
     public bool tracker;
     protected static UserAuthentication auth;
+    public string message = "Logged Off";
 
-    void Awake(){
-         textShowed.text="Logged Off";
+    void Awake() { 
          tracker = true;
          auth= new UserAuthentication();
-}
+         textShowed.text = message;
+    }
 
     public void ChangeWordStatus()
     {
