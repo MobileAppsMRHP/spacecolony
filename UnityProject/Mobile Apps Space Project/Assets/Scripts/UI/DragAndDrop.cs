@@ -59,7 +59,8 @@ public class DragAndDrop : MonoBehaviour
             if (!droppedRoom.crewInThisRoom.Contains(droppedCrew) && droppedRoom.SpacesAvailable())
             { //if the room does not already contain this crew member && the room has spaces avalible
                 droppedRoom.AddPerson(droppedCrew); //add the crew member to the new room
-                oldRoom.RemovePerson(droppedCrew); //remove the crew member from the room it is currently in
+                if(oldRoom != null) //if the crew member had an old room...
+                    oldRoom.RemovePerson(droppedCrew); //remove the crew member from the room it is currently in
                 droppedCrew.currentRoom = droppedRoom; //set the current room to the room the crew member got moved to
             }
             transform.position = droppedRoom.CrewIntoPosition(droppedCrew);

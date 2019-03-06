@@ -3,6 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.UI.DefaultControls;
 
+public enum DebugFlags
+{
+    None = 0,
+    Critical = 1,
+    Warning = 2,
+    DatabaseOps = 4,
+    CollisionOps = 8,
+    option6 = 16,
+    option7 = 32,
+    option8 = 64,
+    option9 = 128,
+    option10 = 256,
+    option11 = 512
+}
+
 public class GameManager : MonoBehaviour
 {
 
@@ -23,6 +38,13 @@ public class GameManager : MonoBehaviour
     //6: 
     //7: 
     //255: log EEEEVERYTHING
+
+    public short debugLevelFlags = short.MaxValue;
+    //add values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
+    //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
+
+
+
 
     public RuntimePlatform running_on;
 
