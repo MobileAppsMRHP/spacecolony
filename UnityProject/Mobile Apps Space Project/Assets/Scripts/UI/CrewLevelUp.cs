@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CrewLevelUp : MonoBehaviour {
-    public GameObject gameManager;
+    public GameObject camera;
     public Crew selectedCrew;
     int crewNum;
+    GameManager gameManager;
 	// Use this for initialization
 	void Start () {
-        selectedCrew = gameManager.GetComponent<GameManager>().CrewMembers[0];
+        gameManager = camera.GetComponent<Loader>().currentGameManager;
+        selectedCrew = gameManager.CrewMembers[0];
         crewNum = 0;
 	}
 	
@@ -21,13 +23,13 @@ public class CrewLevelUp : MonoBehaviour {
     {
         if (right)
         {
-            crewNum = crewNum == gameManager.GetComponent<GameManager>().CrewMembers.Count - 1 ? 0 : crewNum + 1;
+            crewNum = crewNum == gameManager.CrewMembers.Count - 1 ? 0 : crewNum + 1;
         }
         else
         {
-            crewNum = crewNum == 0 ? gameManager.GetComponent<GameManager>().CrewMembers.Count - 1 : crewNum - 1;
+            crewNum = crewNum == 0 ? gameManager.CrewMembers.Count - 1 : crewNum - 1;
         }
-        selectedCrew = gameManager.GetComponent<GameManager>().CrewMembers[crewNum];
+        selectedCrew = gameManager.CrewMembers[crewNum];
     }
 
     public void IncreaseStat(int num)
