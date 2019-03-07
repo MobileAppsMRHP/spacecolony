@@ -51,6 +51,13 @@ public class Room : MonoBehaviour {
                 selected = false;
             }
         }
+        if (crewInThisRoom.Count > 0 && !CrewMoving())
+        {
+            for (int i = 0; i < crewInThisRoom.Count; i++)
+            {
+                crewInThisRoom[i].transform.position = CrewIntoPosition(crewInThisRoom[i]);
+            }
+        }
     }
 
     void ChangeCrew(Crew member)
@@ -99,5 +106,17 @@ public class Room : MonoBehaviour {
                 //increase
                 break;
         }
+    }
+
+    bool CrewMoving()
+    {
+        for (int i = 0; i < crewInThisRoom.Count; i++)
+        {
+            if(crewInThisRoom[i].GetComponent<DragAndDrop>().selected)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
