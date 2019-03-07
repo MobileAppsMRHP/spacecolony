@@ -7,12 +7,12 @@ public class AuthButton : MonoBehaviour {
     public Text textShowed;
     public bool tracker;
     protected static UserAuthentication auth;
-    public string message = "Logged Off";
+    public string message;
 
     void Awake() { 
          tracker = true;
-         auth= new UserAuthentication();
-         textShowed.text = message;
+         auth= gameObject.AddComponent<UserAuthentication>();
+         message = "Logged Off";
     }
 
     public void ChangeWordStatus()
@@ -20,6 +20,7 @@ public class AuthButton : MonoBehaviour {
         if (tracker)
         {
             tracker = false;
+            textShowed.text = message;
         }
         else
         {

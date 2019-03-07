@@ -82,6 +82,8 @@ MonoBehaviour:
   peopleLimit: 2
   crewInThisRoom: []
   crewLocations: []
+  roomType: 0
+  selected: 0
 --- !u!114 &114918558709920864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -94,9 +96,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peopleLimit: 2
-  crewInThisRoom:
-  - {fileID: 0}
+  crewInThisRoom: []
   crewLocations: []
+  roomType: 0
+  selected: 0
 --- !u!212 &212310903063762346
 SpriteRenderer:
   m_ObjectHideFlags: 1

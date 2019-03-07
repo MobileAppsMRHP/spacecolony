@@ -135,6 +135,12 @@ MonoBehaviour:
   role: 
   skillPoints: 0
   progressToNextLevel: 0
+  cooking: 0
+  navigation: 0
+  medical: 0
+  fighting: 0
+  currentRoom: {fileID: 0}
+  identifier: _BLANK
 --- !u!114 &114876239281259676
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -146,9 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fde06dc4e7cea14da1fc79273b888d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
   selected: 0
-  currentRoom: {fileID: 0}
+  inRoom: 0
 --- !u!212 &212572942157471790
 SpriteRenderer:
   m_ObjectHideFlags: 1

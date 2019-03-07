@@ -9,7 +9,6 @@ using UnityEngine.EventSystems;
 
 public class DragAndDrop : MonoBehaviour
 {
-    public GameObject mainCamera;
     public bool selected;
     Vector3 initialPosition;
     //public Room currentRoom;
@@ -31,7 +30,6 @@ public class DragAndDrop : MonoBehaviour
         {
             selected = false;
             Debug.Log("touch ended");
-            mainCamera.GetComponent<CamPan>().characterSelected = false;
         }
 	}
 
@@ -40,7 +38,6 @@ public class DragAndDrop : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             selected = true;
-            mainCamera.GetComponent<CamPan>().characterSelected = true;
             initialPosition = transform.position;
             inRoom = false;
         }
@@ -48,27 +45,31 @@ public class DragAndDrop : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collider)
     {
-        Room oldRoom = GetComponent<Crew>().currentRoom;
-        Room droppedRoom = collider.gameObject.GetComponent<Room>();
-        Crew droppedCrew = GetComponent<Crew>();
+        if (!selected)
+        {
+            Room oldRoom = GetComponent<Crew>().currentRoom;
+            Room droppedRoom = collider.gameObject.GetComponent<Room>();
+            Crew droppedCrew = GetComponent<Crew>();
 
-        Debug.Log("Running collision with " + collider.ToString() + " and " + GetComponent<Crew>().name);
-        
-        if (collider.tag == "Room")
-        {
-            if (!droppedRoom.crewInThisRoom.Contains(droppedCrew) && droppedRoom.SpacesAvailable())
-            { //if the room does not already contain this crew member && the room has spaces avalible
-                droppedRoom.AddPerson(droppedCrew); //add the crew member to the new room
-                oldRoom.RemovePerson(droppedCrew); //remove the crew member from the room it is currently in
-                droppedCrew.currentRoom = droppedRoom; //set the current room to the room the crew member got moved to
+            Debug.Log("Running collision with " + collider.ToString() + " and " + GetComponent<Crew>().name);
+
+            if (collider.tag == "Room")
+            {
+                if (!droppedRoom.crewInThisRoom.Contains(droppedCrew) && droppedRoom.SpacesAvailable())
+                { //if the room does not already contain this crew member && the room has spaces avalible
+                    droppedRoom.AddPerson(droppedCrew); //add the crew member to the new room
+                    if (oldRoom != null) //if the crew member had an old room...
+                        oldRoom.RemovePerson(droppedCrew); //remove the crew member from the room it is currently in
+                    droppedCrew.currentRoom = droppedRoom; //set the current room to the room the crew member got moved to
+                }
+                transform.position = droppedRoom.CrewIntoPosition(droppedCrew);
+                inRoom = true;
+                droppedCrew.currentRoom = droppedRoom; //add the crew memeber to the room's list of the crew it contains
             }
-            transform.position = droppedRoom.CrewIntoPosition(droppedCrew);
-            inRoom = true;
-           droppedCrew.currentRoom = droppedRoom; //add the crew memeber to the room's list of the crew it contains
-        }
-        else if(collider.tag == "Background" && inRoom) //if it was dropped on a background object, don't move it anywhere.
-        {
-            transform.position = initialPosition;
+            else if (collider.tag == "Background" && inRoom) //if it was dropped on a background object, don't move it anywhere.
+            {
+                transform.position = initialPosition;
+            }
         }
 
     }

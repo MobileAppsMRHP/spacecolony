@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CamPan : MonoBehaviour {
-    public bool characterSelected;
+    bool characterSelected;
     bool zooming;
     Vector3 touchInitialLocation;
 	// Use this for initialization
@@ -39,5 +39,19 @@ public class CamPan : MonoBehaviour {
             }
         }
 
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) //if there are touch events in the buffer to process...
+        {
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position)), new Vector2(0f, 0f)); //do a raycast to see what they hit
+            if (hit.collider.tag == "Player") //if it hit something, anything, ....
+            {
+                Debug.Log("Touched it"); //log that something was hit by the touch event
+                Debug.Log(hit.collider);
+                characterSelected = true;
+            }
+            else
+            {
+                characterSelected = false;
+            }
+        }
     }
 }

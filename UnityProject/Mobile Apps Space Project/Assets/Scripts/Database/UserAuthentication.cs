@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Threading.Tasks;
 
 public class UserAuthentication : MonoBehaviour {
-    Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;//import API thorugh default instance of class 
+    Firebase.Auth.FirebaseAuth auth;
     protected bool fetchingToken = false;
     protected bool signInAndFetchProfile = true;
     protected string email = "";
@@ -14,7 +14,7 @@ public class UserAuthentication : MonoBehaviour {
 
     // Use this for initialization
      void Awake() {
-       
+       auth = Firebase.Auth.FirebaseAuth.DefaultInstance;//import API thorugh default instance of class 
     }
 	
 	// Update is called once per frame
