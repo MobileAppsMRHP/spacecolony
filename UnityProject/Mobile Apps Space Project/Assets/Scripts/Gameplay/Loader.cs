@@ -5,14 +5,14 @@ using UnityEngine;
 public class Loader : MonoBehaviour
 {
     public GameObject gameManager;
-    public GameManager currentGameManager;
+    //public GameManager currentGameManager;
     // Use this for initialization
     void Awake()
     {
         if (GameManager.instance == null)
         {
             Debug.Log("Created new gamemanager");
-            currentGameManager = Instantiate(gameManager).GetComponent<GameManager>();
+            //currentGameManager = Instantiate(gameManager).GetComponent<GameManager>();
         }
     }
 }

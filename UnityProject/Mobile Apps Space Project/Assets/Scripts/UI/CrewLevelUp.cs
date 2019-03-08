@@ -6,10 +6,10 @@ public class CrewLevelUp : MonoBehaviour {
     public GameObject camera;
     public Crew selectedCrew;
     int crewNum;
-    GameManager gameManager;
+    public GameManager gameManager;
 	// Use this for initialization
 	void Start () {
-        gameManager = camera.GetComponent<Loader>().currentGameManager;
+        gameManager = GameManager.instance;
         selectedCrew = gameManager.CrewMembers[0];
         crewNum = 0;
 	}
