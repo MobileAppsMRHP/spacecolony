@@ -28,8 +28,8 @@ public class Room : MonoBehaviour {
     void Start () {
         UpgradeResources = new List<RequiredResources>()
         {
-            new RequiredResources(1, 1, 1)
-
+            new RequiredResources(1, 1, 1),
+            new RequiredResources(2, 3, 1)
         };
 
     }

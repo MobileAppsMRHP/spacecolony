@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.UI.DefaultControls;
 
-public enum DebugFlags
+[System.FlagsAttribute] public enum DebugFlags// : short
 {
     None = 0,
     Critical = 1,
@@ -15,8 +15,11 @@ public enum DebugFlags
     option8 = 64,
     option9 = 128,
     option10 = 256,
-    option11 = 512
-}
+    option11 = 512,
+    option12 = 1024,
+    option13 = 2048,
+    option14 = 4096
+} //16 options with short
 
 public class GameManager : MonoBehaviour
 {
@@ -39,9 +42,10 @@ public class GameManager : MonoBehaviour
     //7: 
     //255: log EEEEVERYTHING
 
-    public short debugLevelFlags = short.MaxValue;
-    //add values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
+    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps;
+    //add or subtract values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
     //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
+    //example debugLevelFlags = short.MaxValue - DebugFlags.CollisionOps
 
 
 
@@ -202,7 +206,26 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public static void DebugLog(string message, byte debugLevelToDisplayAt)
+    public static void DebugLog(string message, DebugFlags flagLevelToDisplayAt /*byte debugLevelToDisplayAt*/)
+    {
+        if ((debugLevelFlags & flagLevelToDisplayAt) != 0) //check if debugLevelFlags contains the flag passed in
+        {
+            if (flagLevelToDisplayAt == DebugFlags.Critical)
+                Debug.LogError(message);
+            else if(flagLevelToDisplayAt == DebugFlags.Warning)
+                Debug.LogWarning(message);
+            else
+                Debug.Log(message);
+
+        }
+        /*if (debugLevel >= debugLevelToDisplayAt)
+            if(debugLevelToDisplayAt == 1)
+                Debug.LogError(message);
+            else
+                Debug.Log(message);*/
+    }
+
+    public static void DebugLog(string message, byte debugLevelToDisplayAt) //alternate, old version of flags system
     {
         if (debugLevel >= debugLevelToDisplayAt)
             if(debugLevelToDisplayAt == 1)
@@ -213,6 +236,6 @@ public class GameManager : MonoBehaviour
 
     public static void DebugLog(string message) //overloaded
     {
-        DebugLog(message, 0);
+        DebugLog(message, (byte)0);
     }
 }
