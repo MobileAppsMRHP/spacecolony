@@ -29,7 +29,7 @@ public class DragAndDrop : MonoBehaviour
         if (selected && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
             selected = false;
-            Debug.Log("touch ended");
+            //Debug.Log("touch ended");
         }
 	}
 
@@ -51,7 +51,7 @@ public class DragAndDrop : MonoBehaviour
             Room droppedRoom = collider.gameObject.GetComponent<Room>();
             Crew droppedCrew = GetComponent<Crew>();
 
-            Debug.Log("Running collision with " + collider.ToString() + " and " + GetComponent<Crew>().name);
+            //Debug.Log("Running collision with " + collider.ToString() + " and " + GetComponent<Crew>().name);
 
             if (collider.tag == "Room")
             {
@@ -60,15 +60,20 @@ public class DragAndDrop : MonoBehaviour
                     droppedRoom.AddPerson(droppedCrew); //add the crew member to the new room
                     if (oldRoom != null) //if the crew member had an old room...
                         oldRoom.RemovePerson(droppedCrew); //remove the crew member from the room it is currently in
-                    droppedCrew.currentRoom = droppedRoom; //set the current room to the room the crew member got moved to
+                    Debug.Log("New room!");
                 }
-                transform.position = droppedRoom.CrewIntoPosition(droppedCrew);
+                else if (!droppedRoom.crewInThisRoom.Contains(droppedCrew))
+                {
+                    Debug.Log("Can't enter room for some reason");
+                }
+                droppedRoom.CrewIntoPosition(droppedCrew);
                 inRoom = true;
                 droppedCrew.currentRoom = droppedRoom; //add the crew memeber to the room's list of the crew it contains
             }
             else if (collider.tag == "Background" && inRoom) //if it was dropped on a background object, don't move it anywhere.
             {
                 transform.position = initialPosition;
+                Debug.Log("returning to original room");
             }
         }
 

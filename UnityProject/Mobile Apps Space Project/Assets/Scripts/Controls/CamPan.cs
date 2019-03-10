@@ -32,7 +32,7 @@ public class CamPan : MonoBehaviour {
             Vector3 touchPosition = Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position));
             //Debug.Log(cameraPosition);
             //Debug.Log(touchPosition);
-            Debug.Log(Vector3.Distance(cameraPosition, touchPosition));
+            //Debug.Log(Vector3.Distance(cameraPosition, touchPosition));
             if (Vector3.Distance(cameraPosition, touchPosition) > 0.6)
             {
                 Camera.main.transform.position = Vector3.Lerp(cameraPosition, touchPosition, .06f);

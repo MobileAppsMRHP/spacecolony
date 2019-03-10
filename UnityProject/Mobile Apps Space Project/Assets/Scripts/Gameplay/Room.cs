@@ -51,13 +51,6 @@ public class Room : MonoBehaviour {
                 selected = false;
             }
         }
-        if (crewInThisRoom.Count > 0 && !CrewMoving())
-        {
-            for (int i = 0; i < crewInThisRoom.Count; i++)
-            {
-                crewInThisRoom[i].transform.position = CrewIntoPosition(crewInThisRoom[i]);
-            }
-        }
     }
 
     void ChangeCrew(Crew member)
@@ -71,7 +64,10 @@ public class Room : MonoBehaviour {
         if (crewInThisRoom.Count < peopleLimit)
             return true;
         else
+        {
+            Debug.Log("Too many people in this room");
             return false;
+        }
     }
 
     public float SpacesLeft()
@@ -89,10 +85,12 @@ public class Room : MonoBehaviour {
         crewInThisRoom.Remove(crewToRemove);
     }
 
-    public Vector3 CrewIntoPosition(Crew crewToMove)
+    public void CrewIntoPosition(Crew crewToMove)
     {
-        int index = crewInThisRoom.IndexOf(crewToMove);
-        return crewLocations[index].transform.position;
+        for (int i = 0; i < crewInThisRoom.Count; i++)
+        {
+            crewInThisRoom[i].transform.position = crewLocations[i].transform.position;
+        }
     }
 
     void IncreaseResources()
@@ -114,6 +112,7 @@ public class Room : MonoBehaviour {
         {
             if(crewInThisRoom[i].GetComponent<DragAndDrop>().selected)
             {
+                //Debug.Log("Crew moving");
                 return true;
             }
         }
