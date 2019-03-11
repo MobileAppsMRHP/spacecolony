@@ -16,13 +16,13 @@ public class Room : MonoBehaviour {
             money = m;
         }
     }
-    public enum RoomType { Food, Bridge, Energy};
+    //public enum RoomType { Food, Bridge, Energy};
     public int peopleLimit;
     int roomLevel;
     public List<Crew> crewInThisRoom;
     public List<GameObject> crewLocations;
     public List<RequiredResources> UpgradeResources;
-    public RoomType roomType;
+    public Shared.RoomTypes roomType;
     public bool selected;
     // Use this for initialization
     void Start () {
@@ -97,12 +97,15 @@ public class Room : MonoBehaviour {
     {
         switch (roomType)
         {
-            case RoomType.Food:
+            case Shared.RoomTypes.food:
                 //increase food
                 break;
-            case RoomType.Energy:
+            case Shared.RoomTypes.energy:
                 //increase
                 break;
+            default: //empty room
+                //do nothing
+            break;
         }
     }
 

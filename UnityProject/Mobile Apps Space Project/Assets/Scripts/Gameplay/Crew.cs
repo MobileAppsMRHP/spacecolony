@@ -8,7 +8,7 @@ using UnityEngine;
 public class Crew : MonoBehaviour {
 
     public string crewName;
-    public string role;
+    public Shared.Roles role;
     public int skillPoints;
     public float progressToNextLevel;
 
@@ -80,12 +80,12 @@ public class Crew : MonoBehaviour {
         return crewName;
     }
 
-    public string GetRole()
+    public Shared.Roles GetRole()
     {
         return role;
     }
 
-    public void ChangeRole(string newRole)
+    public void ChangeRole(Shared.Roles newRole)
     {
         role = newRole;
     }
