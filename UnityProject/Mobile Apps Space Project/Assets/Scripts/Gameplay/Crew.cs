@@ -65,15 +65,7 @@ public class Crew : MonoBehaviour {
         JsonUtility.FromJsonOverwrite(rawJson, this);
     }*/
 
-    public void FreshCrewSetup()
-    {
-        //setup unique crew identifier
-        System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc); //from https://answers.unity.com/questions/417939/how-can-i-get-the-time-since-the-epoch-date-in-uni.html
-        int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
-        identifier = "" + cur_time;
-
-
-    }
+    
 
     public string GetName()
     {
@@ -174,13 +166,21 @@ public class Crew : MonoBehaviour {
         //ValueChanged += DatabaseValueChanged;
     }
 
-
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " with JSON from database: " + json, 4);
         JsonUtility.FromJsonOverwrite(json, this);
     }
-    
+
+    public void FreshCrewSetup()
+    {
+        //setup unique crew identifier
+        System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc); //from https://answers.unity.com/questions/417939/how-can-i-get-the-time-since-the-epoch-date-in-uni.html
+        int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
+        identifier = "" + cur_time;
+
+    }
+
 
 }

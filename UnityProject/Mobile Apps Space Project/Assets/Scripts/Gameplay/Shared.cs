@@ -39,4 +39,12 @@ public static class Shared {
         food
     }
 
+    public enum ResourceTypes
+    {
+        scraps,
+        money,
+        energy,
+        preciousMetal
+    }
+
 }

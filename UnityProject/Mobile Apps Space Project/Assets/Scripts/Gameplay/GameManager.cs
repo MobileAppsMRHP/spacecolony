@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance = null; //singleton pattern
 
-    private static DatabaseManager dbman = null;
+    public ResourceManager resourceManager;
     public CrewSpawner crewCreator;
     public RoomSpawner roomCreator;
 
@@ -137,12 +137,14 @@ public class GameManager : MonoBehaviour
     //TODO: make this actually load database values, initalize crew and resources, etc.
     public void LoadDatabaseValues()
     {
-        dbman = new DatabaseManager();
+        //dbman = new DatabaseManager();
 
-        LoadRooms();
+        LoadResources();
+        LoadRooms(); //load rooms first so crew know where to go
         LoadCrew();
+        
 
-        dbman.LoadResources();
+        //dbman.LoadResources();
     }
 
     void LoadCrew()
@@ -202,6 +204,12 @@ public class GameManager : MonoBehaviour
     void LoadRooms()
     {
         roomCreator.CreateRoom();
+    }
+
+    //TODO: make this actually load resources.
+    void LoadResources()
+    {
+
     }
 
     //TODO: make this actually display a loading screen

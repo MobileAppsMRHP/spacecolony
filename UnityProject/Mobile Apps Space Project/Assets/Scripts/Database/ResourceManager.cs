@@ -7,16 +7,36 @@ using Firebase.Unity.Editor;
 
 using UnityEngine;
 
-public class DatabaseManager {
+public class ResourceManager {
+
+
+    public Dictionary<Shared.ResourceTypes, int> resources;
+
+    void Start()
+    {
+        //replace contents with database value
+    }
+
+    void Update()
+    {
+
+    }
+
+    int GetResource(Shared.ResourceTypes resourceToGet)
+    {
+        return resources[resourceToGet];
+    }
+
+
 
     //public static int maximumTimeout = 10000;
 
     //written with the guidance of https://firebase.google.com/docs/database/unity/retrieve-data
 
-    public FirebaseDatabase instance;
+    //public FirebaseDatabase instance;
     //public string user_string;
 
-    public DatabaseReference rootRef; 
+    //public DatabaseReference rootRef; 
 
         /*
     //Start Singleton handling from https://gamedev.stackexchange.com/a/116010
@@ -39,7 +59,7 @@ public class DatabaseManager {
         */
     
     // Use this for initialization
-    public DatabaseManager(/*string UserID*/) {
+    /*public DatabaseManager(string UserID) {
         // Set this before calling into the realtime database.
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://mobileappsmrhp-spacecolony.firebaseio.com/");
 
@@ -49,7 +69,7 @@ public class DatabaseManager {
         rootRef = instance.RootReference;
 
         GameManager.DebugLog("Database Manager initialized", 3);
-    }
+    }*/
 
     /*
 	// Update is called once per frame
@@ -157,7 +177,7 @@ public class DatabaseManager {
         //Crew.LoadCrew(this);
     }*/
 
-    public void LoadRooms()
+    /*public void LoadRooms()
     {
 
     }
@@ -165,7 +185,7 @@ public class DatabaseManager {
     public void LoadResources()
     {
 
-    }
+    }*/
 
     /*public object GetValueListener(string reference)
     {
@@ -174,19 +194,19 @@ public class DatabaseManager {
     }*/
 
     //TODO: return error codes needed?
-    public void SetValueAsync(string reference, object thing)
+    /*public void SetValueAsync(string reference, object thing)
     {
         GameManager.DebugLog("Overwriting data at " + reference + " with " + thing.ToString(), 4);
         instance.GetReference(reference).SetValueAsync(thing);
-    }
+    }*/
 
     //TODO: return error codes needed?
-    public void SetJsonAsyc(string reference, object thing)
+    /*public void SetJsonAsyc(string reference, object thing)
     {
         string json = JsonUtility.ToJson(thing);
         GameManager.DebugLog("Overwriting JSON at: " + reference + " with: " + json, 4);
         instance.GetReference(reference).SetRawJsonValueAsync(json);
-    }
+    }*/
 
 
 }
