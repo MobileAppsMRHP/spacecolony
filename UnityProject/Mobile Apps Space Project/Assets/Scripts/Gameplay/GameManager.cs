@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        DEBUG_WriteNewCrewTemplate();
+        DEBUG_WriteNewRoomTemplate();
         DisplayLoadingScreen();
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, 3);
@@ -185,7 +187,17 @@ public class GameManager : MonoBehaviour
         });
 
     }
-        
+
+    void DEBUG_WriteNewCrewTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data
+    {
+        FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/crew").SetRawJsonValueAsync(JsonUtility.ToJson(crewCreator.prefab));
+    }
+
+    void DEBUG_WriteNewRoomTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data
+    {
+        FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").SetRawJsonValueAsync(JsonUtility.ToJson(roomCreator.prefab));
+    }
+
 
     void LoadRooms()
     {
