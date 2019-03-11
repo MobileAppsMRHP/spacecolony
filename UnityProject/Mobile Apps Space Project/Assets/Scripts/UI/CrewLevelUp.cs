@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CrewLevelUp : MonoBehaviour {
-    public GameObject camera;
     public Crew selectedCrew;
     int crewNum;
     public GameManager gameManager;
