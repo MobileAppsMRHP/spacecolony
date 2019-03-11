@@ -131,8 +131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6ee61ca72cdb54693148b641aeb290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crewName: 
-  role: 
+  crewName: FRESH_CREW
+  role: 0
   skillPoints: 0
   progressToNextLevel: 0
   cooking: 0

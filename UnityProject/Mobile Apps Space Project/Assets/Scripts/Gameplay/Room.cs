@@ -5,9 +5,9 @@ using UnityEngine;
 public class Room : MonoBehaviour {
     public struct RequiredResources
     {
-        float scraps;
-        float energy;
-        float money;
+        public float scraps;
+        public float energy;
+        public float money;
 
         public RequiredResources(float s, float e, float m)
         {
@@ -24,6 +24,7 @@ public class Room : MonoBehaviour {
     public List<RequiredResources> UpgradeResources;
     public Shared.RoomTypes roomType;
     public bool selected;
+    public GameManager gameManager;
     // Use this for initialization
     void Start () {
         UpgradeResources = new List<RequiredResources>()
@@ -31,7 +32,7 @@ public class Room : MonoBehaviour {
             new RequiredResources(1, 1, 1),
             new RequiredResources(2, 3, 1)
         };
-
+        gameManager = GameManager.instance;
     }
 	
 	// Update is called once per frame
@@ -120,5 +121,12 @@ public class Room : MonoBehaviour {
             }
         }
         return false;
+    }
+    public void IncreaseLevel()
+    {
+        /*if (gameManager.GetResource() > UpgradeResources[roomLevel-1].scraps && gameManager.GetResource() > UpgradeResources[roomLevel - 1].energy && gameManager.GetResource() > UpgradeResources[roomLevel - 1].money)
+        {
+            
+        }*/
     }
 }

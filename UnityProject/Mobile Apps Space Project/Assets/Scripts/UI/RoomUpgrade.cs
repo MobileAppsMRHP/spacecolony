@@ -26,4 +26,9 @@ public class RoomUpgrade : MonoBehaviour {
         }
         return null;
     }
+
+    void UpgradeRoom(Room selectRoom)
+    {
+        selectRoom.IncreaseLevel();
+    }
 }
