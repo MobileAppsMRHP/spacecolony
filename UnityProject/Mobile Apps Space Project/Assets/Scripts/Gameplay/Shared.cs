@@ -23,12 +23,20 @@ public static class Shared {
 
     public enum Roles
     {
-        unassigned,
+        unassigned = 0,
         pilot,
         cook,
         farmer,
         explorer,
         lifesupport
+    }
+
+    public enum RoomTypes
+    {
+        empty = 0,
+        bridge,
+        energy,
+        food
     }
 
 }
