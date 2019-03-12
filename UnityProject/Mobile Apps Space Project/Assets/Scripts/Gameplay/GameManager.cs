@@ -186,6 +186,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Created crew member with ID " + identifier /*(string)data[0]*/);
 
             CrewMembers.Add(newCrewMember);
+            newCrewMember.transform.SetParent(crewCreator.transform);
         });
 
     }
