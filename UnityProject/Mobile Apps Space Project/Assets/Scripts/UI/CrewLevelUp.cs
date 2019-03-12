@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CrewLevelUp : MonoBehaviour {
     public Crew selectedCrew;
     int crewNum;
     public GameManager gameManager;
+    public List<Text> crewInfo;
 	// Use this for initialization
 	void Start () {
         gameManager = GameManager.instance;
@@ -15,7 +17,11 @@ public class CrewLevelUp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        crewInfo[0].text = selectedCrew.name;
+        crewInfo[1].text = selectedCrew.cooking.ToString();
+        crewInfo[2].text = selectedCrew.navigation.ToString();
+        crewInfo[3].text = selectedCrew.medical.ToString();
+        crewInfo[4].text = selectedCrew.fighting.ToString();
 	}
 
     public void SwitchCrew(bool right)
