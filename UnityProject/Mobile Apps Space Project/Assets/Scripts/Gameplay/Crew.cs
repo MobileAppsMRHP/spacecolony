@@ -132,7 +132,7 @@ public class Crew : MonoBehaviour {
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew").Child(identifier).SetRawJsonValueAsync(JsonUtility.ToJson(this));
     }
 
-    public void LoadCrew(DatabaseManager dbman)
+    /*public void LoadCrew()
     {
         //FirebaseDatabase.DefaultInstance.GetReference(dbman.user_string).Child("Crew").ValueChanged += HandleValueChanged;
 
@@ -164,7 +164,7 @@ public class Crew : MonoBehaviour {
 
 
         //ValueChanged += DatabaseValueChanged;
-    }
+    }*/
 
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
