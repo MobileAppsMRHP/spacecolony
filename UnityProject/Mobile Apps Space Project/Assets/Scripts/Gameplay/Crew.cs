@@ -22,6 +22,8 @@ public class Crew : MonoBehaviour {
 
     public string identifier = "_BLANK"; //don't change this! only fresh crew members get this changed by the code
 
+    public static List<string> Possible_Names;
+
     //private GameManager gameManager;
 
     //public bool newCharacter;
@@ -31,13 +33,7 @@ public class Crew : MonoBehaviour {
     {
         //this.identifier = (string)data[0];
         this.identifier = identifier;
-        //CrewSpawner spawner = (CrewSpawner)data[1];
-        //transform.position = Vector3.MoveTowards(transform.position, spawner.transform.position, 1); //go to spawner
-        //FirebaseDatabase.DefaultInstance.GetReference("testing-data").Child(this.crewName).SetRawJsonValueAsync(JsonUtility.ToJson(this));
         GameManager.DebugLog("I exist! " + identifier);
-        //FreshCrewSetup();
-        //SerializeWrite();
-
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier).ValueChanged += HandleValueChanged;
     }
 
@@ -66,6 +62,31 @@ public class Crew : MonoBehaviour {
         JsonUtility.FromJsonOverwrite(rawJson, this);
     }*/
 
+    public static void BuildRandomNameList() //run first to build name list
+    {
+        Possible_Names = new List<string>();
+        FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/possible-crew-names").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                // Handle the error...
+                GameManager.DebugLog("Data retrival error when prompting for possible crew names!", 1);
+            }
+            else if (task.IsCompleted)
+            {
+                foreach (DataSnapshot possibleName in task.Result.Children)
+                {
+                    Possible_Names.Add(possibleName.Value.ToString());
+                }
+            }
+            else
+            {
+                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
+                GameManager.DebugLog("Task error when prompting for possible crew names", 1);
+            }
+        });
+    }
+
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
@@ -79,34 +100,15 @@ public class Crew : MonoBehaviour {
         System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc); //from https://answers.unity.com/questions/417939/how-can-i-get-the-time-since-the-epoch-date-in-uni.html
         int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
         identifier = "" + cur_time;
+        if (Possible_Names == null) //check to ensure names exist
+            BuildRandomNameList();
         SetNameRandomly();
     }
 
     private void SetNameRandomly()
     {
-        FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/possible-crew-names").GetValueAsync().ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-            {
-                // Handle the error...
-                GameManager.DebugLog("Data retrival error when prompting for possible crew names!", 1);
-            }
-            else if (task.IsCompleted)
-            {
-                List<string> temp_names = new List<string>();
-                foreach (DataSnapshot possibleName in task.Result.Children)
-                {
-                    temp_names.Add(possibleName.Value.ToString());
-                }
-                System.Random rand = new System.Random();
-                this.crewName = temp_names[rand.Next(temp_names.Count)];
-            }
-            else
-            {
-                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
-                GameManager.DebugLog("Task error when prompting for possible crew names", 1);
-            }
-        });
+        System.Random rand = new System.Random();
+        this.crewName = Possible_Names[rand.Next(Possible_Names.Count)];
     }
 
 

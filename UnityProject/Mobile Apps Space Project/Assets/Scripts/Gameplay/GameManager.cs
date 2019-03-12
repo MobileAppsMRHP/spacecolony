@@ -150,6 +150,7 @@ public class GameManager : MonoBehaviour
 
     void LoadCrew()
     {
+        Crew.BuildRandomNameList();
         //crewCreator.CreateCrewMember();
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Crew/").GetValueAsync().ContinueWith(task =>
        {
