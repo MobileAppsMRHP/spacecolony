@@ -44,7 +44,8 @@ public static class Shared {
         scraps,
         money,
         energy,
-        preciousMetal
+        preciousMetal,
+        premiumCurrency
     }
 
 }
