@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Firebase.Database;
 using UnityEngine;
+using System;
 
 
 
@@ -25,8 +26,8 @@ public class Crew : MonoBehaviour {
 
     //public bool newCharacter;
 
-	// Use this for initialization
-	public void CrewCreatorStart (string identifier /*List<object> data*/)
+    // Use this for initialization
+    public void CrewCreatorStart(string identifier /*List<object> data*/)
     {
         //this.identifier = (string)data[0];
         this.identifier = identifier;
@@ -36,14 +37,14 @@ public class Crew : MonoBehaviour {
         GameManager.DebugLog("I exist! " + identifier);
         //FreshCrewSetup();
         //SerializeWrite();
-        
+
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier).ValueChanged += HandleValueChanged;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update() {
         IncreaseExperience();
-	}
+    }
 
     /*public Crew(string crewName, string role, Shared.Skills skills)
     {
@@ -65,7 +66,49 @@ public class Crew : MonoBehaviour {
         JsonUtility.FromJsonOverwrite(rawJson, this);
     }*/
 
-    
+    void HandleValueChanged(object sender, ValueChangedEventArgs args)
+    {
+        string json = args.Snapshot.GetRawJsonValue();
+        GameManager.DebugLog("Overwrote crew member " + this.name + " with JSON from database: " + json, 4);
+        JsonUtility.FromJsonOverwrite(json, this);
+    }
+
+    public void FreshCrewSetup()
+    {//few things here need initial values because they are set by the prefab. to give initial values, edit the prefab.
+        //setup unique crew identifier
+        System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc); //from https://answers.unity.com/questions/417939/how-can-i-get-the-time-since-the-epoch-date-in-uni.html
+        int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
+        identifier = "" + cur_time;
+        SetNameRandomly();
+    }
+
+    private void SetNameRandomly()
+    {
+        FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/possible-crew-names").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                // Handle the error...
+                GameManager.DebugLog("Data retrival error when prompting for possible crew names!", 1);
+            }
+            else if (task.IsCompleted)
+            {
+                List<string> temp_names = new List<string>();
+                foreach (DataSnapshot possibleName in task.Result.Children)
+                {
+                    temp_names.Add(possibleName.Value.ToString());
+                }
+                System.Random rand = new System.Random();
+                this.crewName = temp_names[rand.Next(temp_names.Count)];
+            }
+            else
+            {
+                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
+                GameManager.DebugLog("Task error when prompting for possible crew names", 1);
+            }
+        });
+    }
+
 
     public string GetName()
     {
@@ -121,7 +164,6 @@ public class Crew : MonoBehaviour {
         }
     }
 
-
     public string Serialize()
     { //rob test method
         return JsonUtility.ToJson(this);
@@ -166,21 +208,7 @@ public class Crew : MonoBehaviour {
         //ValueChanged += DatabaseValueChanged;
     }*/
 
-    void HandleValueChanged(object sender, ValueChangedEventArgs args)
-    {
-        string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote crew member " + this.name + " with JSON from database: " + json, 4);
-        JsonUtility.FromJsonOverwrite(json, this);
-    }
-
-    public void FreshCrewSetup()
-    {
-        //setup unique crew identifier
-        System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc); //from https://answers.unity.com/questions/417939/how-can-i-get-the-time-since-the-epoch-date-in-uni.html
-        int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
-        identifier = "" + cur_time;
-
-    }
+    
 
 
 }

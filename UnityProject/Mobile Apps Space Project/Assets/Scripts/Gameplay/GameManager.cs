@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
         DEBUG_WriteNewCrewTemplate();
         DEBUG_WriteNewRoomTemplate();
         DisplayLoadingScreen();
+        //CreateFreshCrewMember();
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, 3);
         Authenticate();
@@ -173,22 +174,35 @@ public class GameManager : MonoBehaviour
        });
     }
 
-    private void SpawnCrew(string identifier /*List<object> data*/)
-    { //expected data format:
-            // string           identifer string
-            // CrewCreator      spawner to teleport to upon spawning
+    private void SpawnCrew(string identifier)
+    {
         DebugLog("Spawning crew member via dispatch...");
         UnityMainThreadDispatcher.Instance().Enqueue(() => {
             //Debug.Log("This is executed from the main thread");
             Crew newCrewMember = Instantiate(crewCreator.prefab);
 
-            newCrewMember.SendMessage("CrewCreatorStart", identifier /*data*/);
-            Debug.Log("Created crew member with ID " + identifier /*(string)data[0]*/);
+            newCrewMember.SendMessage("CrewCreatorStart", identifier);
+            Debug.Log("Created crew member with ID " + identifier);
 
             CrewMembers.Add(newCrewMember);
             newCrewMember.transform.SetParent(crewCreator.transform);
         });
 
+    }
+
+    public void CreateFreshCrewMember()
+    {
+        DebugLog("Spawning fresh member via dispatch...");
+        UnityMainThreadDispatcher.Instance().Enqueue(() => {
+            //Debug.Log("This is executed from the main thread");
+            Crew newCrewMember = Instantiate(crewCreator.prefab);
+
+            newCrewMember.SendMessage("FreshCrewSetup");
+            Debug.Log("Created fresh crew member");
+
+            CrewMembers.Add(newCrewMember);
+            newCrewMember.transform.SetParent(crewCreator.transform);
+        });
     }
 
     void DEBUG_WriteNewCrewTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data
