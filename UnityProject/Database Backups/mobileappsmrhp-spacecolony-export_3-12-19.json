@@ -1,0 +1,55 @@
+{
+  "new-object-templates" : {
+    "crew" : {
+      "cooking" : 0,
+      "crewName" : "FRESH_CREW",
+      "currentRoom" : {
+        "instanceID" : 0
+      },
+      "fighting" : 0,
+      "identifier" : "_BLANK",
+      "medical" : 0,
+      "navigation" : 0,
+      "progressToNextLevel" : 0,
+      "role" : 0,
+      "skillPoints" : 0
+    },
+    "possible-crew-names" : [ null, "Pranay", "Mason", "Hannah", "Rob", "Signe Andreasen", "Huan Yü", "Zaid Tannous", "Irena Kociánová", "Amaan", "Jackson Morisset", "Haddas Tewolde", "Mireille Gregoire", "Katharina Freitag", "Søren Kristiansen", "Juanelo Irizarry", "Szôlôssi Evacska", "Sigurósk Jensdóttir", "Vitale Baresi", "Tetsugaku Ishihara", "Ch'Mara D'Ghor", "Sigurd Vea", "جهاندار خانلو", "Frydrych Wieczorek", "Diana Abramova", "Dennis McLean", "Laci Berc", "Mehdi Olsson", "สุยุคฟ้า พาเตาะ", "Hàn Thị Trúc Hoài", "Chris Zickert" ],
+    "room" : {
+      "gameManager" : {
+        "instanceID" : 0
+      },
+      "peopleLimit" : 2,
+      "roomType" : 0,
+      "selected" : false
+    }
+  },
+  "testing-data" : {
+    "tempdata" : "temp"
+  },
+  "user-data" : {
+    "User1" : {
+      "Crew" : {
+        "1551285935" : {
+          "crewName" : "CrewMemberOne",
+          "identifier" : "1551285935",
+          "progressToNextLevel" : 0,
+          "role" : "Unassigned",
+          "skillPoints" : 0
+        },
+        "1551285936" : {
+          "crewName" : "HiMason",
+          "identifier" : 1551285936,
+          "progressToNextLevel" : 0,
+          "role" : "Unassigned",
+          "skillPoints" : 0
+        }
+      },
+      "Resources" : {
+        "resource1" : 0
+      },
+      "UserName" : "Demoperson 1",
+      "temptag" : "temp"
+    }
+  }
+}

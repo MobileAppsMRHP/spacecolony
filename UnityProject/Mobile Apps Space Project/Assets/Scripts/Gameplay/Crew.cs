@@ -33,7 +33,7 @@ public class Crew : MonoBehaviour {
     {
         //this.identifier = (string)data[0];
         this.identifier = identifier;
-        GameManager.DebugLog("I exist! " + identifier);
+        GameManager.DebugLog("I exist! id:" + identifier);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier).ValueChanged += HandleValueChanged;
     }
 
@@ -100,17 +100,20 @@ public class Crew : MonoBehaviour {
         System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc); //from https://answers.unity.com/questions/417939/how-can-i-get-the-time-since-the-epoch-date-in-uni.html
         int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
         identifier = "" + cur_time;
-        if (Possible_Names == null) //check to ensure names exist
+        if (Possible_Names == null) //check to ensure names exist, create if not
             BuildRandomNameList();
-        SetNameRandomly();
+        SetNameRandomly(); //set name
 
+        //write self to database
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/"+ this.identifier).SetRawJsonValueAsync(JsonUtility.ToJson(this));
+        GameManager.DebugLog("Fresh crew member setup done id: " + identifier);
+        CrewCreatorStart(identifier); //run regular setup
     }
 
     private void SetNameRandomly()
     {
         System.Random rand = new System.Random();
-        this.crewName = Possible_Names[rand.Next(Possible_Names.Count)];
+        this.crewName = Possible_Names[0 /*rand.Next(Possible_Names.Count)*/];
     }
 
 

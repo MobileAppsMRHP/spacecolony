@@ -62,13 +62,14 @@ public class GameManager : MonoBehaviour
         DEBUG_WriteNewCrewTemplate();
         DEBUG_WriteNewRoomTemplate();
         DisplayLoadingScreen();
-        //CreateFreshCrewMember();
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, 3);
         Authenticate();
         user_string = "User1"; //TODO: get actual from auth
         LoadDatabaseValues();
         HideLoadingScreen();
+
+        CreateFreshCrewMember();
     }
 
     // Use this for initialization
@@ -95,24 +96,6 @@ public class GameManager : MonoBehaviour
     {
         //call auth stuff here
     }
-
-    /*public int GetResource(string key)
-    {
-        if (Resources.ContainsKey(key))
-            return Resources[key];
-        else
-        {
-            DebugLog("A resource " + key + " was requested that was not present in the resources list.", 2);
-            return 0;
-        }
-        resourceManager.GetResource(key);
-    }*/
-
-    /*public int SetResource(string key, int value)
-    {
-        Resources[key] = value;
-        return Resources[key];
-    }*/
 
     public void LoadDatabaseValues()
     {
@@ -197,7 +180,7 @@ public class GameManager : MonoBehaviour
 
     void LoadRooms()
     {
-        roomCreator.CreateRoom();
+        //roomCreator.CreateRoom();
     }
 
     //TODO: make this actually load resources.
