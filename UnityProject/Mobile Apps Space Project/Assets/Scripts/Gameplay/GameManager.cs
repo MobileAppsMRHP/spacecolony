@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     public List<Room> Rooms;
     private Dictionary<string, int> Resources; //{ get; }
 
-    private bool IsLoading; //indicates to other things if the game is loading
+    //private bool IsLoading; //indicates to other things if the game is loading
 
     public const byte debugLevel = 255; //increase this value to log more debug messages
     //higher number includes more logs, so picking 2 includes both 1 and 2's output
@@ -64,8 +64,8 @@ public class GameManager : MonoBehaviour
         DisplayLoadingScreen();
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, 3);
-        Authenticate();
-        user_string = "User1"; //TODO: get actual from auth
+        user_string = Authenticate();
+        //user_string = "User1"; //TODO: get actual from auth
         LoadDatabaseValues();
         HideLoadingScreen();
 
@@ -92,27 +92,22 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void Authenticate()
+    public string Authenticate()
     {
         //call auth stuff here
+        return "User1";
     }
 
     public void LoadDatabaseValues()
     {
-        //dbman = new DatabaseManager();
-
         LoadResources();
         LoadRooms(); //load rooms first so crew know where to go
         LoadCrew();
-        
-
-        
     }
 
     void LoadCrew()
     {
         Crew.BuildRandomNameList();
-        //crewCreator.CreateCrewMember();
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Crew/").GetValueAsync().ContinueWith(task =>
        {
            if (task.IsFaulted)
@@ -192,15 +187,14 @@ public class GameManager : MonoBehaviour
     //TODO: make this actually display a loading screen
     public void DisplayLoadingScreen()
     {
-        IsLoading = true;
+        //IsLoading = true;
 
     }
 
     //TODO: make this actually display a loading screen
     public void HideLoadingScreen()
     {
-        IsLoading = false;
-
+        //IsLoading = false;
     }
 
     public static void DebugLog(string message, DebugFlags flagLevelToDisplayAt /*byte debugLevelToDisplayAt*/)

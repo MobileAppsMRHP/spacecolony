@@ -24,6 +24,7 @@ public class ResourceManager {
             else if (task.IsCompleted)
             {
                 JsonUtility.FromJsonOverwrite(task.Result.GetRawJsonValue(), this);
+                GameManager.DebugLog("Overwrote resources with data from database: " + task.Result.GetRawJsonValue(), 3);
             }
             else
             {

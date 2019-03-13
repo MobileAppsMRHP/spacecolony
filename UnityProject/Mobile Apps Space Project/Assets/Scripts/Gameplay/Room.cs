@@ -66,7 +66,7 @@ public class Room : MonoBehaviour {
             return true;
         else
         {
-            Debug.Log("Too many people in this room");
+            //Debug.Log("Too many people in this room");
             return false;
         }
     }

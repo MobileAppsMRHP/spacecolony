@@ -64,7 +64,7 @@ public class Crew : MonoBehaviour {
 
     public static void BuildRandomNameList() //run first to build name list
     {
-        Possible_Names = new List<string>();
+        GameManager.DebugLog("Building Name List");
         FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/possible-crew-names").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -76,8 +76,10 @@ public class Crew : MonoBehaviour {
             {
                 foreach (DataSnapshot possibleName in task.Result.Children)
                 {
-                    Possible_Names.Add(possibleName.Value.ToString());
+                    GameManager.DebugLog("Found name: " + possibleName.Value.ToString());
+                    Crew.Possible_Names.Add(possibleName.Value.ToString());
                 }
+                GameManager.DebugLog("Name List done building: " + JsonUtility.ToJson(Possible_Names));
             }
             else
             {
@@ -100,8 +102,6 @@ public class Crew : MonoBehaviour {
         System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc); //from https://answers.unity.com/questions/417939/how-can-i-get-the-time-since-the-epoch-date-in-uni.html
         int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
         identifier = "" + cur_time;
-        if (Possible_Names == null) //check to ensure names exist, create if not
-            BuildRandomNameList();
         SetNameRandomly(); //set name
 
         //write self to database
@@ -112,8 +112,14 @@ public class Crew : MonoBehaviour {
 
     private void SetNameRandomly()
     {
+        if (Possible_Names == null) //check to ensure names exist, create if not
+        {
+            Debug.Log("Rebuilding names list because it doesn't exist");
+            BuildRandomNameList();
+        }
         System.Random rand = new System.Random();
-        this.crewName = Possible_Names[0 /*rand.Next(Possible_Names.Count)*/];
+        this.crewName = "TempName";//Possible_Names[1 /*rand.Next(Possible_Names.Count)*/];
+        //GameManager.DebugLog("Test Name: " + Possible_Names[0]);
     }
 
 

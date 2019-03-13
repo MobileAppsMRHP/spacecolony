@@ -64,7 +64,7 @@ public class DragAndDrop : MonoBehaviour
                 }
                 else if (!droppedRoom.crewInThisRoom.Contains(droppedCrew))
                 {
-                    Debug.Log("Can't enter room for some reason");
+                    //Debug.Log("Can't enter room for some reason");
                 }
                 droppedRoom.CrewIntoPosition(droppedCrew);
                 inRoom = true;
