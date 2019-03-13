@@ -23,6 +23,11 @@ public class CrewLevelUp : MonoBehaviour {
         crewInfo[3].text = selectedCrew.medical.ToString();
         crewInfo[4].text = selectedCrew.fighting.ToString();
         crewInfo[5].text = selectedCrew.skillPoints.ToString();
+        crewInfo[6].text = selectedCrew.role.ToString();
+        for (int i=0; i<gameManager.CrewMembers.Count; i++)
+        {
+            gameManager.CrewMembers[i].GetComponent<DragAndDrop>().selected = false;
+        }
 	}
 
     public void SwitchCrew(bool right)
