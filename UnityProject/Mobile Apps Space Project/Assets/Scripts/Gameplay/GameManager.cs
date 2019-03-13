@@ -47,9 +47,6 @@ public class GameManager : MonoBehaviour
     //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
     //example debugLevelFlags = short.MaxValue - DebugFlags.CollisionOps
 
-
-
-
     public RuntimePlatform running_on;
 
     public static GameManager instance = null; //singleton pattern
@@ -70,7 +67,6 @@ public class GameManager : MonoBehaviour
         DebugLog("Running on a " + running_on, 3);
         Authenticate();
         user_string = "User1"; //TODO: get actual from auth
-        SetupResourcesList();
         LoadDatabaseValues();
         HideLoadingScreen();
     }
@@ -100,20 +96,7 @@ public class GameManager : MonoBehaviour
         //call auth stuff here
     }
 
-    public void SetupResourcesList()
-    {
-        Resources = new Dictionary<string, int>()
-        {
-            { "food", 0 },
-            { "water", 0 },
-            { "energy", 0 },
-            { "money", 0 }
-        };
-        DebugLog("Done setting up resrouces list", 3);
-
-    }
-
-    public int GetResource(string key)
+    /*public int GetResource(string key)
     {
         if (Resources.ContainsKey(key))
             return Resources[key];
@@ -122,20 +105,15 @@ public class GameManager : MonoBehaviour
             DebugLog("A resource " + key + " was requested that was not present in the resources list.", 2);
             return 0;
         }
-    }
+        resourceManager.GetResource(key);
+    }*/
 
-    public int SetResource(string key, int value)
+    /*public int SetResource(string key, int value)
     {
         Resources[key] = value;
         return Resources[key];
-    }
-
-    /*public void AddFood(int num)
-    {
-        food += num;
     }*/
 
-    //TODO: make this actually load database values, initalize crew and resources, etc.
     public void LoadDatabaseValues()
     {
         //dbman = new DatabaseManager();
@@ -145,7 +123,7 @@ public class GameManager : MonoBehaviour
         LoadCrew();
         
 
-        //dbman.LoadResources();
+        
     }
 
     void LoadCrew()
@@ -225,7 +203,7 @@ public class GameManager : MonoBehaviour
     //TODO: make this actually load resources.
     void LoadResources()
     {
-
+        resourceManager = new ResourceManager(); //loading handled by its startup
     }
 
     //TODO: make this actually display a loading screen

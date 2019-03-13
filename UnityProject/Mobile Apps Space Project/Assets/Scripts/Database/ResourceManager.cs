@@ -14,7 +14,23 @@ public class ResourceManager {
 
     void Start()
     {
-        //replace contents with database value
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                // Handle the error...
+                GameManager.DebugLog("Data retrival error when prompting for resources!", 1);
+            }
+            else if (task.IsCompleted)
+            {
+                JsonUtility.FromJsonOverwrite(task.Result.GetRawJsonValue(), this);
+            }
+            else
+            {
+                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
+                GameManager.DebugLog("Task error when prompting for resources", 1);
+            }
+        });
     }
 
     void Update()
@@ -24,9 +40,39 @@ public class ResourceManager {
 
     int GetResource(Shared.ResourceTypes resourceToGet)
     {
-        return resources[resourceToGet];
+        if (resources.ContainsKey(resourceToGet))
+            return resources[resourceToGet];
+        else
+        {
+            GameManager.DebugLog("A resource " + resourceToGet + " was requested that was not present in the resources list.", 2);
+            return 0;
+        }
     }
 
+    public int SetResource(Shared.ResourceTypes key, int value)
+    {
+        resources[key] = value;
+        return value;
+    }
+
+    public int ChangeResource(Shared.ResourceTypes key, int deltaValue)
+    {
+        resources[key] += deltaValue;
+        return resources[key];
+    }
+
+    public void DEBUG_SetupResourcesList()
+    {
+        resources = new Dictionary<Shared.ResourceTypes, int>()
+        {
+            {Shared.ResourceTypes.scraps, 5 },
+            {Shared.ResourceTypes.money, 10 },
+            {Shared.ResourceTypes.energy, 7 }
+        };
+
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").SetRawJsonValueAsync(JsonUtility.ToJson(this));
+
+    }
 
 
     //public static int maximumTimeout = 10000;
@@ -38,26 +84,26 @@ public class ResourceManager {
 
     //public DatabaseReference rootRef; 
 
-        /*
-    //Start Singleton handling from https://gamedev.stackexchange.com/a/116010
-    private static DatabaseManager _instance;
-    public static DatabaseManager Instance { get { return _instance; } }
+    /*
+//Start Singleton handling from https://gamedev.stackexchange.com/a/116010
+private static DatabaseManager _instance;
+public static DatabaseManager Instance { get { return _instance; } }
 
-    private void Awake()
+private void Awake()
+{
+    if (_instance != null && _instance != this)
     {
-        if (_instance != null && _instance != this)
-        {
-            //Destroy(this.gameObject);
-            Debug.LogError("A second database manager was created! Unexpected behaviour will ensue.");
-        }
-        else
-        {
-            _instance = this;
-        }
+        //Destroy(this.gameObject);
+        Debug.LogError("A second database manager was created! Unexpected behaviour will ensue.");
     }
-    //End singleton handling from https://gamedev.stackexchange.com/a/116010
-        */
-    
+    else
+    {
+        _instance = this;
+    }
+}
+//End singleton handling from https://gamedev.stackexchange.com/a/116010
+    */
+
     // Use this for initialization
     /*public DatabaseManager(string UserID) {
         // Set this before calling into the realtime database.
