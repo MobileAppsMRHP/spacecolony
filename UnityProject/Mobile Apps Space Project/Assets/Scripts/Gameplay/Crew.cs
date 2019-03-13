@@ -103,6 +103,8 @@ public class Crew : MonoBehaviour {
         if (Possible_Names == null) //check to ensure names exist
             BuildRandomNameList();
         SetNameRandomly();
+
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/"+ this.identifier).SetRawJsonValueAsync(JsonUtility.ToJson(this));
     }
 
     private void SetNameRandomly()
