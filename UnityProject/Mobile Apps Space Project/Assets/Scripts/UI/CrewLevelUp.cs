@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CrewLevelUp : MonoBehaviour {
     public Crew selectedCrew;
-    int crewNum;
+    public int crewNum;
     public GameManager gameManager;
     public List<Text> crewInfo;
 	// Use this for initialization
@@ -17,11 +17,12 @@ public class CrewLevelUp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        crewInfo[0].text = selectedCrew.name;
+        crewInfo[0].text = selectedCrew.crewName;
         crewInfo[1].text = selectedCrew.cooking.ToString();
         crewInfo[2].text = selectedCrew.navigation.ToString();
         crewInfo[3].text = selectedCrew.medical.ToString();
         crewInfo[4].text = selectedCrew.fighting.ToString();
+        crewInfo[5].text = selectedCrew.skillPoints.ToString();
 	}
 
     public void SwitchCrew(bool right)
@@ -35,6 +36,7 @@ public class CrewLevelUp : MonoBehaviour {
             crewNum = crewNum == 0 ? gameManager.CrewMembers.Count - 1 : crewNum - 1;
         }
         selectedCrew = gameManager.CrewMembers[crewNum];
+        //Debug.Log("changed crew to " + selectedCrew.crewName);
     }
 
     public void IncreaseStat(int num)

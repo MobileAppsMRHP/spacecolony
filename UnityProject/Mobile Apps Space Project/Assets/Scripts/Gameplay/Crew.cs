@@ -141,20 +141,24 @@ public class Crew : MonoBehaviour {
 
     public void IncreaseSkill(int skillNum)
     {
-        switch (skillNum)
+        if (skillPoints > 0)
         {
-            case 1:
-                cooking++;
-                break;
-            case 2:
-                navigation++;
-                break;
-            case 3:
-                medical++;
-                break;
-            case 4:
-                fighting++;
-                break;
+            switch (skillNum)
+            {
+                case 0:
+                    cooking++;
+                    break;
+                case 1:
+                    navigation++;
+                    break;
+                case 2:
+                    medical++;
+                    break;
+                case 3:
+                    fighting++;
+                    break;
+            }
+            skillPoints--;
         }
     }
 
