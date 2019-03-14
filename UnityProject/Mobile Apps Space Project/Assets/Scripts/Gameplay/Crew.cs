@@ -22,16 +22,15 @@ public class Crew : MonoBehaviour {
 
     public string identifier = "_BLANK"; //don't change this! only fresh crew members get this changed by the code
 
-    public static List<string> Possible_Names;
+    public static List<string> Possible_Names = new List<string>();
 
     //private GameManager gameManager;
 
     //public bool newCharacter;
 
     // Use this for initialization
-    public void CrewCreatorStart(string identifier /*List<object> data*/)
+    public void CrewCreatorStart(string identifier)
     {
-        //this.identifier = (string)data[0];
         this.identifier = identifier;
         GameManager.DebugLog("I exist! id:" + identifier);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier).ValueChanged += HandleValueChanged;
@@ -42,29 +41,10 @@ public class Crew : MonoBehaviour {
         IncreaseExperience();
     }
 
-    /*public Crew(string crewName, string role, Shared.Skills skills)
-    {
-        gameManager = GameManager.instance;
-        this.crewName = crewName;
-        this.role = role;
-        this.skillPoints = 0;
-        this.progressToNextLevel = 0;
-
-        //this.skills = skills; // new SharedStructs.Skills();
-
-        
-    }*/
-
-    /*public Crew(string rawJson, System.EventHandler<ValueChangedEventArgs> EventHandler)
-    {
-        gameManager = GameManager.instance;
-        EventHandler += HandleValueChanged;
-        JsonUtility.FromJsonOverwrite(rawJson, this);
-    }*/
-
     public static void BuildRandomNameList() //run first to build name list
     {
         GameManager.DebugLog("Building Name List");
+        List<string> temp_Possible_Names = new List<string>();
         FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/possible-crew-names").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -77,9 +57,11 @@ public class Crew : MonoBehaviour {
                 foreach (DataSnapshot possibleName in task.Result.Children)
                 {
                     GameManager.DebugLog("Found name: " + possibleName.Value.ToString());
-                    Crew.Possible_Names.Add(possibleName.Value.ToString());
+                    temp_Possible_Names.Add(possibleName.Value.ToString());
                 }
-                GameManager.DebugLog("Name List done building: " + JsonUtility.ToJson(Possible_Names));
+                Possible_Names = temp_Possible_Names;
+                GameManager.DebugLog("Name List done building, items: " + Possible_Names.Count/* + " | " + JsonUtility.ToJson(Possible_Names)*/);
+                //GameManager.DebugLog("Name 1 " + Possible_Names[1]);
             }
             else
             {
@@ -97,31 +79,33 @@ public class Crew : MonoBehaviour {
     }
 
     public void FreshCrewSetup()
-    {//few things here need initial values because they are set by the prefab. to give initial values, edit the prefab.
+    {
+        //few things here need initial values because they are set by the prefab. to give initial values, edit the prefab.
         //setup unique crew identifier
+        GameManager.DebugLog("Starting coroutine to make fresh crew member");
+        StartCoroutine(SetUpAndWriteFreshCrew());
+    }
+
+    IEnumerator SetUpAndWriteFreshCrew()
+    {
         System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc); //from https://answers.unity.com/questions/417939/how-can-i-get-the-time-since-the-epoch-date-in-uni.html
         int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
         identifier = "" + cur_time;
-        SetNameRandomly(); //set name
+
+        if(Possible_Names.Count != 0)
+            Debug.Log("Waiting for names list to build...");
+        yield return new WaitUntil(() => Possible_Names.Count != 0);
+        Debug.Log("Names list done building. Continuing with name setting.");
+
+        System.Random rand = new System.Random();
+        this.crewName = Possible_Names[rand.Next(Possible_Names.Count)];
 
         //write self to database
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/"+ this.identifier).SetRawJsonValueAsync(JsonUtility.ToJson(this));
+        GameManager.DebugLog("Writing to fresh crew with name " + crewName + " and id " + identifier + " to database...");
+        yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier).SetRawJsonValueAsync(JsonUtility.ToJson(this));
         GameManager.DebugLog("Fresh crew member setup done id: " + identifier);
         CrewCreatorStart(identifier); //run regular setup
     }
-
-    private void SetNameRandomly()
-    {
-        if (Possible_Names == null) //check to ensure names exist, create if not
-        {
-            Debug.Log("Rebuilding names list because it doesn't exist");
-            BuildRandomNameList();
-        }
-        System.Random rand = new System.Random();
-        this.crewName = "TempName";//Possible_Names[1 /*rand.Next(Possible_Names.Count)*/];
-        //GameManager.DebugLog("Test Name: " + Possible_Names[0]);
-    }
-
 
     public string GetName()
     {
@@ -190,42 +174,4 @@ public class Crew : MonoBehaviour {
     {
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew").Child(identifier).SetRawJsonValueAsync(JsonUtility.ToJson(this));
     }
-
-    /*public void LoadCrew()
-    {
-        //FirebaseDatabase.DefaultInstance.GetReference(dbman.user_string).Child("Crew").ValueChanged += HandleValueChanged;
-
-        //var query = dbman.instance.GetReference(dbman.user_string).Child("Crew").GetValueAsync()
-        dbman.instance.GetReference(GameManager.instance.user_string).Child("Crew").GetValueAsync()
-           .ContinueWith(task => {
-               if (task.IsFaulted)
-               {
-                    // Handle the error...
-                    GameManager.DebugLog("Data retrival error when prompting for Crew data for user " + GameManager.instance.user_string, 1);
-               }
-               else if (task.IsCompleted)
-               {
-                   Debug.Log("got Crew members data for " + GameManager.instance.user_string);
-                   foreach (var item in task.Result.Children)
-                   {
-                       //Instantiate(CrewMemberPrefab, )
-                       //System.EventHandler<ValueChangedEventArgs> EventHandler = FirebaseDatabase.DefaultInstance.GetReference(dbman.user_string).Child("Crew").ValueChanged;
-                       //GameManager.instance.CrewMembers.Add(new Crew(item.GetRawJsonValue(), EventHandler));
-                   }
-               }
-               else
-               {
-                    //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
-                    GameManager.DebugLog("Task error! Crew data request", 1);
-               }
-           });
-
-
-
-        //ValueChanged += DatabaseValueChanged;
-    }*/
-
-    
-
-
 }

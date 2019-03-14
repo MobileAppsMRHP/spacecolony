@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance = null; //singleton pattern
 
-    public ResourceManager resourceManager;
+    public ResourceManager resourceManager = new ResourceManager();
     public CrewSpawner crewCreator;
     public RoomSpawner roomCreator;
 
@@ -61,6 +61,8 @@ public class GameManager : MonoBehaviour
     {
         DEBUG_WriteNewCrewTemplate();
         DEBUG_WriteNewRoomTemplate();
+        resourceManager.DEBUG_SetupResourcesList();
+
         DisplayLoadingScreen();
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, 3);
@@ -107,9 +109,9 @@ public class GameManager : MonoBehaviour
 
     void LoadCrew()
     {
-        Crew.BuildRandomNameList();
+        //Crew.BuildRandomNameList();
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Crew/").GetValueAsync().ContinueWith(task =>
-       {
+        {
            if (task.IsFaulted)
            {
                // Handle the error...
@@ -128,7 +130,7 @@ public class GameManager : MonoBehaviour
                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
                DebugLog("Task error when prompting for crew data", 1);
            }
-       });
+        });
     }
 
     private void SpawnCrew(string identifier)
@@ -181,7 +183,7 @@ public class GameManager : MonoBehaviour
     //TODO: make this actually load resources.
     void LoadResources()
     {
-        resourceManager = new ResourceManager(); //loading handled by its startup
+        //resourceManager = new ResourceManager(); //loading handled by its startup
     }
 
     //TODO: make this actually display a loading screen
