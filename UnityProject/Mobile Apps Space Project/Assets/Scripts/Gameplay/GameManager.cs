@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
     public ResourceManager resourceManager;
     public CrewSpawner crewCreator;
     public RoomSpawner roomCreator;
+    protected static UserAuthentication auth;
 
     public string user_string = "StillLoading";
 
@@ -94,7 +95,9 @@ public class GameManager : MonoBehaviour
 
     public string Authenticate()
     {
-        //call auth stuff here
+        auth = gameObject.AddComponent<UserAuthentication>();
+        Firebase.Auth.Credential token= auth.getCredential();
+        print(token);
         return "User1";
     }
 
