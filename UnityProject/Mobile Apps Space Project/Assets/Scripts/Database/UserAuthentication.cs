@@ -9,6 +9,7 @@ public class UserAuthentication : MonoBehaviour {
     protected bool signInAndFetchProfile = true;
     protected string email = "";
     protected string password = "";
+    protected Firebase.Auth.Credential credential;
     // The verification id needed along with the sent code for phone authentication.
     private string phoneAuthVerificationId;
 
@@ -72,13 +73,12 @@ public class UserAuthentication : MonoBehaviour {
         if (signInAndFetchProfile)
         {
             return auth.SignInAndRetrieveDataWithCredentialAsync(
-              Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
-                HandleSignInWithSignInResult);
+              credential=Firebase.Auth.GoogleAuthProvider.GetCredential(email, password)).ContinueWith(HandleSignInWithSignInResult);
         }
         else
         {
             return auth.SignInWithCredentialAsync(
-              Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
+              Firebase.Auth.GoogleAuthProvider.GetCredential(email, password)).ContinueWith(
                 HandleSignInWithUser);
         }
     }
@@ -138,6 +138,11 @@ public class UserAuthentication : MonoBehaviour {
                 print(string.Format("{0}{1}: {2}", indent, kv.Key, kv.Value));
             }
         }
+    }
+
+    public Firebase.Auth.Credential getCredential()
+    {
+        return credential;
     }
 
 }
