@@ -15,7 +15,7 @@ public class ResourceManager {
     public ResourceManager()
     {
         GameManager.DebugLog("Starting resource manager...");
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").GetValueAsync().ContinueWith(task =>
+        /*FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
@@ -31,7 +31,8 @@ public class ResourceManager {
                 //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
                 GameManager.DebugLog("Task error when prompting for resources", 1);
             }
-        });
+        });*/
+        resources = new Dictionary<Shared.ResourceTypes, int>();
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").ValueChanged += HandleValueChanged;
     }
 
@@ -67,12 +68,19 @@ public class ResourceManager {
 
     public void DEBUG_SetupResourcesList()
     {
-        resources = new Dictionary<Shared.ResourceTypes, int>()
+        GameManager.DebugLog("DEBUG: Creating demo resouces and writing to database...");
+        /*resources = new Dictionary<Shared.ResourceTypes, int>()
         {
             {Shared.ResourceTypes.scraps, 5 },
             {Shared.ResourceTypes.money, 10 },
             {Shared.ResourceTypes.energy, 7 }
-        };
+        };*/
+
+        resources.Add(Shared.ResourceTypes.scraps, 5);
+        resources.Add(Shared.ResourceTypes.money, 10);
+        resources.Add(Shared.ResourceTypes.energy, 7);
+
+        GameManager.DebugLog("Resources count after DEBUG setup: " + resources.Count);
 
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").SetRawJsonValueAsync(JsonUtility.ToJson(this));
 

@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance = null; //singleton pattern
 
-    public ResourceManager resourceManager = new ResourceManager();
+    public ResourceManager resourceManager;
     public CrewSpawner crewCreator;
     public RoomSpawner roomCreator;
 
@@ -61,17 +61,24 @@ public class GameManager : MonoBehaviour
     {
         DEBUG_WriteNewCrewTemplate();
         DEBUG_WriteNewRoomTemplate();
-        resourceManager.DEBUG_SetupResourcesList();
-
+        
         DisplayLoadingScreen();
+
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, 3);
         user_string = Authenticate();
         //user_string = "User1"; //TODO: get actual from auth
+
+        resourceManager = new ResourceManager();
+        
+
         LoadDatabaseValues();
+
+
+
         HideLoadingScreen();
 
-        CreateFreshCrewMember();
+        StartCoroutine("DelayedStart");
     }
 
     // Use this for initialization
@@ -92,6 +99,15 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update() {
 
+    }
+
+    System.Collections.IEnumerator DelayedStart()
+    {
+        DebugLog("Waiting 10 seconds to start delayed actions...");
+        yield return new WaitForSeconds(10);
+        DebugLog("10 seconds elapsed, running delayed actions.");
+        resourceManager.DEBUG_SetupResourcesList();
+        CreateFreshCrewMember();
     }
 
     public string Authenticate()

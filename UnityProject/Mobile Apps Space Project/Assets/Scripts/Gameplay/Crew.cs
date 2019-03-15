@@ -82,7 +82,7 @@ public class Crew : MonoBehaviour {
     {
         //few things here need initial values because they are set by the prefab. to give initial values, edit the prefab.
         //setup unique crew identifier
-        GameManager.DebugLog("Starting coroutine to make fresh crew member");
+        GameManager.DebugLog("Starting coroutine to make FRESH crew member");
         StartCoroutine(SetUpAndWriteFreshCrew());
     }
 
@@ -92,18 +92,27 @@ public class Crew : MonoBehaviour {
         int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
         identifier = "" + cur_time;
 
-        if(Possible_Names.Count != 0)
+        /*if (Possible_Names.Count != 0)
+        {
             Debug.Log("Waiting for names list to build...");
-        yield return new WaitUntil(() => Possible_Names.Count != 0);
-        Debug.Log("Names list done building. Continuing with name setting.");
+            yield return new WaitUntil(() => Possible_Names.Count != 0);
+        }
+        Debug.Log("Names list done building. Continuing with name setting. Length: " + Possible_Names.Count);*/
 
         System.Random rand = new System.Random();
-        this.crewName = Possible_Names[rand.Next(Possible_Names.Count)];
+        //this.crewName = Possible_Names[rand.Next(Possible_Names.Count)];
+        List<string> tempList = new List<string>();
+        tempList.Add("Name1");
+        tempList.Add("Name2");
+        tempList.Add("Name3");
+        tempList.Add("Name4");
+        tempList.Add("Name5");
+        this.crewName = tempList[rand.Next(tempList.Count)];
 
         //write self to database
-        GameManager.DebugLog("Writing to fresh crew with name " + crewName + " and id " + identifier + " to database...");
+        GameManager.DebugLog("Writing FRESH crew with name " + crewName + " and id " + identifier + " to database...");
         yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier).SetRawJsonValueAsync(JsonUtility.ToJson(this));
-        GameManager.DebugLog("Fresh crew member setup done id: " + identifier);
+        GameManager.DebugLog("FRESH crew member setup done id: " + identifier);
         CrewCreatorStart(identifier); //run regular setup
     }
 
