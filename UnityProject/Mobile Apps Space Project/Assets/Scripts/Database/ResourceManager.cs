@@ -9,29 +9,11 @@ using UnityEngine;
 
 public class ResourceManager {
 
-
     public Dictionary<Shared.ResourceTypes, int> resources;
 
     public ResourceManager()
     {
         GameManager.DebugLog("Starting resource manager...");
-        /*FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").GetValueAsync().ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-            {
-                GameManager.DebugLog("Data retrival error when prompting for resources!", 1);
-            }
-            else if (task.IsCompleted)
-            {
-                JsonUtility.FromJsonOverwrite(task.Result.GetRawJsonValue(), this);
-                GameManager.DebugLog("Overwrote resources with data from database: " + task.Result.GetRawJsonValue(), 3);
-            }
-            else
-            {
-                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
-                GameManager.DebugLog("Task error when prompting for resources", 1);
-            }
-        });*/
         resources = new Dictionary<Shared.ResourceTypes, int>();
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").ValueChanged += HandleValueChanged;
     }
@@ -49,7 +31,7 @@ public class ResourceManager {
             return resources[resourceToGet];
         else
         {
-            GameManager.DebugLog("A resource " + resourceToGet + " was requested that was not present in the resources list.", 2);
+            GameManager.DebugLog("A resource " + resourceToGet + " was requested that was not present in the resources list; returning 0 count.", 2);
             return 0;
         }
     }

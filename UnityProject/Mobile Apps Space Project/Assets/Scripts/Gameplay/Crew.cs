@@ -32,8 +32,8 @@ public class Crew : MonoBehaviour {
     public void CrewCreatorStart(string identifier)
     {
         this.identifier = identifier;
-        GameManager.DebugLog("I exist! id:" + identifier);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier).ValueChanged += HandleValueChanged;
+        GameManager.DebugLog("Crew startup done for " + identifier);
     }
 
     // Update is called once per frame
@@ -43,7 +43,7 @@ public class Crew : MonoBehaviour {
 
     public static void BuildRandomNameList() //run first to build name list
     {
-        GameManager.DebugLog("Building Name List");
+        GameManager.DebugLog("Building names list...");
         List<string> temp_Possible_Names = new List<string>();
         FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/possible-crew-names").GetValueAsync().ContinueWith(task =>
         {
@@ -54,14 +54,21 @@ public class Crew : MonoBehaviour {
             }
             else if (task.IsCompleted)
             {
+                string tempString = "";
                 foreach (DataSnapshot possibleName in task.Result.Children)
                 {
-                    GameManager.DebugLog("Found name: " + possibleName.Value.ToString());
-                    temp_Possible_Names.Add(possibleName.Value.ToString());
+                    //GameManager.DebugLog("Found name: " + possibleName.Value.ToString());
+                    string val = possibleName.Value.ToString();
+                    temp_Possible_Names.Add(val);
+                    tempString += val + "|";
                 }
                 Possible_Names = temp_Possible_Names;
-                GameManager.DebugLog("Name List done building, items: " + Possible_Names.Count/* + " | " + JsonUtility.ToJson(Possible_Names)*/);
+                GameManager.DebugLog("Name List done building, items: " + Possible_Names.Count + " | " + tempString/* + " | " + JsonUtility.ToJson(Possible_Names)*/);
                 //GameManager.DebugLog("Name 1 " + Possible_Names[1]);
+                /*foreach (string thisName in Possible_Names)
+                {
+                    GameManager.DebugLog("Names list item : " + thisName);
+                }*/
             }
             else
             {
@@ -82,7 +89,7 @@ public class Crew : MonoBehaviour {
     {
         //few things here need initial values because they are set by the prefab. to give initial values, edit the prefab.
         //setup unique crew identifier
-        GameManager.DebugLog("Starting coroutine to make FRESH crew member");
+        GameManager.DebugLog("FRESH Crew Coroutine Start");
         StartCoroutine(SetUpAndWriteFreshCrew());
     }
 
@@ -92,27 +99,19 @@ public class Crew : MonoBehaviour {
         int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
         identifier = "" + cur_time;
 
-        /*if (Possible_Names.Count != 0)
+        if (Possible_Names.Count == 0)
         {
             Debug.Log("Waiting for names list to build...");
             yield return new WaitUntil(() => Possible_Names.Count != 0);
+            Debug.Log("Names list done building. Continuing with name setting. Length: " + Possible_Names.Count);
         }
-        Debug.Log("Names list done building. Continuing with name setting. Length: " + Possible_Names.Count);*/
-
         System.Random rand = new System.Random();
-        //this.crewName = Possible_Names[rand.Next(Possible_Names.Count)];
-        List<string> tempList = new List<string>();
-        tempList.Add("Name1");
-        tempList.Add("Name2");
-        tempList.Add("Name3");
-        tempList.Add("Name4");
-        tempList.Add("Name5");
-        this.crewName = tempList[rand.Next(tempList.Count)];
+        this.crewName = Possible_Names[rand.Next(Possible_Names.Count)];
 
         //write self to database
         GameManager.DebugLog("Writing FRESH crew with name " + crewName + " and id " + identifier + " to database...");
         yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier).SetRawJsonValueAsync(JsonUtility.ToJson(this));
-        GameManager.DebugLog("FRESH crew member setup done id: " + identifier);
+        GameManager.DebugLog("FRESH crew setup done for " + identifier);
         CrewCreatorStart(identifier); //run regular setup
     }
 
@@ -172,15 +171,5 @@ public class Crew : MonoBehaviour {
         {
             progressToNextLevel += 0.01f * Time.deltaTime;
         }
-    }
-
-    public string Serialize()
-    { //rob test method
-        return JsonUtility.ToJson(this);
-    }
-
-    public void SerializeWrite()
-    {
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew").Child(identifier).SetRawJsonValueAsync(JsonUtility.ToJson(this));
     }
 }
