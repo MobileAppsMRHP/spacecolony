@@ -60,17 +60,24 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        DEBUG_WriteNewCrewTemplate();
-        DEBUG_WriteNewRoomTemplate();
+        StartCoroutine("DebugDelayedStart");
+
         DisplayLoadingScreen();
+
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, 3);
         user_string = Authenticate();
         //user_string = "User1"; //TODO: get actual from auth
+
+        resourceManager = new ResourceManager();
+
         LoadDatabaseValues();
+
+
+
         HideLoadingScreen();
 
-        CreateFreshCrewMember();
+        
     }
 
     // Use this for initialization
@@ -93,6 +100,19 @@ public class GameManager : MonoBehaviour
 
     }
 
+    System.Collections.IEnumerator DebugDelayedStart()
+    {
+        DEBUG_WriteNewCrewTemplate();
+        DEBUG_WriteNewRoomTemplate();
+        //resourceManager.DEBUG_SetupResourcesList();
+        DebugLog("Waiting 4 seconds to start delayed actions...");
+        yield return new WaitForSeconds(4);
+        DebugLog("4 seconds elapsed, running delayed actions.");
+
+        StartCoroutine("CreateFreshCrewMember", 2);
+
+    }
+
     public string Authenticate()
     {
         auth = gameObject.AddComponent<UserAuthentication>();
@@ -112,7 +132,7 @@ public class GameManager : MonoBehaviour
     {
         Crew.BuildRandomNameList();
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Crew/").GetValueAsync().ContinueWith(task =>
-       {
+        {
            if (task.IsFaulted)
            {
                // Handle the error...
@@ -131,18 +151,18 @@ public class GameManager : MonoBehaviour
                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
                DebugLog("Task error when prompting for crew data", 1);
            }
-       });
+        });
     }
 
     private void SpawnCrew(string identifier)
     {
-        DebugLog("Spawning crew member via dispatch...");
+        DebugLog("Loading crew member " + identifier + " via dispatch...");
         UnityMainThreadDispatcher.Instance().Enqueue(() => {
             //Debug.Log("This is executed from the main thread");
             Crew newCrewMember = Instantiate(crewCreator.prefab);
 
             newCrewMember.SendMessage("CrewCreatorStart", identifier);
-            Debug.Log("Created crew member with ID " + identifier);
+            Debug.Log("Loaded crew member with ID " + identifier);
 
             CrewMembers.Add(newCrewMember);
             newCrewMember.transform.SetParent(crewCreator.transform);
@@ -150,19 +170,31 @@ public class GameManager : MonoBehaviour
 
     }
 
+    System.Collections.IEnumerator CreateFreshCrewMember(int count)
+    {
+        if (count > 0)
+        {
+            for (int index = 1; index <= count; index++)
+            {
+                DebugLog("Spawning fresh member (" + index + "/" + count + ") via dispatch...");
+                UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                {
+                    Crew newCrewMember = Instantiate(crewCreator.prefab);
+
+                    newCrewMember.SendMessage("FreshCrewSetup");
+                    Debug.Log("MainThread: Created a fresh crew member");
+                    CrewMembers.Add(newCrewMember);
+                    newCrewMember.transform.SetParent(crewCreator.transform);
+                });
+                yield return new WaitForSecondsRealtime(1.0f); //TODO: Fix this bandaid. Because the spawn task is being enqueud in the main thread, this wait doesn't acutally wait for the purposes of the RNG, just enqueue time, which is why it has to be so long. Even then there might be overlap.
+            }
+            DebugLog("Done spawning requested " + count + " fresh crew members.");
+        }
+    }
+
     public void CreateFreshCrewMember()
     {
-        DebugLog("Spawning fresh member via dispatch...");
-        UnityMainThreadDispatcher.Instance().Enqueue(() => {
-            //Debug.Log("This is executed from the main thread");
-            Crew newCrewMember = Instantiate(crewCreator.prefab);
-
-            newCrewMember.SendMessage("FreshCrewSetup");
-            Debug.Log("Created fresh crew member");
-
-            CrewMembers.Add(newCrewMember);
-            newCrewMember.transform.SetParent(crewCreator.transform);
-        });
+        CreateFreshCrewMember(1);
     }
 
     void DEBUG_WriteNewCrewTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data
@@ -184,7 +216,7 @@ public class GameManager : MonoBehaviour
     //TODO: make this actually load resources.
     void LoadResources()
     {
-        resourceManager = new ResourceManager(); //loading handled by its startup
+        //resourceManager = new ResourceManager(); //loading handled by its startup
     }
 
     //TODO: make this actually display a loading screen
