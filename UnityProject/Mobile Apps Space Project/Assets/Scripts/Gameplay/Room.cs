@@ -23,7 +23,7 @@ public class Room : MonoBehaviour {
     public List<GameObject> crewLocations;
     public List<RequiredResources> UpgradeResources;
     public Shared.RoomTypes roomType;
-    public bool selected;
+    public bool currentlySelected;
     public GameManager gameManager;
     // Use this for initialization
     void Start () {
@@ -40,16 +40,16 @@ public class Room : MonoBehaviour {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) //if there are touch events in the buffer to process...
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position)), new Vector2(0f, 0f)); //do a raycast to see what they hit
-            if (hit.collider.tag == "Room") //if it hit something, anything, ....
+            if (hit.collider.name == gameObject.name) //if it hit something, anything, ....
             {
                 Debug.Log("Room selected"); //log that something was hit by the touch event
                 Debug.Log(hit.collider);
-                gameObject.GetComponent<Animator>().enabled = !gameObject.GetComponent<Animator>().enabled; //toggle animator enabled status
-                selected = true;
+                currentlySelected = true;
             }
             else
             {
-                selected = false;
+                Debug.Log("Room no longer selected");
+                currentlySelected = false;
             }
         }
     }

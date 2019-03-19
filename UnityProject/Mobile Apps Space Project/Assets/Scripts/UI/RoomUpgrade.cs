@@ -19,7 +19,7 @@ public class RoomUpgrade : MonoBehaviour {
     {
         for (int i=0; i<gameManager.Rooms.Count; i++)
         {
-            if (gameManager.Rooms[i].selected)
+            if (gameManager.Rooms[i].currentlySelected)
             {
                 return gameManager.Rooms[i];
             }
