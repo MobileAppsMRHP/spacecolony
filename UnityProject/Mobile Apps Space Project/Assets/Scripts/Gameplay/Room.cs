@@ -126,7 +126,9 @@ public class Room : MonoBehaviour {
     {
         /*if (gameManager.GetResource() > UpgradeResources[roomLevel-1].scraps && gameManager.GetResource() > UpgradeResources[roomLevel - 1].energy && gameManager.GetResource() > UpgradeResources[roomLevel - 1].money)
         {
-            
-        }*/
+            roomLevel++;
+            return true
+        }
+        return false;*/
     }
 }

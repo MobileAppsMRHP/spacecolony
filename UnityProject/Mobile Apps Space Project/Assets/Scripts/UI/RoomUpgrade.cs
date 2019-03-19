@@ -29,6 +29,10 @@ public class RoomUpgrade : MonoBehaviour {
 
     void UpgradeRoom(Room selectRoom)
     {
-        selectRoom.IncreaseLevel();
+        /*if (selectRoom.IncreaseLevel())
+        {
+            spawn image or change text;
+        }  
+        */
     }
 }

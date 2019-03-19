@@ -28,6 +28,12 @@ public class CrewLevelUp : MonoBehaviour {
         {
             gameManager.CrewMembers[i].GetComponent<DragAndDrop>().selected = false;
         }
+        if (selectedCrew.skillPoints == 0)
+        {
+            //change button color or disable button
+            //change a text to show lack of skill points
+        }
+        //show progress to next level of crew
 	}
 
     public void SwitchCrew(bool right)
