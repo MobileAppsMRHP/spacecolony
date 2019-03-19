@@ -180,11 +180,10 @@ public class GameManager : MonoBehaviour
 
                     newCrewMember.SendMessage("FreshCrewSetup");
                     Debug.Log("MainThread: Created a fresh crew member");
-
                     CrewMembers.Add(newCrewMember);
                     newCrewMember.transform.SetParent(crewCreator.transform);
                 });
-                yield return new WaitForFixedUpdate();
+                yield return new WaitForSecondsRealtime(1.0f); //TODO: Fix this bandaid. Because the spawn task is being enqueud in the main thread, this wait doesn't acutally wait for the purposes of the RNG, just enqueue time, which is why it has to be so long. Even then there might be overlap.
             }
             DebugLog("Done spawning requested " + count + " fresh crew members.");
         }
