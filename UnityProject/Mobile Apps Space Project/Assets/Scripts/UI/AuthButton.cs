@@ -10,9 +10,10 @@ public class AuthButton : MonoBehaviour {
     public string message;
 
     void Awake() { 
-         tracker = true;
+         tracker = false;
          auth= gameObject.AddComponent<UserAuthentication>();
          message = "Logged Off";
+         textShowed.text = message;
     }
 
     public void ChangeWordStatus()
@@ -26,6 +27,7 @@ public class AuthButton : MonoBehaviour {
         {
             auth.SigninWithEmailCredentialAsync();
             textShowed.text = "Logged in";
+            tracker = true;
         }
     }
 }
