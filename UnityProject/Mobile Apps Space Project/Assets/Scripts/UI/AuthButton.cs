@@ -13,6 +13,7 @@ public class AuthButton : MonoBehaviour {
          tracker = true;
          auth= gameObject.AddComponent<UserAuthentication>();
          message = "Logged Off";
+         textShowed.text = message;
     }
 
     public void ChangeWordStatus()
