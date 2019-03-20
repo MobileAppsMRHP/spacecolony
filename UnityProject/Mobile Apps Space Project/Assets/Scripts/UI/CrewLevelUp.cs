@@ -8,6 +8,7 @@ public class CrewLevelUp : MonoBehaviour {
     public int crewNum;
     public GameManager gameManager;
     public List<Text> crewInfo;
+    public Image experienceBar;
 	// Use this for initialization
 	void Start () {
         gameManager = GameManager.instance;
@@ -34,6 +35,7 @@ public class CrewLevelUp : MonoBehaviour {
             //change a text to show lack of skill points
         }
         //show progress to next level of crew
+        experienceBar.transform.localScale = new Vector3(selectedCrew.progressToNextLevel, 1, 1);
 	}
 
     public void SwitchCrew(bool right)
