@@ -70,15 +70,17 @@ public class UserAuthentication : MonoBehaviour {
   //eventually we can use the method below to sign in with google or other provider credentials
     public Task SigninWithEmailCredentialAsync()
     {
+        credential = Firebase.Auth.GoogleAuthProvider.GetCredential(email, password);
         if (signInAndFetchProfile)
         {
+            print("attempting to authenticate");
             return auth.SignInAndRetrieveDataWithCredentialAsync(
-              credential=Firebase.Auth.GoogleAuthProvider.GetCredential(email, password)).ContinueWith(HandleSignInWithSignInResult);
+              credential).ContinueWith(HandleSignInWithSignInResult);
         }
         else
         {
             return auth.SignInWithCredentialAsync(
-              Firebase.Auth.GoogleAuthProvider.GetCredential(email, password)).ContinueWith(
+              credential).ContinueWith(
                 HandleSignInWithUser);
         }
     }
@@ -97,7 +99,11 @@ public class UserAuthentication : MonoBehaviour {
     {
         if (task.IsCompleted)
         {
-            DisplaySignInResult(task.Result, 1);
+           print(task.Result);
+        }
+        else
+        {
+            print("sign in failed");
         }
     }
 
