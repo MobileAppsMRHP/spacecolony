@@ -25,7 +25,7 @@ public class ResourceManager {
         JsonUtility.FromJsonOverwrite(json, this);
     }
 
-    int GetResource(Shared.ResourceTypes resourceToGet)
+    public int GetResource(Shared.ResourceTypes resourceToGet)
     {
         if (resources.ContainsKey(resourceToGet))
             return resources[resourceToGet];

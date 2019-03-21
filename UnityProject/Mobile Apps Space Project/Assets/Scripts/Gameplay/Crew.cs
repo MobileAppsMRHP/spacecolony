@@ -17,6 +17,7 @@ public class Crew : MonoBehaviour {
     public int navigation;
     public int medical;
     public int fighting;
+    public int level;
 
     public Room currentRoom;
 
@@ -136,6 +137,7 @@ public class Crew : MonoBehaviour {
         {
             progressToNextLevel -= 100;
             skillPoints += 3;
+            level++;
             return true;
         }
         else

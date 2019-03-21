@@ -122,13 +122,15 @@ public class Room : MonoBehaviour {
         }
         return false;
     }
-    public void IncreaseLevel()
+    public bool IncreaseLevel()
     {
-        /*if (gameManager.GetResource() > UpgradeResources[roomLevel-1].scraps && gameManager.GetResource() > UpgradeResources[roomLevel - 1].energy && gameManager.GetResource() > UpgradeResources[roomLevel - 1].money)
+        if (gameManager.resourceManager.GetResource(Shared.ResourceTypes.scraps) > UpgradeResources[roomLevel-1].scraps && 
+            gameManager.resourceManager.GetResource(Shared.ResourceTypes.energy) > UpgradeResources[roomLevel - 1].energy && 
+            gameManager.resourceManager.GetResource(Shared.ResourceTypes.money) > UpgradeResources[roomLevel - 1].money)
         {
             roomLevel++;
-            return true
+            return true;
         }
-        return false;*/
+        return false;
     }
 }
