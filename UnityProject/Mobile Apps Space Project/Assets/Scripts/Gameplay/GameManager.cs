@@ -56,6 +56,8 @@ public class GameManager : MonoBehaviour
     public RoomSpawner roomCreator;
     protected static UserAuthentication auth;
 
+    public bool isDoneLoading = false;
+
     public string user_string = "StillLoading";
 
     private void Start()
@@ -70,6 +72,7 @@ public class GameManager : MonoBehaviour
         //user_string = "User1"; //TODO: get actual from auth
 
         resourceManager = new ResourceManager();
+        resourceManager.DEBUG_SetupResourcesList();
 
         LoadDatabaseValues();
 
@@ -108,7 +111,7 @@ public class GameManager : MonoBehaviour
         DebugLog("Waiting 4 seconds to start delayed actions...");
         yield return new WaitForSeconds(4);
         DebugLog("4 seconds elapsed, running delayed actions.");
-
+        isDoneLoading = true;
         //StartCoroutine("CreateFreshCrewMember", 2);
 
     }
@@ -117,7 +120,7 @@ public class GameManager : MonoBehaviour
     {
         auth = gameObject.AddComponent<UserAuthentication>();
         Firebase.Auth.Credential token= auth.getCredential();
-        print(token);
+        print("Auth user token: " + token);
         return "User1";
     }
 

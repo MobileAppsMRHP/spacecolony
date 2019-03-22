@@ -25,6 +25,12 @@ public class Room : MonoBehaviour {
     public Shared.RoomTypes roomType;
     public bool currentlySelected;
     public GameManager gameManager;
+
+    public string RoomUniqueIdentifierForDB;
+
+
+
+
     // Use this for initialization
     void Start () {
         UpgradeResources = new List<RequiredResources>()

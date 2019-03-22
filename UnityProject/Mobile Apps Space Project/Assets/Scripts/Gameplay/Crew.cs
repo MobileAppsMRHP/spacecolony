@@ -20,6 +20,7 @@ public class Crew : MonoBehaviour {
     public int level;
 
     public Room currentRoom;
+    public string CurrentRoomStringForDB = "NO_ROOM";
 
     public string identifier = "_BLANK"; //don't change this! only fresh crew members get this changed by the code
 
