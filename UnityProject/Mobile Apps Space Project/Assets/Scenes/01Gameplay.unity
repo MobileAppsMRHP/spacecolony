@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -718,6 +718,11 @@ Prefab:
       propertyPath: crewLocations.Array.data[1]
       value: 
       objectReference: {fileID: 1291080381}
+    - target: {fileID: 114864710342572286, guid: 67c1a16393de4054bada52027b027547,
+        type: 2}
+      propertyPath: RoomUniqueIdentifierForDB
+      value: Room_Debug_Bridge
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 67c1a16393de4054bada52027b027547, type: 2}
@@ -5074,6 +5079,11 @@ Prefab:
       propertyPath: crewLocations.Array.data[1]
       value: 
       objectReference: {fileID: 1877175964}
+    - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
+        type: 2}
+      propertyPath: RoomUniqueIdentifierForDB
+      value: Room_Debug_Food
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114864710342572286, guid: 67c1a16393de4054bada52027b027547, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 67c1a16393de4054bada52027b027547, type: 2}
