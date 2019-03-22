@@ -99,10 +99,10 @@ public class Room : MonoBehaviour {
         switch (roomType)
         {
             case Shared.RoomTypes.food:
-                //increase food
+                //
                 break;
             case Shared.RoomTypes.energy:
-                //increase
+                gameManager.resourceManager.ChangeResource(Shared.ResourceTypes.energy, .001f);
                 break;
             default: //empty room
                 //do nothing
