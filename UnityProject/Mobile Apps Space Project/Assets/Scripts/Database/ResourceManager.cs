@@ -21,8 +21,8 @@ public class ResourceManager {
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote ResouceManager with JSON from database: " + json, 4);
-        JsonUtility.FromJsonOverwrite(json, this);
+        GameManager.DebugLog("Overwrote resources with JSON from database: " + json, 4);
+        //JsonUtility.FromJsonOverwrite(json, resources);
     }
 
     public int GetResource(Shared.ResourceTypes resourceToGet)
@@ -63,8 +63,9 @@ public class ResourceManager {
         resources.Add(Shared.ResourceTypes.energy, 7);
 
         GameManager.DebugLog("Resources count after DEBUG setup: " + resources.Count);
+        GameManager.DebugLog("Resources JSON to write: " + JsonUtility.ToJson(resources));
 
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").SetRawJsonValueAsync(JsonUtility.ToJson(this));
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").SetRawJsonValueAsync(JsonUtility.ToJson(resources));
 
     }
 }
