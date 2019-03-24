@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CamPan : MonoBehaviour {
+    public GameObject topLeftBorder;
+    public GameObject bottomRightBorder;
     bool characterSelected;
     bool zooming;
     Vector3 touchInitialLocation;
+    float minXPos;
+    float minYPos;
+    float maxXPos;
+    float maxYPos;
 	// Use this for initialization
 	void Start () {
-		
+        minXPos = topLeftBorder.transform.position.x;
+        minYPos = bottomRightBorder.transform.position.y;
+        maxXPos = bottomRightBorder.transform.position.x;
+        maxYPos = topLeftBorder.transform.position.y;
 	}
 	
 	// Update is called once per frame
@@ -52,6 +61,22 @@ public class CamPan : MonoBehaviour {
             {
                 characterSelected = false;
             }
+        }
+        if (transform.position.x > maxXPos)
+        {
+            transform.position = new Vector3(maxXPos, transform.position.y, transform.position.z);
+        }
+        if (transform.position.x < minXPos)
+        {
+            transform.position = new Vector3(minXPos, transform.position.y, transform.position.z);
+        }
+        if (transform.position.y > maxYPos)
+        {
+            transform.position = new Vector3(transform.position.x, maxYPos, transform.position.z);
+        }
+        if (transform.position.y < minYPos)
+        {
+            transform.position = new Vector3(transform.position.x, minYPos, transform.position.z);
         }
     }
 }
