@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Firebase.Database;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,6 +40,8 @@ public class Room : MonoBehaviour {
             new RequiredResources(2, 3, 1)
         };
         gameManager = GameManager.instance;
+
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).ValueChanged += HandleValueChanged;
     }
 	
 	// Update is called once per frame
@@ -138,5 +141,12 @@ public class Room : MonoBehaviour {
             return true;
         }
         return false;
+    }
+
+    void HandleValueChanged(object sender, ValueChangedEventArgs args)
+    {
+        string json = args.Snapshot.GetRawJsonValue();
+        GameManager.DebugLog("Overwrote room" + RoomUniqueIdentifierForDB + " with JSON from database: " + json, 4);
+        JsonUtility.FromJsonOverwrite(json, this);
     }
 }

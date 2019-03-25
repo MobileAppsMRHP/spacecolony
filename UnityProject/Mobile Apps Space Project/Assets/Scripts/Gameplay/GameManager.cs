@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
 
     public List<Crew> CrewMembers;
     public List<Room> Rooms;
-    private Dictionary<string, int> Resources; //{ get; }
+    //private Dictionary<string, int> Resources; //{ get; }
 
     //private bool IsLoading; //indicates to other things if the game is loading
 
@@ -72,9 +72,10 @@ public class GameManager : MonoBehaviour
         //user_string = "User1"; //TODO: get actual from auth
 
         resourceManager = new ResourceManager();
-        resourceManager.DEBUG_SetupResourcesList();
+        //resourceManager.DEBUG_SetupResourcesList();
 
-        LoadDatabaseValues();
+
+        LoadCrew();
 
 
 
@@ -122,13 +123,6 @@ public class GameManager : MonoBehaviour
         Firebase.Auth.Credential token= auth.getCredential();
         print("Auth user token: " + token);
         return "User1";
-    }
-
-    public void LoadDatabaseValues()
-    {
-        LoadResources();
-        LoadRooms(); //load rooms first so crew know where to go
-        LoadCrew();
     }
 
     void LoadCrew()
@@ -208,18 +202,6 @@ public class GameManager : MonoBehaviour
     void DEBUG_WriteNewRoomTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data
     {
         FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").SetRawJsonValueAsync(JsonUtility.ToJson(roomCreator.prefab));
-    }
-
-
-    void LoadRooms()
-    {
-        //roomCreator.CreateRoom();
-    }
-
-    //TODO: make this actually load resources.
-    void LoadResources()
-    {
-        //resourceManager = new ResourceManager(); //loading handled by its startup
     }
 
     //TODO: make this actually display a loading screen
