@@ -109,7 +109,9 @@ public class Room : MonoBehaviour {
     {
         for (int i = 0; i < crewInThisRoom.Count; i++)
         {
-            crewInThisRoom[i].transform.position = crewLocations[i].transform.position;
+            Vector3 oldPosition = crewInThisRoom[i].transform.position;
+            Vector3 newPosition = crewLocations[i].transform.position;
+            oldPosition = newPosition;
         }
     }
 
@@ -143,7 +145,7 @@ public class Room : MonoBehaviour {
     }
     public bool IncreaseLevel()
     {
-        if (gameManager.resourceManager.GetResource(Shared.ResourceTypes.scraps) > baseUpgradeCost * Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel) && 
+        if (gameManager.resourceManager.GetResource(Shared.ResourceTypes.minerals) > baseUpgradeCost * Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel) && 
             gameManager.resourceManager.GetResource(Shared.ResourceTypes.energy) > baseUpgradeCost * Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel) && 
             gameManager.resourceManager.GetResource(Shared.ResourceTypes.money) > baseUpgradeCost * Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel))
         {

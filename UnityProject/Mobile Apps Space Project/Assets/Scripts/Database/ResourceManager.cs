@@ -53,9 +53,23 @@ public class ResourceManager {
     {
         GameManager.DebugLog("DEBUG: Creating demo resouces and writing to database...");
 
-        resources.Add(Shared.ResourceTypes.scraps, 5.4f);
-        resources.Add(Shared.ResourceTypes.money, 10.2f);
+        /*
+        minerals,
+        food,
+        water,
+        money,
+        energy,
+        preciousMetal,
+        premiumCurrency
+        */
+
+        resources.Add(Shared.ResourceTypes.minerals, 5.4f);
+        resources.Add(Shared.ResourceTypes.food, 25.5f);
+        resources.Add(Shared.ResourceTypes.water, 6.3f);
+        resources.Add(Shared.ResourceTypes.money, 10.7f);
         resources.Add(Shared.ResourceTypes.energy, 7.1f);
+        resources.Add(Shared.ResourceTypes.preciousMetal, 4.2f);
+        resources.Add(Shared.ResourceTypes.premiumCurrency, 999.99f);
 
         GameManager.DebugLog("Resources count after DEBUG setup: " + resources.Count);
         GameManager.DebugLog("Resources JSON to write: " + JsonUtility.ToJson(resources));
