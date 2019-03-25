@@ -1,1 +1,1 @@
-"C:\Program Files\Gource\gource.exe" -f -a 2 -e 0.01
+"Gource\gource.exe" -f -a 2 -e 0.01
