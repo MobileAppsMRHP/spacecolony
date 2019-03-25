@@ -23,7 +23,7 @@ public class Crew : MonoBehaviour {
 
     public string identifier = "_BLANK"; //don't change this! only fresh crew members get this changed by the code
 
-    public static List<string> Possible_Names = new List<string>();
+    [System.NonSerialized] public static List<string> Possible_Names = new List<string>();
 
     //private GameManager gameManager;
 
