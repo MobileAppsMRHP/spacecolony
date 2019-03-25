@@ -9,12 +9,13 @@ using UnityEngine;
 
 public class ResourceManager {
 
-    public Dictionary<Shared.ResourceTypes, int> resources;
+    //public Dictionary<Shared.ResourceTypes, int> resources;
+    public DictionaryOfResourceAndFloat resources;
 
     public ResourceManager()
     {
         GameManager.DebugLog("Starting resource manager...");
-        resources = new Dictionary<Shared.ResourceTypes, int>();
+        resources = new DictionaryOfResourceAndFloat();
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").ValueChanged += HandleValueChanged;
     }
 
@@ -25,7 +26,7 @@ public class ResourceManager {
         //JsonUtility.FromJsonOverwrite(json, resources);
     }
 
-    public int GetResource(Shared.ResourceTypes resourceToGet)
+    public float GetResource(Shared.ResourceTypes resourceToGet)
     {
         if (resources.ContainsKey(resourceToGet))
             return resources[resourceToGet];
@@ -42,7 +43,7 @@ public class ResourceManager {
         return value;
     }
 
-    public int ChangeResource(Shared.ResourceTypes key, int deltaValue)
+    public float ChangeResource(Shared.ResourceTypes key, int deltaValue)
     {
         resources[key] += deltaValue;
         return resources[key];

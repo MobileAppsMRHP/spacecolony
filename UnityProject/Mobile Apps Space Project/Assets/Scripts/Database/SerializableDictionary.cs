@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//https://answers.unity.com/questions/460727/how-to-serialize-dictionary-with-unity-serializati.html
+//Modified from http://answers.unity.com/answers/809221/view.html
 
 [System.Serializable]
 public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
@@ -31,10 +31,14 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
         this.Clear();
 
         if (keys.Count != values.Count)
-            throw new System.Exception(string.Format("there are {0} keys and {1} values after deserialization. Make sure that both key and value types are serializable."));
+            throw new System.Exception(string.Format("there are {0} keys and {1} values after deserialization. Make sure that both key and value types are serializable.", keys.Count, values.Count));
 
         for (int i = 0; i < keys.Count; i++)
             this.Add(keys[i], values[i]);
     }
 }
+
+[System.Serializable] public class DictionaryOfStringAndInt : SerializableDictionary<string, int> { }
+[System.Serializable] public class DictionaryOfResourceAndFloat : SerializableDictionary<Shared.ResourceTypes, float> { }
+
 
