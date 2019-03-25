@@ -15,10 +15,10 @@ public class ResourceDisplay : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        resourceManager = gameManager.resourceManager;
+        /*resourceManager = gameManager.resourceManager;
         resources[0].text = resourceManager.GetResource(Shared.ResourceTypes.scraps).ToString();
         resources[1].text = resourceManager.GetResource(Shared.ResourceTypes.energy).ToString();
-        resources[2].text = resourceManager.GetResource(Shared.ResourceTypes.money).ToString();
+        resources[2].text = resourceManager.GetResource(Shared.ResourceTypes.money).ToString();*/
     }
 
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Room : MonoBehaviour {
+
     public struct RequiredResources
     {
         public float scraps;
@@ -23,9 +24,9 @@ public class Room : MonoBehaviour {
     public List<Crew> crewInThisRoom;
     public List<GameObject> crewLocations;
     public List<RequiredResources> UpgradeResources;
-    public Shared.RoomTypes roomType;
+    public Shared.RoomTypes RoomType;
     public bool currentlySelected;
-    public GameManager gameManager;
+    private GameManager gameManager;
 
     public string RoomUniqueIdentifierForDB;
 
@@ -40,8 +41,16 @@ public class Room : MonoBehaviour {
             new RequiredResources(2, 3, 1)
         };
         gameManager = GameManager.instance;
+        StartCoroutine(AwaitSetup());
+    }
 
+    IEnumerator AwaitSetup()
+    {
+        GameManager.DebugLog("Awaiting user string loading to set up rooms...");
+        yield return new WaitUntil(() => !GameManager.instance.user_string.Equals("StillLoading"));
+        GameManager.DebugLog("... user string loaded as '" + GameManager.instance.user_string + "', setting up room " + RoomUniqueIdentifierForDB);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).ValueChanged += HandleValueChanged;
+        //DEBUG_WriteMyRoomData();
     }
 	
 	// Update is called once per frame
@@ -105,7 +114,7 @@ public class Room : MonoBehaviour {
 
     void IncreaseResources()
     {
-        switch (roomType)
+        switch (RoomType)
         {
             case Shared.RoomTypes.food:
                 //
@@ -146,7 +155,14 @@ public class Room : MonoBehaviour {
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote room" + RoomUniqueIdentifierForDB + " with JSON from database: " + json, 4);
+        GameManager.DebugLog("Overwrote room " + RoomUniqueIdentifierForDB + " with JSON from database: " + json, 4);
         JsonUtility.FromJsonOverwrite(json, this);
+    }
+
+    public void DEBUG_WriteMyRoomData()
+    {
+        string json = JsonUtility.ToJson(this);
+        GameManager.DebugLog("DEBUG: Writing room '" + RoomUniqueIdentifierForDB + "' to database. " + json);
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
     }
 }

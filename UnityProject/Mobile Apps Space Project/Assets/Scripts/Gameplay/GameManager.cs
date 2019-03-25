@@ -108,6 +108,7 @@ public class GameManager : MonoBehaviour
     {
         DEBUG_WriteNewCrewTemplate();
         DEBUG_WriteNewRoomTemplate();
+
         //resourceManager.DEBUG_SetupResourcesList();
         DebugLog("Waiting 4 seconds to start delayed actions...");
         yield return new WaitForSeconds(4);

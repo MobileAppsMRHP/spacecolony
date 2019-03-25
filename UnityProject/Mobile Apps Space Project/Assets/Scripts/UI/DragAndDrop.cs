@@ -60,7 +60,7 @@ public class DragAndDrop : MonoBehaviour
                     droppedRoom.AddPerson(droppedCrew); //add the crew member to the new room
                     if (oldRoom != null) //if the crew member had an old room...
                         oldRoom.RemovePerson(droppedCrew); //remove the crew member from the room it is currently in
-                    Debug.Log("New room!");
+                    Debug.Log("Moving " + droppedCrew.crewName + " into room " + droppedRoom);
                 }
                 else if (!droppedRoom.crewInThisRoom.Contains(droppedCrew))
                 {

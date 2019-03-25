@@ -968,6 +968,11 @@ Prefab:
       propertyPath: RoomUniqueIdentifierForDB
       value: Room_Debug_Bridge
       objectReference: {fileID: 0}
+    - target: {fileID: 114864710342572286, guid: 67c1a16393de4054bada52027b027547,
+        type: 2}
+      propertyPath: roomType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 67c1a16393de4054bada52027b027547, type: 2}
@@ -6145,6 +6150,11 @@ Prefab:
         type: 2}
       propertyPath: RoomUniqueIdentifierForDB
       value: Room_Debug_Food
+      objectReference: {fileID: 0}
+    - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
+        type: 2}
+      propertyPath: roomType
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114864710342572286, guid: 67c1a16393de4054bada52027b027547, type: 2}
