@@ -37,13 +37,13 @@ public class ResourceManager {
         }
     }
 
-    public int SetResource(Shared.ResourceTypes key, int value)
+    public float SetResource(Shared.ResourceTypes key, float value)
     {
         resources[key] = value;
         return value;
     }
 
-    public float ChangeResource(Shared.ResourceTypes key, int deltaValue)
+    public float ChangeResource(Shared.ResourceTypes key, float deltaValue)
     {
         resources[key] += deltaValue;
         return resources[key];
@@ -52,16 +52,10 @@ public class ResourceManager {
     public void DEBUG_SetupResourcesList()
     {
         GameManager.DebugLog("DEBUG: Creating demo resouces and writing to database...");
-        /*resources = new Dictionary<Shared.ResourceTypes, int>()
-        {
-            {Shared.ResourceTypes.scraps, 5 },
-            {Shared.ResourceTypes.money, 10 },
-            {Shared.ResourceTypes.energy, 7 }
-        };*/
 
-        resources.Add(Shared.ResourceTypes.scraps, 5);
-        resources.Add(Shared.ResourceTypes.money, 10);
-        resources.Add(Shared.ResourceTypes.energy, 7);
+        resources.Add(Shared.ResourceTypes.scraps, 5.4f);
+        resources.Add(Shared.ResourceTypes.money, 10.2f);
+        resources.Add(Shared.ResourceTypes.energy, 7.1f);
 
         GameManager.DebugLog("Resources count after DEBUG setup: " + resources.Count);
         GameManager.DebugLog("Resources JSON to write: " + JsonUtility.ToJson(resources));
