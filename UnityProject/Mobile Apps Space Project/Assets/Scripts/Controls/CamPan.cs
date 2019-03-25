@@ -5,6 +5,7 @@ using UnityEngine;
 public class CamPan : MonoBehaviour {
     public GameObject topLeftBorder;
     public GameObject bottomRightBorder;
+    public GameObject mainScreen;
     bool characterSelected;
     bool zooming;
     Vector3 touchInitialLocation;
@@ -28,7 +29,7 @@ public class CamPan : MonoBehaviour {
             touchInitialLocation = Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position));
         }
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved && !zooming && !characterSelected)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved && !zooming && !characterSelected && mainScreen.activeInHierarchy)
         {
             Vector3 changeDirection = touchInitialLocation - Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position));
             Camera.main.transform.position += changeDirection;

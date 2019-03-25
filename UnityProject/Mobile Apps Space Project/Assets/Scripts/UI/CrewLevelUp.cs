@@ -25,8 +25,7 @@ public class CrewLevelUp : MonoBehaviour {
         crewInfo[3].text = selectedCrew.medical.ToString();
         crewInfo[4].text = selectedCrew.fighting.ToString();
         crewInfo[5].text = selectedCrew.skillPoints.ToString();
-        crewInfo[6].text = selectedCrew.role.ToString();
-        crewInfo[7].text = selectedCrew.level.ToString();
+        crewInfo[6].text = selectedCrew.level.ToString();
         crewImage.sprite = selectedCrew.GetComponent<SpriteRenderer>().sprite;
         for (int i=0; i<gameManager.CrewMembers.Count; i++)
         {

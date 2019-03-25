@@ -9,7 +9,6 @@ using System;
 public class Crew : MonoBehaviour {
 
     public string crewName;
-    public Shared.Roles role;
     public int skillPoints;
     public float progressToNextLevel;
 
@@ -120,16 +119,6 @@ public class Crew : MonoBehaviour {
     public string GetName()
     {
         return crewName;
-    }
-
-    public Shared.Roles GetRole()
-    {
-        return role;
-    }
-
-    public void ChangeRole(Shared.Roles newRole)
-    {
-        role = newRole;
     }
 
     public bool NextLevel()

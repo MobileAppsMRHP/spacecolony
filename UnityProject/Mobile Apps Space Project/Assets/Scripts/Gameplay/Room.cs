@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Room : MonoBehaviour {
 
-    public struct RequiredResources
+    /*public struct RequiredResources
     {
         public float scraps;
         public float energy;
@@ -17,28 +17,29 @@ public class Room : MonoBehaviour {
             energy = e;
             money = m;
         }
-    }
+    }*/
     //public enum RoomType { Food, Bridge, Energy};
     public int peopleLimit;
     int roomLevel;
     public List<Crew> crewInThisRoom;
     public List<GameObject> crewLocations;
-    public List<RequiredResources> UpgradeResources;
+    public List<Vector3> UpgradeResourceMultiplier; //mineral (scraps), energy, money
     public Shared.RoomTypes RoomType;
     public bool currentlySelected;
     private GameManager gameManager;
 
     public string RoomUniqueIdentifierForDB;
-
+    float baseUpgradeCost = 50f;
 
 
 
     // Use this for initialization
     void Start () {
-        UpgradeResources = new List<RequiredResources>()
+        UpgradeResourceMultiplier = new List<Vector3>()
         {
-            new RequiredResources(1, 1, 1),
-            new RequiredResources(2, 3, 1)
+            new Vector3(1.2f, 1.5f, 1.1f), //bridge
+            new Vector3(1.5f, 1.1f, 1.2f), //energy
+            new Vector3(1.1f, 1.3f, 1.1f) //food
         };
         gameManager = GameManager.instance;
         StartCoroutine(AwaitSetup());
@@ -142,9 +143,9 @@ public class Room : MonoBehaviour {
     }
     public bool IncreaseLevel()
     {
-        if (gameManager.resourceManager.GetResource(Shared.ResourceTypes.scraps) > UpgradeResources[roomLevel-1].scraps && 
-            gameManager.resourceManager.GetResource(Shared.ResourceTypes.energy) > UpgradeResources[roomLevel - 1].energy && 
-            gameManager.resourceManager.GetResource(Shared.ResourceTypes.money) > UpgradeResources[roomLevel - 1].money)
+        if (gameManager.resourceManager.GetResource(Shared.ResourceTypes.scraps) > baseUpgradeCost * Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel) && 
+            gameManager.resourceManager.GetResource(Shared.ResourceTypes.energy) > baseUpgradeCost * Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel) && 
+            gameManager.resourceManager.GetResource(Shared.ResourceTypes.money) > baseUpgradeCost * Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel))
         {
             roomLevel++;
             return true;
