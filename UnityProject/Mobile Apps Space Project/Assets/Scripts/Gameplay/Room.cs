@@ -23,14 +23,14 @@ public class Room : MonoBehaviour {
     int roomLevel;
     public List<Crew> crewInThisRoom;
     public List<GameObject> crewLocations;
-    public List<Vector3> UpgradeResourceMultiplier; //mineral (scraps), energy, money
+    List<Vector3> UpgradeResourceMultiplier; //mineral (scraps), energy, money
+    public Vector3 upgradeCosts;
     public Shared.RoomTypes RoomType;
     public bool currentlySelected;
     private GameManager gameManager;
 
     public string RoomUniqueIdentifierForDB;
-    float baseUpgradeCost = 50f;
-
+    Vector3 baseUpgradeCost = new Vector3(50, 50, 50);
 
 
     // Use this for initialization
@@ -71,6 +71,8 @@ public class Room : MonoBehaviour {
                 currentlySelected = false;
             }
         }
+        Vector3 tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel));
+        upgradeCosts = Vector3.Scale(baseUpgradeCost, tempCost);
     }
 
     void ChangeCrew(Crew member)
@@ -145,9 +147,9 @@ public class Room : MonoBehaviour {
     }
     public bool IncreaseLevel()
     {
-        if (gameManager.resourceManager.GetResource(Shared.ResourceTypes.minerals) > baseUpgradeCost * Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel) && 
-            gameManager.resourceManager.GetResource(Shared.ResourceTypes.energy) > baseUpgradeCost * Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel) && 
-            gameManager.resourceManager.GetResource(Shared.ResourceTypes.money) > baseUpgradeCost * Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel))
+        if (gameManager.resourceManager.GetResource(Shared.ResourceTypes.minerals) > upgradeCosts.x && 
+            gameManager.resourceManager.GetResource(Shared.ResourceTypes.energy) > upgradeCosts.y && 
+            gameManager.resourceManager.GetResource(Shared.ResourceTypes.money) > upgradeCosts.z)
         {
             roomLevel++;
             return true;

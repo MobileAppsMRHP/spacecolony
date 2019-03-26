@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoomUpgrade : MonoBehaviour {
     GameManager gameManager;
     public Room selectedRoom;
+    public List<Text> resourceCosts;
 	// Use this for initialization
 	void Start () {
         gameManager = GameManager.instance;
@@ -13,7 +15,11 @@ public class RoomUpgrade : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         selectedRoom = FindSelectedRoom();
-	}
+        resourceCosts[0].text = "-" + selectedRoom.upgradeCosts.x.ToString();
+        resourceCosts[1].text = "-" + selectedRoom.upgradeCosts.y.ToString();
+        resourceCosts[2].text = "-" + selectedRoom.upgradeCosts.z.ToString();
+
+    }
 
     Room FindSelectedRoom()
     {
