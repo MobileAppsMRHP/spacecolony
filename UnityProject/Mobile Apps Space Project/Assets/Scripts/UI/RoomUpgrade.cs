@@ -7,6 +7,10 @@ public class RoomUpgrade : MonoBehaviour {
     GameManager gameManager;
     public Room selectedRoom;
     public List<Text> resourceCosts;
+    public Text selectedRoomName;
+    public Text selectedRoomLevel;
+    public Button upgradeButton;
+    public GameObject upgradedInfo;
 	// Use this for initialization
 	void Start () {
         gameManager = GameManager.instance;
@@ -15,10 +19,27 @@ public class RoomUpgrade : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         selectedRoom = FindSelectedRoom();
-        resourceCosts[0].text = "-" + selectedRoom.upgradeCosts.x.ToString();
-        resourceCosts[1].text = "-" + selectedRoom.upgradeCosts.y.ToString();
-        resourceCosts[2].text = "-" + selectedRoom.upgradeCosts.z.ToString();
+        if (selectedRoom == null)
+        {
+            for (int i = 0; i < resourceCosts.Count; i++)
+            {
+                resourceCosts[i].text = "";
+            }
+            upgradeButton.interactable = false;
+            selectedRoomName.text = "Select a room";
+            selectedRoomLevel.text = "";
+        }
+        else
+        {
+            upgradeButton.interactable = true;
+            resourceCosts[0].text = "-" + selectedRoom.upgradeCosts.x.ToString();
+            resourceCosts[1].text = "-" + selectedRoom.upgradeCosts.y.ToString();
+            resourceCosts[2].text = "-" + selectedRoom.upgradeCosts.z.ToString();
+            selectedRoomName.text = selectedRoom.RoomType.ToString();
+            selectedRoomLevel.text = "L: " + selectedRoom.roomLevel;
+        }
 
+        upgradeButton.interactable = selectedRoom.CanIncreaseLevel();
     }
 
     Room FindSelectedRoom()
@@ -35,10 +56,7 @@ public class RoomUpgrade : MonoBehaviour {
 
     void UpgradeRoom(Room selectRoom)
     {
-        /*if (selectRoom.IncreaseLevel())
-        {
-            spawn image or change text;
-        }  
-        */
+        selectedRoom.IncreaseLevel();
+        upgradedInfo.SetActive(true);
     }
 }

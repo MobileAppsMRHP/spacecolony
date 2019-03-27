@@ -20,7 +20,7 @@ public class Room : MonoBehaviour {
     }*/
     //public enum RoomType { Food, Bridge, Energy};
     public int peopleLimit;
-    int roomLevel;
+    public int roomLevel;
     public List<Crew> crewInThisRoom;
     public List<GameObject> crewLocations;
     List<Vector3> UpgradeResourceMultiplier; //mineral (scraps), energy, money
@@ -145,16 +145,20 @@ public class Room : MonoBehaviour {
         }
         return false;
     }
-    public bool IncreaseLevel()
+    public bool CanIncreaseLevel()
     {
         if (gameManager.resourceManager.GetResource(Shared.ResourceTypes.minerals) > upgradeCosts.x && 
             gameManager.resourceManager.GetResource(Shared.ResourceTypes.energy) > upgradeCosts.y && 
             gameManager.resourceManager.GetResource(Shared.ResourceTypes.money) > upgradeCosts.z)
         {
-            roomLevel++;
             return true;
         }
         return false;
+    }
+
+    public void IncreaseLevel()
+    {
+        roomLevel++;
     }
 
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
