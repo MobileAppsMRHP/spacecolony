@@ -37,9 +37,8 @@ public class RoomUpgrade : MonoBehaviour {
             resourceCosts[2].text = "-" + selectedRoom.upgradeCosts.z.ToString();
             selectedRoomName.text = selectedRoom.RoomType.ToString();
             selectedRoomLevel.text = "L: " + selectedRoom.roomLevel;
+            upgradeButton.interactable = selectedRoom.CanIncreaseLevel();
         }
-
-        upgradeButton.interactable = selectedRoom.CanIncreaseLevel();
     }
 
     Room FindSelectedRoom()
