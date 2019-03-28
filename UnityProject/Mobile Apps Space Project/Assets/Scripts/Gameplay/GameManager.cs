@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
     public CrewSpawner crewCreator;
     public RoomSpawner roomCreator;
     protected static UserAuthentication auth;
+    private List<IFirebaseTimedUpdateable> toFirebasePush;
 
     public bool isDoneLoading = false;
 
@@ -66,14 +67,15 @@ public class GameManager : MonoBehaviour
 
         DisplayLoadingScreen();
 
+        toFirebasePush = new List<IFirebaseTimedUpdateable>();
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, 3);
         user_string = Authenticate();
         //user_string = "User1"; //TODO: get actual from auth
 
         resourceManager = new ResourceManager();
-        resourceManager.DEBUG_SetupResourcesList();
-
+        //resourceManager.DEBUG_SetupResourcesList();
+        
 
         LoadCrew();
 
@@ -114,7 +116,33 @@ public class GameManager : MonoBehaviour
         DebugLog("4 seconds elapsed, running delayed actions.");
         isDoneLoading = true;
         //StartCoroutine("CreateFreshCrewMember", 2);
+        StartCoroutine(FirebaseTimedUpdates(2.0f));
 
+    }
+
+    System.Collections.IEnumerator FirebaseTimedUpdates(float waitTimeSeconds)
+    {
+        DebugLog("Starting timed update sequence with interval " + waitTimeSeconds + " seconds.");
+        while (true)
+        {
+            yield return new WaitForSeconds(waitTimeSeconds);
+            DebugLog("[TimedUpdate] Triggered", 4);
+            foreach (var item in toFirebasePush)
+            {
+                item.FirebaseUpdate(true); //run the update, marking it as a timed update
+            }
+        }
+    }
+
+    public void AddToFirebaseTimedUpdates(IFirebaseTimedUpdateable thingToAdd)
+    {
+        if (toFirebasePush.Contains(thingToAdd))
+            DebugLog("[TimedUpdate] '" + thingToAdd + "' is already on the update list and wasn't added a second time.");
+        else
+        {
+            DebugLog("[TimedUpdate] Adding '" + thingToAdd + "' to the timed update list.");
+            toFirebasePush.Add(thingToAdd);
+        }
     }
 
     public string Authenticate()
@@ -187,11 +215,6 @@ public class GameManager : MonoBehaviour
             }
             DebugLog("Done spawning requested " + count + " fresh crew members.");
         }
-    }
-
-    public void CreateFreshCrewMember()
-    {
-        CreateFreshCrewMember(1);
     }
 
     void DEBUG_WriteNewCrewTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data

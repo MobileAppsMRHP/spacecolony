@@ -7,7 +7,7 @@ using Firebase.Unity.Editor;
 
 using UnityEngine;
 
-public class ResourceManager {
+public class ResourceManager : IFirebaseTimedUpdateable {
 
     //public Dictionary<Shared.ResourceTypes, int> resources;
     public DictionaryOfResourceAndFloat resources;
@@ -17,13 +17,14 @@ public class ResourceManager {
         GameManager.DebugLog("Starting resource manager...");
         resources = new DictionaryOfResourceAndFloat();
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").ValueChanged += HandleValueChanged;
+        GameManager.instance.AddToFirebaseTimedUpdates(this);
     }
 
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote resources with JSON from database: " + json, 4);
-        //JsonUtility.FromJsonOverwrite(json, resources);
+        JsonUtility.FromJsonOverwrite(json, resources);
     }
 
     public float GetResource(Shared.ResourceTypes resourceToGet)
@@ -76,6 +77,16 @@ public class ResourceManager {
 
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").SetRawJsonValueAsync(JsonUtility.ToJson(resources));
 
+    }
+
+    public void FirebaseUpdate(bool wasTimedUpdate)
+    {
+        string json = JsonUtility.ToJson(resources);
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").SetRawJsonValueAsync(json);
+        if (wasTimedUpdate)
+            GameManager.DebugLog("[TimedUpdate] Updated user's resources database contents with " + json, 4);
+        else
+            GameManager.DebugLog("[>TriggeredUpdate] Updated user's resources database contents with " + json, 4);
     }
 }
 

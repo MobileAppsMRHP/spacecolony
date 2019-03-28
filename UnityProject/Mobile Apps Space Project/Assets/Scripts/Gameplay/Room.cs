@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Room : MonoBehaviour {
+public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
 
     /*public struct RequiredResources
     {
@@ -43,6 +43,7 @@ public class Room : MonoBehaviour {
         };
         gameManager = GameManager.instance;
         StartCoroutine(AwaitSetup());
+        //GameManager.instance.AddToFirebaseTimedUpdates(this);
     }
 
     IEnumerator AwaitSetup()
@@ -159,6 +160,7 @@ public class Room : MonoBehaviour {
     public void IncreaseLevel()
     {
         roomLevel++;
+        FirebaseUpdate(false);
     }
 
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
@@ -173,5 +175,15 @@ public class Room : MonoBehaviour {
         string json = JsonUtility.ToJson(this);
         GameManager.DebugLog("DEBUG: Writing room '" + RoomUniqueIdentifierForDB + "' to database. " + json);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
+    }
+
+    public void FirebaseUpdate(bool wasTimedUpdate)
+    {
+        string json = JsonUtility.ToJson(this);
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
+        if (wasTimedUpdate)
+            GameManager.DebugLog("[TimedUpdate] Updated room " + RoomUniqueIdentifierForDB + " database contents with " + json, 4);
+        else
+            GameManager.DebugLog("[>TriggeredUpdate] Updated room " + RoomUniqueIdentifierForDB + " database contents with " + json, 4);
     }
 }

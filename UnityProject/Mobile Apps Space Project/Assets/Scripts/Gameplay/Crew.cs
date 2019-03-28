@@ -6,7 +6,7 @@ using System;
 
 
 
-public class Crew : MonoBehaviour {
+public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
 
     public string crewName;
     public int skillPoints;
@@ -35,6 +35,7 @@ public class Crew : MonoBehaviour {
         this.identifier = identifier;
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier).ValueChanged += HandleValueChanged;
         GameManager.DebugLog("Crew startup done for " + identifier);
+        GameManager.instance.AddToFirebaseTimedUpdates(this);
     }
 
     // Update is called once per frame
@@ -128,6 +129,8 @@ public class Crew : MonoBehaviour {
             progressToNextLevel -= 100;
             skillPoints += 3;
             level++;
+            FirebaseUpdate(false);
+            GameManager.DebugLog("Crew " + identifier + " leveled up!");
             return true;
         }
         else
@@ -154,6 +157,7 @@ public class Crew : MonoBehaviour {
                     break;
             }
             skillPoints--;
+            FirebaseUpdate(false);
         }
     }
 
@@ -163,5 +167,16 @@ public class Crew : MonoBehaviour {
         {
             progressToNextLevel += 0.01f * Time.deltaTime;
         }
+    }
+
+    public void FirebaseUpdate(bool wasTimedUpdate)
+    {
+        string json = JsonUtility.ToJson(this);
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier).SetRawJsonValueAsync(json);
+        if (wasTimedUpdate)
+            GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " database contents with " + json, 4);
+        else
+            GameManager.DebugLog("[>TriggeredUpdate] Updated crew " + identifier + " database contents with " + json, 4);
+
     }
 }
