@@ -28,9 +28,25 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     public Shared.RoomTypes RoomType;
     public bool currentlySelected;
     private GameManager gameManager;
+    List<CrewSkills> crewSkillsResourceMultipliers;
 
     public string RoomUniqueIdentifierForDB;
     Vector3 baseUpgradeCost = new Vector3(50, 50, 50);
+    struct CrewSkills
+    {
+        public float fighting;
+        public float medical;
+        public float cooking;
+        public float navigation;
+
+        public CrewSkills(float f, float m, float c, float n)
+        {
+            fighting = f;
+            medical = m;
+            cooking = c;
+            navigation = n;
+        }
+    }
 
 
     // Use this for initialization
@@ -40,6 +56,10 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
             new Vector3(1.2f, 1.5f, 1.1f), //bridge
             new Vector3(1.5f, 1.1f, 1.2f), //energy
             new Vector3(1.1f, 1.3f, 1.1f) //food
+        };
+        crewSkillsResourceMultipliers = new List<CrewSkills>()
+        {
+            new CrewSkills(1f, 1f, 1f, 1f)
         };
         gameManager = GameManager.instance;
         StartCoroutine(AwaitSetup());
@@ -160,6 +180,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     public void IncreaseLevel()
     {
         roomLevel++;
+        //subtract from resources
         FirebaseUpdate(false);
     }
 
