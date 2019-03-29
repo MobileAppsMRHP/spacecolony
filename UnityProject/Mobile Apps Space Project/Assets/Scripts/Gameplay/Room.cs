@@ -46,6 +46,11 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
             cooking = c;
             navigation = n;
         }
+
+        public float MultipliedSum(Crew nCrew)
+        {
+            return nCrew.fighting * fighting + nCrew.medical * medical + nCrew.cooking * cooking + nCrew.navigation * navigation;
+        }
     }
 
 
@@ -59,7 +64,8 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         };
         crewSkillsResourceMultipliers = new List<CrewSkills>()
         {
-            new CrewSkills(1f, 1f, 1f, 1f)
+            new CrewSkills(1f, 1f, 1f, 1f),
+            new CrewSkills(0.8f, 0.5f, 2f, 0.3f)
         };
         gameManager = GameManager.instance;
         StartCoroutine(AwaitSetup());
@@ -146,7 +152,8 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
                 //
                 break;
             case Shared.RoomTypes.energy:
-                gameManager.resourceManager.ChangeResource(Shared.ResourceTypes.energy, .001f);
+                float resourceIncrease = CalculateTotalResourceIncrease(1); //still need to test this
+                gameManager.resourceManager.ChangeResource(Shared.ResourceTypes.energy, resourceIncrease);
                 break;
             default: //empty room
                 //do nothing
@@ -182,6 +189,16 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         roomLevel++;
         //subtract from resources
         FirebaseUpdate(false);
+    }
+
+    float CalculateTotalResourceIncrease(int roomTypeNum)
+    {
+        float sum = 0;
+        for (int i = 0; i < crewInThisRoom.Count; i++)
+        {
+            sum += crewSkillsResourceMultipliers[roomTypeNum].MultipliedSum(crewInThisRoom[i]);
+        }
+        return sum;
     }
 
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
