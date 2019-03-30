@@ -34,7 +34,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
     {
         this.identifier = identifier;
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier).ValueChanged += HandleValueChanged;
-        GameManager.DebugLog("Crew startup done for " + identifier);
+        GameManager.DebugLog("Crew startup done for " + identifier, DebugFlags.CrewLoadingOps);
         GameManager.instance.AddToFirebaseTimedUpdates(this);
     }
 
@@ -45,37 +45,37 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
 
     public static void BuildRandomNameList() //run first to build name list
     {
-        GameManager.DebugLog("Building names list...");
+        GameManager.DebugLog("Building names list...", DebugFlags.CrewLoadingOps);
         List<string> temp_Possible_Names = new List<string>();
         FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/possible-crew-names").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
                 // Handle the error...
-                GameManager.DebugLog("Data retrival error when prompting for possible crew names!", 1);
+                GameManager.DebugLog("Data retrival error when prompting for possible crew names!", DebugFlags.Critical);
             }
             else if (task.IsCompleted)
             {
                 string tempString = "";
                 foreach (DataSnapshot possibleName in task.Result.Children)
                 {
-                    //GameManager.DebugLog("Found name: " + possibleName.Value.ToString());
+                    //GameManager.DebugLog("Found name: " + possibleName.Value.ToString(), DebugFlags.CrewLoadingOps);
                     string val = possibleName.Value.ToString();
                     temp_Possible_Names.Add(val);
                     tempString += val + "|";
                 }
                 Possible_Names = temp_Possible_Names;
-                GameManager.DebugLog("Name List done building, items: " + Possible_Names.Count + " | " + tempString/* + " | " + JsonUtility.ToJson(Possible_Names)*/);
+                GameManager.DebugLog("Name List done building, items: " + Possible_Names.Count + " | " + tempString/* + " | " + JsonUtility.ToJson(Possible_Names)*/, DebugFlags.CrewLoadingOps);
                 //GameManager.DebugLog("Name 1 " + Possible_Names[1]);
                 /*foreach (string thisName in Possible_Names)
                 {
-                    GameManager.DebugLog("Names list item : " + thisName);
+                    GameManager.DebugLog("Names list item : " + thisName, DebugFlags.CrewLoadingOps);
                 }*/
             }
             else
             {
                 //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
-                GameManager.DebugLog("Task error when prompting for possible crew names", 1);
+                GameManager.DebugLog("Task error when prompting for possible crew names", DebugFlags.Critical);
             }
         });
     }
@@ -83,7 +83,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote crew member " + this.name + " with JSON from database: " + json, 4);
+        GameManager.DebugLog("Overwrote crew member " + this.name + " with JSON from database: " + json, DebugFlags.DatabaseOps);
         JsonUtility.FromJsonOverwrite(json, this);
     }
 
@@ -91,7 +91,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
     {
         //few things here need initial values because they are set by the prefab. to give initial values, edit the prefab.
         //setup unique crew identifier
-        GameManager.DebugLog("FRESH Crew Coroutine Start");
+        GameManager.DebugLog("FRESH Crew Coroutine Start", DebugFlags.CrewLoadingOps);
         StartCoroutine(SetUpAndWriteFreshCrew());
     }
 
@@ -103,17 +103,17 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
 
         if (Possible_Names.Count == 0)
         {
-            Debug.Log("Waiting for names list to build...");
+            GameManager.DebugLog("Waiting for names list to build...", DebugFlags.CrewLoadingOps);
             yield return new WaitUntil(() => Possible_Names.Count != 0);
-            Debug.Log("Names list done building. Continuing with name setting. Length: " + Possible_Names.Count);
+            GameManager.DebugLog("Names list done building. Continuing with name setting. Length: " + Possible_Names.Count, DebugFlags.CrewLoadingOps);
         }
         System.Random rand = new System.Random();
         this.crewName = Possible_Names[rand.Next(Possible_Names.Count)];
 
         //write self to database
-        GameManager.DebugLog("Writing FRESH crew with name " + crewName + " and id " + identifier + " to database...");
+        GameManager.DebugLog("Writing FRESH crew with name " + crewName + " and id " + identifier + " to database...", DebugFlags.CrewLoadingOps);
         yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier).SetRawJsonValueAsync(JsonUtility.ToJson(this));
-        GameManager.DebugLog("FRESH crew setup done for " + identifier);
+        GameManager.DebugLog("FRESH crew setup done for " + identifier, DebugFlags.CrewLoadingOps);
         CrewCreatorStart(identifier); //run regular setup
     }
 
@@ -130,7 +130,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
             skillPoints += 3;
             level++;
             FirebaseUpdate(false);
-            GameManager.DebugLog("Crew " + identifier + " leveled up!");
+            GameManager.DebugLog("Crew " + identifier + " leveled up!", DebugFlags.GeneralInfo);
             return true;
         }
         else
@@ -174,9 +174,9 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
         string json = JsonUtility.ToJson(this);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier).SetRawJsonValueAsync(json);
         if (wasTimedUpdate)
-            GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " database contents with " + json, 4);
+            GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
         else
-            GameManager.DebugLog("[>TriggeredUpdate] Updated crew " + identifier + " database contents with " + json, 4);
+            GameManager.DebugLog("[>TriggeredUpdate] Updated crew " + identifier + " database contents with " + json, DebugFlags.DatabaseOps);
 
     }
 }

@@ -51,7 +51,7 @@ public class DragAndDrop : MonoBehaviour
             Room droppedRoom = collider.gameObject.GetComponent<Room>();
             Crew droppedCrew = GetComponent<Crew>();
 
-            //Debug.Log("Running collision with " + collider.ToString() + " and " + GetComponent<Crew>().name);
+            GameManager.DebugLog("Running collision with " + collider.ToString() + " and " + GetComponent<Crew>().name, DebugFlags.CollisionOps);
 
             if (collider.tag == "Room")
             {
@@ -60,11 +60,11 @@ public class DragAndDrop : MonoBehaviour
                     droppedRoom.AddPerson(droppedCrew); //add the crew member to the new room
                     if (oldRoom != null) //if the crew member had an old room...
                         oldRoom.RemovePerson(droppedCrew); //remove the crew member from the room it is currently in
-                    Debug.Log("Moving " + droppedCrew.crewName + " into room " + droppedRoom);
+                    GameManager.DebugLog("Moving " + droppedCrew.crewName + " into room " + droppedRoom, DebugFlags.CollisionOps);
                 }
                 else if (!droppedRoom.crewInThisRoom.Contains(droppedCrew))
                 {
-                    //Debug.Log("Can't enter room for some reason");
+                    GameManager.DebugLog("Can't enter room for some reason", DebugFlags.CollisionOps);
                 }
                 droppedRoom.CrewIntoPosition(droppedCrew);
                 inRoom = true;
@@ -73,7 +73,7 @@ public class DragAndDrop : MonoBehaviour
             else if (collider.tag == "Background" && inRoom) //if it was dropped on a background object, don't move it anywhere.
             {
                 transform.position = initialPosition;
-                Debug.Log("returning to original room");
+                GameManager.DebugLog("Returning to original room", DebugFlags.CollisionOps);
             }
         }
 

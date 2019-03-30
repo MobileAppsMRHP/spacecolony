@@ -114,7 +114,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
             return true;
         else
         {
-            //Debug.Log("Too many people in this room");
+            GameManager.DebugLog("Too many people in room " + RoomUniqueIdentifierForDB, DebugFlags.CollisionOps);
             return false;
         }
     }
@@ -204,14 +204,14 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote room " + RoomUniqueIdentifierForDB + " with JSON from database: " + json, 4);
+        GameManager.DebugLog("Overwrote room " + RoomUniqueIdentifierForDB + " with JSON from database: " + json, DebugFlags.DatabaseOps);
         JsonUtility.FromJsonOverwrite(json, this);
     }
 
     public void DEBUG_WriteMyRoomData()
     {
         string json = JsonUtility.ToJson(this);
-        GameManager.DebugLog("DEBUG: Writing room '" + RoomUniqueIdentifierForDB + "' to database. " + json);
+        GameManager.DebugLog("[DEBUG] Writing room '" + RoomUniqueIdentifierForDB + "' to database. " + json);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
     }
 
@@ -220,8 +220,8 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         string json = JsonUtility.ToJson(this);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
         if (wasTimedUpdate)
-            GameManager.DebugLog("[TimedUpdate] Updated room " + RoomUniqueIdentifierForDB + " database contents with " + json, 4);
+            GameManager.DebugLog("[TimedUpdate] Updated room " + RoomUniqueIdentifierForDB + " database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
         else
-            GameManager.DebugLog("[>TriggeredUpdate] Updated room " + RoomUniqueIdentifierForDB + " database contents with " + json, 4);
+            GameManager.DebugLog("[>TriggeredUpdate] Updated room " + RoomUniqueIdentifierForDB + " database contents with " + json, DebugFlags.DatabaseOps);
     }
 }

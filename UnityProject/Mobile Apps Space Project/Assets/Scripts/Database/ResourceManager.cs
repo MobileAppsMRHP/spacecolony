@@ -23,7 +23,7 @@ public class ResourceManager : IFirebaseTimedUpdateable {
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote resources with JSON from database: " + json, 4);
+        GameManager.DebugLog("Overwrote resources with JSON from database: " + json, DebugFlags.DatabaseOps);
         JsonUtility.FromJsonOverwrite(json, resources);
     }
 
@@ -33,7 +33,7 @@ public class ResourceManager : IFirebaseTimedUpdateable {
             return resources[resourceToGet];
         else
         {
-            GameManager.DebugLog("A resource " + resourceToGet + " was requested that was not present in the resources list; returning 0 count.", 2);
+            GameManager.DebugLog("A resource " + resourceToGet + " was requested that was not present in the resources list; returning 0 count.", DebugFlags.Warning);
             return 0;
         }
     }
@@ -52,7 +52,7 @@ public class ResourceManager : IFirebaseTimedUpdateable {
 
     public void DEBUG_SetupResourcesList()
     {
-        GameManager.DebugLog("DEBUG: Creating demo resouces and writing to database...");
+        GameManager.DebugLog("[DEBUG] Creating demo resouces and writing to database...");
 
         /*
         minerals,
@@ -72,8 +72,8 @@ public class ResourceManager : IFirebaseTimedUpdateable {
         resources.Add(Shared.ResourceTypes.preciousMetal, 4.2f);
         resources.Add(Shared.ResourceTypes.premiumCurrency, 999.99f);
 
-        GameManager.DebugLog("Resources count after DEBUG setup: " + resources.Count);
-        GameManager.DebugLog("Resources JSON to write: " + JsonUtility.ToJson(resources));
+        GameManager.DebugLog("[DEBUG] Resources count after DEBUG setup: " + resources.Count);
+        GameManager.DebugLog("[DEBUG] Resources JSON to write: " + JsonUtility.ToJson(resources));
 
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").SetRawJsonValueAsync(JsonUtility.ToJson(resources));
 
@@ -84,9 +84,9 @@ public class ResourceManager : IFirebaseTimedUpdateable {
         string json = JsonUtility.ToJson(resources);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").SetRawJsonValueAsync(json);
         if (wasTimedUpdate)
-            GameManager.DebugLog("[TimedUpdate] Updated user's resources database contents with " + json, 4);
+            GameManager.DebugLog("[TimedUpdate] Updated user's resources database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
         else
-            GameManager.DebugLog("[>TriggeredUpdate] Updated user's resources database contents with " + json, 4);
+            GameManager.DebugLog("[>TriggeredUpdate] Updated user's resources database contents with " + json, DebugFlags.DatabaseOps);
     }
 }
 

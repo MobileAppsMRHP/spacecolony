@@ -10,10 +10,10 @@ using static UnityEngine.UI.DefaultControls;
     Warning = 2,
     DatabaseOps = 4,
     CollisionOps = 8,
-    option6 = 16,
-    option7 = 32,
-    option8 = 64,
-    option9 = 128,
+    Auth = 16,
+    DatabaseOpsOnTimer = 32,
+    GeneralInfo = 64,
+    CrewLoadingOps = 128,
     option10 = 256,
     option11 = 512,
     option12 = 1024,
@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour
     public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps;
     //add or subtract values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
     //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
-    //example debugLevelFlags = short.MaxValue - DebugFlags.CollisionOps
 
     public RuntimePlatform running_on;
 
@@ -63,13 +62,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        PrintEnabledDebugs();
         StartCoroutine("DebugDelayedStart");
 
         DisplayLoadingScreen();
 
         toFirebasePush = new List<IFirebaseTimedUpdateable>();
         running_on = Application.platform;
-        DebugLog("Running on a " + running_on, 3);
+        DebugLog("Running on a " + running_on, DebugFlags.GeneralInfo);
         user_string = Authenticate();
         //user_string = "User1"; //TODO: get actual from auth
 
@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(waitTimeSeconds);
-            DebugLog("[TimedUpdate] Triggered", 4);
+            DebugLog("[TimedUpdate] Triggered", DebugFlags.DatabaseOpsOnTimer);
             foreach (var item in toFirebasePush)
             {
                 item.FirebaseUpdate(true); //run the update, marking it as a timed update
@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
     {
         auth = gameObject.AddComponent<UserAuthentication>();
         Firebase.Auth.Credential token= auth.getCredential();
-        print("Auth user token: " + token);
+        DebugLog("Auth user token: " + token, DebugFlags.Auth);
         return "User1";
     }
 
@@ -161,33 +161,33 @@ public class GameManager : MonoBehaviour
            if (task.IsFaulted)
            {
                // Handle the error...
-               DebugLog("Data retrival error when prompting for crew data!", 1);
+               DebugLog("Data retrival error when prompting for crew data!", DebugFlags.Critical);
            }
            else if (task.IsCompleted)
            {
                foreach(DataSnapshot crewMember in task.Result.Children)
                {
-                   DebugLog("Found crewmember with ID " + crewMember.Key, 4);
+                   DebugLog("Found crewmember with ID " + crewMember.Key, DebugFlags.CrewLoadingOps);
                    SpawnCrew(crewMember.Key /*new List<object> { crewMember.Key, crewCreator }*/);
                }
            }
            else
            {
                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
-               DebugLog("Task error when prompting for crew data", 1);
+               DebugLog("Task error when prompting for crew data", DebugFlags.Critical);
            }
         });
     }
 
     private void SpawnCrew(string identifier)
     {
-        DebugLog("Loading crew member " + identifier + " via dispatch...");
+        DebugLog("Loading crew member " + identifier + " via dispatch...", DebugFlags.CrewLoadingOps);
         UnityMainThreadDispatcher.Instance().Enqueue(() => {
             //Debug.Log("This is executed from the main thread");
             Crew newCrewMember = Instantiate(crewCreator.prefab);
 
             newCrewMember.SendMessage("CrewCreatorStart", identifier);
-            Debug.Log("Loaded crew member with ID " + identifier);
+            DebugLog("Loaded crew member with ID " + identifier, DebugFlags.CrewLoadingOps);
 
             CrewMembers.Add(newCrewMember);
             newCrewMember.transform.SetParent(crewCreator.transform);
@@ -201,13 +201,13 @@ public class GameManager : MonoBehaviour
         {
             for (int index = 1; index <= count; index++)
             {
-                DebugLog("Spawning fresh member (" + index + "/" + count + ") via dispatch...");
+                DebugLog("Spawning fresh member (" + index + "/" + count + ") via dispatch...", DebugFlags.CrewLoadingOps);
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
                     Crew newCrewMember = Instantiate(crewCreator.prefab);
 
                     newCrewMember.SendMessage("FreshCrewSetup");
-                    Debug.Log("MainThread: Created a fresh crew member");
+                    DebugLog("MainThread: Created a fresh crew member", DebugFlags.CrewLoadingOps);
                     CrewMembers.Add(newCrewMember);
                     newCrewMember.transform.SetParent(crewCreator.transform);
                 });
@@ -219,11 +219,13 @@ public class GameManager : MonoBehaviour
 
     void DEBUG_WriteNewCrewTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data
     {
+        DebugLog("[DEBUG] Replacing new CREW MEMBER templace with crew prefab.");
         FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/crew").SetRawJsonValueAsync(JsonUtility.ToJson(crewCreator.prefab));
     }
 
     void DEBUG_WriteNewRoomTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data
     {
+        DebugLog("[DEBUG] Replacing new ROOM templace with room prefab.");
         FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").SetRawJsonValueAsync(JsonUtility.ToJson(roomCreator.prefab));
     }
 
@@ -240,36 +242,40 @@ public class GameManager : MonoBehaviour
         //IsLoading = false;
     }
 
+    private static void PrintEnabledDebugs()
+    {
+        Debug.Log("The following types of debug are enabled...");
+        foreach (DebugFlags flag in (DebugFlags[]) System.Enum.GetValues(typeof(DebugFlags)))
+        {
+            DebugLog("" + flag.ToString(), flag);
+        }
+    }
+
     public static void DebugLog(string message, DebugFlags flagLevelToDisplayAt /*byte debugLevelToDisplayAt*/)
     {
         if ((debugLevelFlags & flagLevelToDisplayAt) != 0) //check if debugLevelFlags contains the flag passed in
         {
             if (flagLevelToDisplayAt == DebugFlags.Critical)
-                Debug.LogError(message);
+                Debug.LogError(message + "\n" + StackTraceUtility.ExtractStackTrace()); //TODO: make stack trace go to where this was called and not to this method
             else if(flagLevelToDisplayAt == DebugFlags.Warning)
-                Debug.LogWarning(message);
+                Debug.LogWarning(message + "\n" + StackTraceUtility.ExtractStackTrace());
             else
-                Debug.Log(message);
+                Debug.Log(message + "\n (" + flagLevelToDisplayAt.ToString() + ")");
 
         }
-        /*if (debugLevel >= debugLevelToDisplayAt)
-            if(debugLevelToDisplayAt == 1)
-                Debug.LogError(message);
-            else
-                Debug.Log(message);*/
     }
 
-    public static void DebugLog(string message, byte debugLevelToDisplayAt) //alternate, old version of flags system
+    /*public static void DebugLog(string message, byte debugLevelToDisplayAt) //alternate, old version of flags system
     {
         if (debugLevel >= debugLevelToDisplayAt)
             if(debugLevelToDisplayAt == 1)
                 Debug.LogError(message);
             else
                 Debug.Log(message);
-    }
+    }*/
 
     public static void DebugLog(string message) //overloaded
     {
-        DebugLog(message, (byte)0);
+        DebugLog(message, DebugFlags.GeneralInfo);
     }
 }
