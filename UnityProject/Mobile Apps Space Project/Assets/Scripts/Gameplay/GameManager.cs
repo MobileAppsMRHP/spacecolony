@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
     protected static UserAuthentication auth;
     private List<IFirebaseTimedUpdateable> toFirebasePush;
 
-    public bool isDoneLoading = false;
+    public bool IsDoneLoading { get; private set; }
 
     public string user_string = "StillLoading";
 
@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
         DebugLog("Waiting 4 seconds to start delayed actions...");
         yield return new WaitForSeconds(4);
         DebugLog("4 seconds elapsed, running delayed actions.");
-        isDoneLoading = true;
+        IsDoneLoading = true;
         //StartCoroutine("CreateFreshCrewMember", 2);
         StartCoroutine(FirebaseTimedUpdates(2.0f));
 
@@ -240,6 +240,21 @@ public class GameManager : MonoBehaviour
     public void HideLoadingScreen()
     {
         //IsLoading = false;
+    }
+
+    public float GetResource(Shared.ResourceTypes resourceToGet)
+    {
+        return resourceManager.GetResource(resourceToGet, true);
+    }
+
+    public float SetResource(Shared.ResourceTypes resourceToGet, float value)
+    {
+        return resourceManager.SetResource(resourceToGet, value, true);
+    }
+
+    public float ChangeResource(Shared.ResourceTypes resourceToGet, float deltaValue)
+    {
+        return resourceManager.ChangeResource(resourceToGet, deltaValue, true);
     }
 
     private static void PrintEnabledDebugs()
