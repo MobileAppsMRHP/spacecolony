@@ -153,7 +153,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
                 break;
             case Shared.RoomTypes.energy:
                 float resourceIncrease = CalculateTotalResourceIncrease(1); //still need to test this
-                gameManager.resourceManager.ChangeResource(Shared.ResourceTypes.energy, resourceIncrease);
+                gameManager.ChangeResource(Shared.ResourceTypes.energy, resourceIncrease);
                 break;
             default: //empty room
                 //do nothing
@@ -175,9 +175,9 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     }
     public bool CanIncreaseLevel()
     {
-        if (gameManager.resourceManager.GetResource(Shared.ResourceTypes.minerals) > upgradeCosts.x && 
-            gameManager.resourceManager.GetResource(Shared.ResourceTypes.energy) > upgradeCosts.y && 
-            gameManager.resourceManager.GetResource(Shared.ResourceTypes.money) > upgradeCosts.z)
+        if (gameManager.GetResource(Shared.ResourceTypes.minerals) > upgradeCosts.x && 
+            gameManager.GetResource(Shared.ResourceTypes.energy) > upgradeCosts.y && 
+            gameManager.GetResource(Shared.ResourceTypes.money) > upgradeCosts.z)
         {
             return true;
         }

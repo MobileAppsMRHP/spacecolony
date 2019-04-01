@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ResourceChange : MonoBehaviour {
     GameManager gameManager;
-    ResourceManager resourceManager;
+    //ResourceManager resourceManager;
 	// Use this for initialization
 	void Start () {
         gameManager = GameManager.instance;
@@ -12,15 +12,15 @@ public class ResourceChange : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        resourceManager = gameManager.resourceManager;
+        
     }
 
     public void AddOneToEach()
     {
-        resourceManager.ChangeResource(Shared.ResourceTypes.minerals, 1f);
-        resourceManager.ChangeResource(Shared.ResourceTypes.energy, 1f);
-        resourceManager.ChangeResource(Shared.ResourceTypes.water, 1f);
-        resourceManager.ChangeResource(Shared.ResourceTypes.money, 1f);
-        resourceManager.ChangeResource(Shared.ResourceTypes.food, 1f);
+        gameManager.ChangeResource(Shared.ResourceTypes.minerals, 1f);
+        gameManager.ChangeResource(Shared.ResourceTypes.energy, 1f);
+        gameManager.ChangeResource(Shared.ResourceTypes.water, 1f);
+        gameManager.ChangeResource(Shared.ResourceTypes.money, 1f);
+        gameManager.ChangeResource(Shared.ResourceTypes.food, 1f);
     }
 }
