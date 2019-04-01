@@ -49,3 +49,9 @@ Assets/StreamingAssets/crashlytics-build.properties
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+
+##########################################################################
+
+#ALLOW Gource files
+!Gource/*
