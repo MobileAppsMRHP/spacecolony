@@ -27,7 +27,7 @@ public class ResourceManager : IFirebaseTimedUpdateable {
         JsonUtility.FromJsonOverwrite(json, resources);
     }
 
-    public float GetResource(Shared.ResourceTypes resourceToGet)
+    public float GetResource(Shared.ResourceTypes resourceToGet, bool DONT_CALL_THIS_FROM_ANYWHERE_BUT_GAME_MANAGER)
     {
         if (resources.ContainsKey(resourceToGet))
             return resources[resourceToGet];
@@ -38,14 +38,16 @@ public class ResourceManager : IFirebaseTimedUpdateable {
         }
     }
 
-    public float SetResource(Shared.ResourceTypes key, float value)
+    public float SetResource(Shared.ResourceTypes key, float value, bool DONT_CALL_THIS_FROM_ANYWHERE_BUT_GAME_MANAGER)
     {
+        GameManager.DebugLog("The resource " + key.ToString() + " was SET to " + value, DebugFlags.Resources);
         resources[key] = value;
         return value;
     }
 
-    public float ChangeResource(Shared.ResourceTypes key, float deltaValue)
+    public float ChangeResource(Shared.ResourceTypes key, float deltaValue, bool DONT_CALL_THIS_FROM_ANYWHERE_BUT_GAME_MANAGER)
     {
+        GameManager.DebugLog("The resource " + key.ToString() + " was CHANGED by " + deltaValue, DebugFlags.Resources);
         resources[key] += deltaValue;
         return resources[key];
     }
@@ -53,16 +55,6 @@ public class ResourceManager : IFirebaseTimedUpdateable {
     public void DEBUG_SetupResourcesList()
     {
         GameManager.DebugLog("[DEBUG] Creating demo resouces and writing to database...");
-
-        /*
-        minerals,
-        food,
-        water,
-        money,
-        energy,
-        preciousMetal,
-        premiumCurrency
-        */
 
         resources.Add(Shared.ResourceTypes.minerals, 5.4f);
         resources.Add(Shared.ResourceTypes.food, 25.5f);
