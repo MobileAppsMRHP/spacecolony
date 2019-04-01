@@ -40,12 +40,14 @@ public class ResourceManager : IFirebaseTimedUpdateable {
 
     public float SetResource(Shared.ResourceTypes key, float value)
     {
+        GameManager.DebugLog("The resource " + key.ToString() + " was SET to " + value, DebugFlags.Resources);
         resources[key] = value;
         return value;
     }
 
     public float ChangeResource(Shared.ResourceTypes key, float deltaValue)
     {
+        GameManager.DebugLog("The resource " + key.ToString() + " was CHANGED by " + deltaValue, DebugFlags.Resources);
         resources[key] += deltaValue;
         return resources[key];
     }

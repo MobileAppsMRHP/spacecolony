@@ -14,7 +14,7 @@ using static UnityEngine.UI.DefaultControls;
     DatabaseOpsOnTimer = 32,
     GeneralInfo = 64,
     CrewLoadingOps = 128,
-    option10 = 256,
+    Resources = 256,
     option11 = 512,
     option12 = 1024,
     option13 = 2048,
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     //7: 
     //255: log EEEEVERYTHING
 
-    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps;
+    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.Resources;
     //add or subtract values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
     //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
 
