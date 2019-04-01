@@ -198,7 +198,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         {
             sum += crewSkillsResourceMultipliers[roomTypeNum].MultipliedSum(crewInThisRoom[i]);
         }
-        return sum;
+        return sum * Time.deltaTime;
     }
 
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
