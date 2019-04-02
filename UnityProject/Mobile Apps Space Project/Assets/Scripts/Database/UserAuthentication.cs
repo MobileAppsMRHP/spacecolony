@@ -96,7 +96,7 @@
             UIEnabled = false;
         }
 
-        void EnableUI()
+        public void EnableUI()
         {
             UIEnabled = true;
         }
