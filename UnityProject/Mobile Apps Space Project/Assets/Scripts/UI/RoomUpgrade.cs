@@ -53,7 +53,7 @@ public class RoomUpgrade : MonoBehaviour {
         return null;
     }
 
-    void UpgradeRoom(Room selectRoom)
+    public void UpgradeRoom()
     {
         selectedRoom.IncreaseLevel();
         upgradedInfo.SetActive(true);

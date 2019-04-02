@@ -15,12 +15,12 @@ public class ResourceChange : MonoBehaviour {
         
     }
 
-    public void AddOneToEach()
+    public void AddToEach(float n)
     {
-        gameManager.ChangeResource(Shared.ResourceTypes.minerals, 1f);
-        gameManager.ChangeResource(Shared.ResourceTypes.energy, 1f);
-        gameManager.ChangeResource(Shared.ResourceTypes.water, 1f);
-        gameManager.ChangeResource(Shared.ResourceTypes.money, 1f);
-        gameManager.ChangeResource(Shared.ResourceTypes.food, 1f);
+        gameManager.ChangeResource(Shared.ResourceTypes.minerals, n);
+        gameManager.ChangeResource(Shared.ResourceTypes.energy, n);
+        gameManager.ChangeResource(Shared.ResourceTypes.water, n);
+        gameManager.ChangeResource(Shared.ResourceTypes.money, n);
+        gameManager.ChangeResource(Shared.ResourceTypes.food, n);
     }
 }
