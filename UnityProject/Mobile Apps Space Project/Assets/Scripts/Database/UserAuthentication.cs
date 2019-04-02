@@ -91,7 +91,7 @@
             }
         }
 
-        void DisableUI()
+        public void DisableUI()
         {
             UIEnabled = false;
         }
