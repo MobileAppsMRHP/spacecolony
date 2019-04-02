@@ -149,6 +149,7 @@ public class GameManager : MonoBehaviour
     {
         auth = gameObject.AddComponent<UserAuthentication>();
         Firebase.Auth.Credential token= auth.getCredential();
+        auth.DisableUI();
         DebugLog("Auth user token: " + token, DebugFlags.Auth);
         auth.DisableUI();
         return "User1";
