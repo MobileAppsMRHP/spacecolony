@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class AuthButton : MonoBehaviour {
     public Text textShowed;
@@ -25,7 +26,8 @@ public class AuthButton : MonoBehaviour {
         }
         else
         {
-            auth.SigninWithEmailCredentialAsync();
+            auth.EnableUI();
+            SceneManager.LoadScene("Login");
             textShowed.text = "Logged in";
             tracker = true;
         }
