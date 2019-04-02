@@ -91,12 +91,12 @@
             }
         }
 
-        void DisableUI()
+        public void DisableUI()
         {
             UIEnabled = false;
         }
 
-        void EnableUI()
+        public void EnableUI()
         {
             UIEnabled = true;
         }
