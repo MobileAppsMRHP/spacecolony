@@ -187,7 +187,9 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     public void IncreaseLevel()
     {
         roomLevel++;
-        //subtract from resources
+        gameManager.ChangeResource(Shared.ResourceTypes.minerals, -upgradeCosts.x);
+        gameManager.ChangeResource(Shared.ResourceTypes.energy, -upgradeCosts.y);
+        gameManager.ChangeResource(Shared.ResourceTypes.money, -upgradeCosts.z);
         FirebaseUpdate(false);
     }
 
