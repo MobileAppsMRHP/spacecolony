@@ -33,7 +33,7 @@
         public bool usePasswordInput = false;
         private Vector2 controlsScrollViewVector = Vector2.zero;
         private Vector2 scrollViewVector = Vector2.zero;
-        bool UIEnabled = true;
+        bool UIEnabled = false;
 
 
         const int kMaxLogSize = 16382;
@@ -351,7 +351,7 @@
         }
 
         // Called when a sign-in without fetching profile data completes.
-        void HandleSignInWithUser(Task<Firebase.Auth.FirebaseUser> task)
+        public void HandleSignInWithUser(Task<Firebase.Auth.FirebaseUser> task)
         {
             EnableUI();
             if (LogTaskCompletion(task, "Sign-in"))
@@ -564,9 +564,12 @@
         // Render the log output in a scroll view.
         void GUIDisplayLog()
         {
+        if (UIEnabled)
+        {
             scrollViewVector = GUILayout.BeginScrollView(scrollViewVector);
             GUILayout.Label(logText);
             GUILayout.EndScrollView();
+        }
         }
 
         // Render the buttons and other controls.
