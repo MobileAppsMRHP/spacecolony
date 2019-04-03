@@ -65,7 +65,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &61641564297663824
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -75,7 +75,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -132,14 +132,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crewName: FRESH_CREW
-  role: 0
   skillPoints: 0
   progressToNextLevel: 0
   cooking: 0
   navigation: 0
   medical: 0
   fighting: 0
+  level: 0
   currentRoom: {fileID: 0}
+  CurrentRoomStringForDB: NO_ROOM
   identifier: _BLANK
 --- !u!114 &114876239281259676
 MonoBehaviour:

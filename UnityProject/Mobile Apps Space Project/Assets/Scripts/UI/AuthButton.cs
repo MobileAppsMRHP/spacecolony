@@ -26,7 +26,7 @@ public class AuthButton : MonoBehaviour {
         }
         else
         {
-            auth.EnableUI();
+            auth.SetUIControl(true);
             SceneManager.LoadScene("Login");
             textShowed.text = "Logged in";
             tracker = true;

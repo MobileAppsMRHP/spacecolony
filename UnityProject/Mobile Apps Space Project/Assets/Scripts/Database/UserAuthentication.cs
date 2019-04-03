@@ -719,6 +719,20 @@
             return credential;
         }
 
+    public Boolean SetUIControl(Boolean a)
+    {
+        if (a == true)
+        {
+            UIEnabled = true;
+            return UIEnabled;
+        }
+        else{
+            UIEnabled = false;
+            return UIEnabled;
+        }
     }
+
+
+}
 
 
