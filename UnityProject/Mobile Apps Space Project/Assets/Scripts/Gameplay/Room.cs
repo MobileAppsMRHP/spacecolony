@@ -74,9 +74,9 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
 
     IEnumerator AwaitSetup()
     {
-        GameManager.DebugLog("Awaiting user string loading to set up rooms...");
+        GameManager.DebugLog("Awaiting user string loading to set up rooms...", DebugFlags.GeneralInfo);
         yield return new WaitUntil(() => !GameManager.instance.user_string.Equals("StillLoading"));
-        GameManager.DebugLog("... user string loaded as '" + GameManager.instance.user_string + "', setting up room " + RoomUniqueIdentifierForDB);
+        GameManager.DebugLog("... user string loaded as '" + GameManager.instance.user_string + "', setting up room " + RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).ValueChanged += HandleValueChanged;
         //DEBUG_WriteMyRoomData();
     }
@@ -88,13 +88,13 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position)), new Vector2(0f, 0f)); //do a raycast to see what they hit
             if (hit.collider.name == gameObject.name) //if it hit something, anything, ....
             {
-                Debug.Log("Room selected"); //log that something was hit by the touch event
+                GameManager.DebugLog("Room " + RoomUniqueIdentifierForDB + " selected", DebugFlags.CollisionOps); //log that something was hit by the touch event
                 Debug.Log(hit.collider);
                 currentlySelected = true;
             }
             else
             {
-                Debug.Log("Room no longer selected");
+                GameManager.DebugLog("Room " + RoomUniqueIdentifierForDB + " no longer selected", DebugFlags.CollisionOps);
                 currentlySelected = false;
             }
         }
@@ -115,7 +115,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
             return true;
         else
         {
-            GameManager.DebugLog("Too many people in room " + RoomUniqueIdentifierForDB, DebugFlags.CollisionOps);
+            GameManager.DebugLog("Too many people in room " + RoomUniqueIdentifierForDB + "\tcurrent: " + crewInThisRoom.Count + " limit: " + peopleLimit, DebugFlags.CollisionOps);
             return false;
         }
     }
@@ -139,9 +139,23 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     {
         for (int i = 0; i < crewInThisRoom.Count; i++)
         {
-            Vector3 oldPosition = crewInThisRoom[i].transform.position;
-            Vector3 newPosition = crewLocations[i].transform.position;
-            oldPosition = newPosition;
+            if (crewInThisRoom[i] != null)
+            {
+                if (crewLocations[i] != null)
+                {
+                    Vector3 oldPosition = crewInThisRoom[i].transform.position;
+                    Vector3 newPosition = crewLocations[i].transform.position;
+                    oldPosition = newPosition;
+                }
+                else
+                {
+                    GameManager.DebugLog("CrewLocations[" + i + "] is null for room '" + RoomUniqueIdentifierForDB + "'!", DebugFlags.CollisionOps);
+                }
+            }
+            else
+            {
+                GameManager.DebugLog("CrewInThisRoom[" + i + "] is null for room '" + RoomUniqueIdentifierForDB + "'!", DebugFlags.CollisionOps);
+            }
         }
     }
 

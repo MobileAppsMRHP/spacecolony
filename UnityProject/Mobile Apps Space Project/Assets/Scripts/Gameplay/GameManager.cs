@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     //7: 
     //255: log EEEEVERYTHING
 
-    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.Resources;
+    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.Resources | DebugFlags.CollisionOps;
     //add or subtract values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
     //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
 
@@ -246,26 +246,42 @@ public class GameManager : MonoBehaviour
 
     public float GetResource(Shared.ResourceTypes resourceToGet)
     {
+        if (resourceManager == null)
+        {
+            DebugLog("A resource " + resourceToGet + " was requested, but ResourceManager does not yet exist; returning 0 count.", DebugFlags.Warning);
+            return 0;
+        }
         return resourceManager.GetResource(resourceToGet, true);
     }
 
     public float SetResource(Shared.ResourceTypes resourceToGet, float value)
     {
+        if (resourceManager == null)
+        {
+            DebugLog("A resource " + resourceToGet + " could not be set because ResourceManager does not yet exist; returning 0 count and no change.", DebugFlags.Warning);
+            return 0;
+        }
         return resourceManager.SetResource(resourceToGet, value, true);
     }
 
     public float ChangeResource(Shared.ResourceTypes resourceToGet, float deltaValue)
     {
+        if (resourceManager == null)
+        {
+            DebugLog("A resource " + resourceToGet + " could not be changed because ResourceManager does not yet exist; returning 0 count and no change.", DebugFlags.Warning);
+            return 0;
+        }
         return resourceManager.ChangeResource(resourceToGet, deltaValue, true);
     }
 
     private static void PrintEnabledDebugs()
     {
-        Debug.Log("The following types of debug are enabled...");
+        Debug.Log("=======================================\nThe following types of debug are enabled...");
         foreach (DebugFlags flag in (DebugFlags[]) System.Enum.GetValues(typeof(DebugFlags)))
         {
             DebugLog("" + flag.ToString(), flag);
         }
+        Debug.Log("=======================================");
     }
 
     public static void DebugLog(string message, DebugFlags flagLevelToDisplayAt /*byte debugLevelToDisplayAt*/)
