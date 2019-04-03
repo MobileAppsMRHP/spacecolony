@@ -53,6 +53,12 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         }
     }
 
+    public struct DataToSerialize
+    {
+        public int roomLevel;
+        public string RoomUniqueIdentifierForDB;
+    }
+
 
     // Use this for initialization
     void Start () {
