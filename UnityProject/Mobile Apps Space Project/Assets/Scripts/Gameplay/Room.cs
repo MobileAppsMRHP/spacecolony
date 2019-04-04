@@ -5,20 +5,6 @@ using UnityEngine;
 
 public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
 
-    /*public struct RequiredResources
-    {
-        public float scraps;
-        public float energy;
-        public float money;
-
-        public RequiredResources(float s, float e, float m)
-        {
-            scraps = s;
-            energy = e;
-            money = m;
-        }
-    }*/
-    //public enum RoomType { Food, Bridge, Energy};
     public int peopleLimit;
     public int roomLevel;
     public List<Crew> crewInThisRoom;
@@ -30,7 +16,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     private GameManager gameManager;
     List<CrewSkills> crewSkillsResourceMultipliers;
 
-    public string RoomUniqueIdentifierForDB;
+    //public string RoomUniqueIdentifierForDB;
     Vector3 baseUpgradeCost = new Vector3(50, 50, 50);
     struct CrewSkills
     {
@@ -53,12 +39,26 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         }
     }
 
+    [System.Serializable]
     public struct DataToSerialize
     {
-        public int roomLevel;
+        public int RoomLevel;
         public string RoomUniqueIdentifierForDB;
+        /*private string roomUniqueIdentifierForDB;
+        public string RoomUniqueIdentifierForDB
+        {
+            get
+            {
+                return roomUniqueIdentifierForDB == null || roomUniqueIdentifierForDB.Equals("") ? "UNSET_ROOM_ID" : roomUniqueIdentifierForDB;
+            }
+            set
+            {
+                roomUniqueIdentifierForDB = value;
+            }
+        }*/
     }
 
+    public DataToSerialize data;
 
     // Use this for initialization
     void Start () {
@@ -73,6 +73,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
             new CrewSkills(1f, 1f, 1f, 1f),
             new CrewSkills(0.8f, 0.5f, 2f, 0.3f)
         };
+        
         gameManager = GameManager.instance;
         StartCoroutine(AwaitSetup());
         //GameManager.instance.AddToFirebaseTimedUpdates(this);
@@ -82,9 +83,9 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     {
         GameManager.DebugLog("Awaiting user string loading to set up rooms...", DebugFlags.GeneralInfo);
         yield return new WaitUntil(() => !GameManager.instance.user_string.Equals("StillLoading"));
-        GameManager.DebugLog("... user string loaded as '" + GameManager.instance.user_string + "', setting up room " + RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).ValueChanged += HandleValueChanged;
-        //DEBUG_WriteMyRoomData();
+        GameManager.DebugLog("... user string loaded as '" + GameManager.instance.user_string + "', setting up room " + data.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + data.RoomUniqueIdentifierForDB).ValueChanged += HandleValueChanged;
+        DEBUG_WriteMyRoomData();
     }
 	
 	// Update is called once per frame
@@ -94,13 +95,13 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position)), new Vector2(0f, 0f)); //do a raycast to see what they hit
             if (hit.collider.name == gameObject.name) //if it hit something, anything, ....
             {
-                GameManager.DebugLog("Room " + RoomUniqueIdentifierForDB + " selected", DebugFlags.CollisionOps); //log that something was hit by the touch event
+                GameManager.DebugLog("Room " + data.RoomUniqueIdentifierForDB + " selected", DebugFlags.CollisionOps); //log that something was hit by the touch event
                 Debug.Log(hit.collider);
                 currentlySelected = true;
             }
             else
             {
-                GameManager.DebugLog("Room " + RoomUniqueIdentifierForDB + " no longer selected", DebugFlags.CollisionOps);
+                GameManager.DebugLog("Room " + data.RoomUniqueIdentifierForDB + " no longer selected", DebugFlags.CollisionOps);
                 currentlySelected = false;
             }
         }
@@ -121,7 +122,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
             return true;
         else
         {
-            GameManager.DebugLog("Too many people in room " + RoomUniqueIdentifierForDB + "\tcurrent: " + crewInThisRoom.Count + " limit: " + peopleLimit, DebugFlags.CollisionOps);
+            GameManager.DebugLog("Too many people in room " + data.RoomUniqueIdentifierForDB + "\tcurrent: " + crewInThisRoom.Count + " limit: " + peopleLimit, DebugFlags.CollisionOps);
             return false;
         }
     }
@@ -155,12 +156,12 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
                 }
                 else
                 {
-                    GameManager.DebugLog("CrewLocations[" + i + "] is null for room '" + RoomUniqueIdentifierForDB + "'!", DebugFlags.CollisionOps);
+                    GameManager.DebugLog("CrewLocations[" + i + "] is null for room '" + data.RoomUniqueIdentifierForDB + "'!", DebugFlags.CollisionOps);
                 }
             }
             else
             {
-                GameManager.DebugLog("CrewInThisRoom[" + i + "] is null for room '" + RoomUniqueIdentifierForDB + "'!", DebugFlags.CollisionOps);
+                GameManager.DebugLog("CrewInThisRoom[" + i + "] is null for room '" + data.RoomUniqueIdentifierForDB + "'!", DebugFlags.CollisionOps);
             }
         }
     }
@@ -194,6 +195,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         }
         return false;
     }
+
     public bool CanIncreaseLevel()
     {
         if (gameManager.GetResource(Shared.ResourceTypes.minerals) > upgradeCosts.x && 
@@ -228,24 +230,24 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote room " + RoomUniqueIdentifierForDB + " with JSON from database: " + json, DebugFlags.DatabaseOps);
-        JsonUtility.FromJsonOverwrite(json, this);
+        GameManager.DebugLog("Overwrote room " + data.RoomUniqueIdentifierForDB + " with JSON from database: " + json, DebugFlags.DatabaseOps);
+        JsonUtility.FromJsonOverwrite(json, data);
     }
 
     public void DEBUG_WriteMyRoomData()
     {
-        string json = JsonUtility.ToJson(this);
-        GameManager.DebugLog("[DEBUG] Writing room '" + RoomUniqueIdentifierForDB + "' to database. " + json);
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
+        string json = JsonUtility.ToJson(data);
+        GameManager.DebugLog("[DEBUG] Writing room '" + data.RoomUniqueIdentifierForDB + "' to database. " + json);
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + data.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
     }
 
     public void FirebaseUpdate(bool wasTimedUpdate)
     {
         string json = JsonUtility.ToJson(this);
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + data.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
         if (wasTimedUpdate)
-            GameManager.DebugLog("[TimedUpdate] Updated room " + RoomUniqueIdentifierForDB + " database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
+            GameManager.DebugLog("[TimedUpdate] Updated room " + data.RoomUniqueIdentifierForDB + " database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
         else
-            GameManager.DebugLog("[>TriggeredUpdate] Updated room " + RoomUniqueIdentifierForDB + " database contents with " + json, DebugFlags.DatabaseOps);
+            GameManager.DebugLog("[>TriggeredUpdate] Updated room " + data.RoomUniqueIdentifierForDB + " database contents with " + json, DebugFlags.DatabaseOps);
     }
 }
