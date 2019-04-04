@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -181,6 +181,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 69513831}
+--- !u!114 &75716547 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
+    type: 2}
+  m_PrefabInternal: {fileID: 1140493537}
+  m_Script: {fileID: 11500000, guid: 61a2ff8a516a9ad41968e603407b80b5, type: 3}
 --- !u!1001 &92023497
 Prefab:
   m_ObjectHideFlags: 0
@@ -239,7 +245,7 @@ Prefab:
         type: 2}
       propertyPath: Rooms.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 75716547}
     - target: {fileID: 114240072660833228, guid: bf49bab51cfdb4849a47caf004774a57,
         type: 2}
       propertyPath: Rooms.Array.data[1]
@@ -761,7 +767,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4426244185809534, guid: 93cc18a863490ff44a21f3410f9ad54e, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1669384477828434, guid: 93cc18a863490ff44a21f3410f9ad54e, type: 2}
       propertyPath: m_IsActive
@@ -1007,7 +1013,7 @@ Transform:
   m_LocalScale: {x: 0.2808262, y: 0.2808262, z: 0.2808262}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &344363711
 GameObject:
@@ -1107,7 +1113,7 @@ Transform:
   m_LocalScale: {x: 0.2808262, y: 0.2808262, z: 0.2808262}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &352248800
 GameObject:
@@ -2142,7 +2148,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4080509806050146, guid: ffd39ad4115ab70499506c7c787a5289, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114876239281259676, guid: ffd39ad4115ab70499506c7c787a5289,
         type: 2}
@@ -2862,7 +2868,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4080509806050146, guid: ffd39ad4115ab70499506c7c787a5289, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1494585674879348, guid: ffd39ad4115ab70499506c7c787a5289, type: 2}
       propertyPath: m_Name
@@ -4202,7 +4208,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4952384370962232, guid: 67c1a16393de4054bada52027b027547, type: 2}
       propertyPath: m_RootOrder
-      value: 17
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1180773634941354, guid: 67c1a16393de4054bada52027b027547, type: 2}
       propertyPath: m_Name
@@ -4232,6 +4238,11 @@ Prefab:
         type: 2}
       propertyPath: RoomType
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
+        type: 2}
+      propertyPath: data.RoomUniqueIdentifierForDB
+      value: Room_Debug_Bridge
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114864710342572286, guid: 67c1a16393de4054bada52027b027547, type: 2}
@@ -4698,7 +4709,7 @@ Transform:
   m_LocalScale: {x: 0.2808262, y: 0.2808262, z: 0.2808262}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1292948162
 GameObject:
@@ -4895,7 +4906,7 @@ Transform:
   m_LocalScale: {x: 0.2808262, y: 0.2808262, z: 0.2808262}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1340022242
 GameObject:
@@ -5956,7 +5967,7 @@ Transform:
   m_LocalScale: {x: 0.2808262, y: 0.2808262, z: 0.2808262}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1675714423
 Prefab:
@@ -6585,7 +6596,7 @@ Transform:
   m_LocalScale: {x: 0.2808262, y: 0.2808262, z: 0.2808262}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1855173742
 GameObject:
@@ -6846,7 +6857,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4315952585669722, guid: 323239a822d7acd43b5b3e8473946850, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 323239a822d7acd43b5b3e8473946850, type: 2}
@@ -7351,6 +7362,16 @@ Prefab:
         type: 2}
       propertyPath: RoomType
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
+        type: 2}
+      propertyPath: currentlySelected
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
+        type: 2}
+      propertyPath: data.RoomUniqueIdentifierForDB
+      value: Room_Debug_Food
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114864710342572286, guid: 67c1a16393de4054bada52027b027547, type: 2}
