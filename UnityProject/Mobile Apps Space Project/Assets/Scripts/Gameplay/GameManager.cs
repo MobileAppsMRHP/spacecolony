@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     //7: 
     //255: log EEEEVERYTHING
 
-    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.Resources | DebugFlags.CollisionOps;
+    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.Resources | DebugFlags.CollisionOps | DebugFlags.GeneralInfo;
     //add or subtract values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
     //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
 
@@ -59,6 +59,9 @@ public class GameManager : MonoBehaviour
     public bool IsDoneLoading { get; private set; }
 
     public string user_string = "StillLoading";
+
+    public readonly static System.DateTime EpochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+    public int CurrentEpochTime { get; private set; }
 
     private void Start()
     {
@@ -103,7 +106,7 @@ public class GameManager : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-
+        CurrentEpochTime = (int)(System.DateTime.UtcNow - EpochStart).TotalSeconds;
     }
 
     System.Collections.IEnumerator DebugDelayedStart()
@@ -127,6 +130,9 @@ public class GameManager : MonoBehaviour
         {
             yield return new WaitForSeconds(waitTimeSeconds);
             DebugLog("[TimedUpdate] Triggered", DebugFlags.DatabaseOpsOnTimer);
+            
+            
+            FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").SetValueAsync(CurrentEpochTime);
             foreach (var item in toFirebasePush)
             {
                 item.FirebaseUpdate(true); //run the update, marking it as a timed update
@@ -143,6 +149,27 @@ public class GameManager : MonoBehaviour
             DebugLog("[TimedUpdate] Adding '" + thingToAdd + "' to the timed update list.");
             toFirebasePush.Add(thingToAdd);
         }
+    }
+
+    System.Collections.IEnumerator ProcessTimeSinceLastLogon()
+    {
+        /*yield return new FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                // Handle the error...
+                DebugLog("Data retrival error when prompting for EpochTimeLastLogon!", DebugFlags.Critical);
+            }
+            else if (task.IsCompleted)
+            {
+                DebugLog("Last logon time: " + task.Result.Value, DebugFlags.GeneralInfo);
+            }
+            else
+            {
+                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
+                DebugLog("Task error when prompting for EpochTimeLastLogon", DebugFlags.Critical);
+            }
+        });*/
     }
 
     public string Authenticate()
