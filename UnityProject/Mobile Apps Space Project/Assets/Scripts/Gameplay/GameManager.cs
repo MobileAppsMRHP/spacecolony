@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
         DebugLog("4 seconds elapsed, running delayed actions.");
         IsDoneLoading = true;
         //StartCoroutine("CreateFreshCrewMember", 2);
-        StartCoroutine(FirebaseTimedUpdates(2.0f));
+        StartCoroutine(FirebaseTimedUpdates(10.0f));
 
     }
 
