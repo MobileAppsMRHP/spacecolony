@@ -151,9 +151,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    System.Collections.IEnumerator ProcessTimeSinceLastLogon()
+    /*System.Collections.IEnumerator ProcessTimeSinceLastLogon()
     {
-        /*yield return new FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").GetValueAsync().ContinueWith(task =>
+        yield return new FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
@@ -169,8 +169,8 @@ public class GameManager : MonoBehaviour
                 //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
                 DebugLog("Task error when prompting for EpochTimeLastLogon", DebugFlags.Critical);
             }
-        });*/
-    }
+        });
+    }*/
 
     public string Authenticate()
     {
