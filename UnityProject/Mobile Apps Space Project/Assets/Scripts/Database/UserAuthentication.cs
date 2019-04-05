@@ -482,6 +482,12 @@
             });
         }
 
+        public string FetchUserToken()
+        {
+        Task<string> a = auth.CurrentUser.TokenAsync(false);
+        return a.Result;
+        }   
+
         // Display information about the currently logged in user.
         void GetUserInfo()
         {
