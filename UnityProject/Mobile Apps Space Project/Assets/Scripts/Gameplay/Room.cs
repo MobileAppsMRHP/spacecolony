@@ -44,18 +44,6 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     {
         public int RoomLevel;
         public string RoomUniqueIdentifierForDB;
-        /*private string roomUniqueIdentifierForDB;
-        public string RoomUniqueIdentifierForDB
-        {
-            get
-            {
-                return roomUniqueIdentifierForDB == null || roomUniqueIdentifierForDB.Equals("") ? "UNSET_ROOM_ID" : roomUniqueIdentifierForDB;
-            }
-            set
-            {
-                roomUniqueIdentifierForDB = value;
-            }
-        }*/
     }
 
     public DataToSerialize data;
