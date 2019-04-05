@@ -142,7 +142,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         crewInThisRoom.Remove(crewToRemove);
     }
 
-    public void CrewIntoPosition(Crew crewToMove)
+    public void CrewIntoPosition()
     {
         for (int i = 0; i < crewInThisRoom.Count; i++)
         {
@@ -152,7 +152,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
                 {
                     Vector3 oldPosition = crewInThisRoom[i].transform.position;
                     Vector3 newPosition = crewLocations[i].transform.position;
-                    oldPosition = newPosition;
+                    crewInThisRoom[i].transform.position = newPosition;
                 }
                 else
                 {
