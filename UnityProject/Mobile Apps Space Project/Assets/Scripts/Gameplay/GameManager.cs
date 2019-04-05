@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
     protected static UserAuthentication auth;
     private List<IFirebaseTimedUpdateable> toFirebasePush;
 
-    public bool IsDoneLoading { get; private set; }
+    public static bool IsDoneLoading { get; private set; }
 
     public string user_string = "StillLoading";
 
@@ -120,6 +120,7 @@ public class GameManager : MonoBehaviour
         IsDoneLoading = true;
         //StartCoroutine("CreateFreshCrewMember", 2);
         StartCoroutine(FirebaseTimedUpdates(10.0f));
+        ProcessTimeSinceLastLogon();
 
     }
 
@@ -151,9 +152,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /*System.Collections.IEnumerator ProcessTimeSinceLastLogon()
+    private void ProcessTimeSinceLastLogon()
     {
-        yield return new FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").GetValueAsync().ContinueWith(task =>
+        DebugLog("Requesting time since last logon...", DebugFlags.GeneralInfo);
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
@@ -162,7 +164,9 @@ public class GameManager : MonoBehaviour
             }
             else if (task.IsCompleted)
             {
-                DebugLog("Last logon time: " + task.Result.Value, DebugFlags.GeneralInfo);
+                System.Int64 lastTime = (System.Int64)task.Result.Value;
+                //Debug.Log(task.Result.Value.GetType());
+                Debug.Log("Last logon time: " + lastTime + "\tTime difference: " + (CurrentEpochTime - lastTime));
             }
             else
             {
@@ -170,7 +174,7 @@ public class GameManager : MonoBehaviour
                 DebugLog("Task error when prompting for EpochTimeLastLogon", DebugFlags.Critical);
             }
         });
-    }*/
+    }
 
     public string Authenticate()
     {

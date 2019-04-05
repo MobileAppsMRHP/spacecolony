@@ -16,7 +16,7 @@ public class ResourceDisplay : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //resourceManager = gameManager.resourceManager;
-        if (GameManager.instance.IsDoneLoading)
+        if (GameManager.IsDoneLoading)
         {
             resources[0].text = gameManager.GetResource(Shared.ResourceTypes.minerals).ToString();
             resources[1].text = gameManager.GetResource(Shared.ResourceTypes.energy).ToString();
