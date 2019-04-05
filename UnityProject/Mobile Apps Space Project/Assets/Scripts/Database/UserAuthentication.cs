@@ -3,11 +3,12 @@
     using System.Threading.Tasks;
     using UnityEngine;
     using Firebase;
+    using UnityEngine.SceneManagement;
 
-    // Handler for UI buttons on the scene.  Also performs some
-    // necessary setup (initializing the firebase app, etc) on
-    // startup.
-    public class UserAuthentication : MonoBehaviour
+// Handler for UI buttons on the scene.  Also performs some
+// necessary setup (initializing the firebase app, etc) on
+// startup.
+public class UserAuthentication : MonoBehaviour
     {
         protected Firebase.Auth.FirebaseAuth auth;
         protected Firebase.Auth.FirebaseAuth otherAuth;
@@ -22,6 +23,7 @@
         protected string displayName = "";
         protected string phoneNumber = "";
         protected string receivedCode = "";
+    protected string token = "";
         // Whether to sign in / link or reauthentication *and* fetch user profile data.
         protected bool signInAndFetchProfile = false;
         // Flag set when a token is being fetched.  This is used to avoid printing the token
@@ -338,14 +340,16 @@
             DisableUI();
             if (signInAndFetchProfile)
             {
-                return auth.SignInAndRetrieveDataWithCredentialAsync(
-                  Firebase.Auth.GoogleAuthProvider.GetCredential(email, password)).ContinueWith(
+            PlayerPrefs.SetString(token, FetchUserToken());
+            PlayerPrefs.Save();
+            return auth.SignInAndRetrieveDataWithCredentialAsync(
+                  Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
                     HandleSignInWithSignInResult);
             }
             else
             {
                 return auth.SignInWithCredentialAsync(
-                  Firebase.Auth.GoogleAuthProvider.GetCredential(email, password)).ContinueWith(
+                  Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
                     HandleSignInWithUser);
             }
         }
@@ -633,7 +637,8 @@
                 if (GUILayout.Button("Sign In With Email Credential"))
                 {
                     SigninWithEmailCredentialAsync();
-                }
+                    SceneManager.LoadScene("01Gameplay");
+            }
                 if (GUILayout.Button("Link With Email Credential"))
                 {
                     LinkWithEmailCredentialAsync();
