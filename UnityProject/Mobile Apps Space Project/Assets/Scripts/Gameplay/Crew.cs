@@ -8,19 +8,8 @@ using System;
 
 public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
 
-    public string crewName;
-    public int skillPoints;
-    public float progressToNextLevel;
-
-    public int cooking;
-    public int navigation;
-    public int medical;
-    public int fighting;
-    public int level;
-
     public Room currentRoom;
-    public string CurrentRoomStringForDB = "NO_ROOM";
-
+    
     public string identifier = "_BLANK"; //don't change this! only fresh crew members get this changed by the code
 
     [System.NonSerialized] public static List<string> Possible_Names = new List<string>();
@@ -28,6 +17,39 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
     //private GameManager gameManager;
 
     //public bool newCharacter;
+
+    [System.Serializable]
+    public struct DataToSerialize
+    {
+        public string CrewName;
+        public int SkillPoints;
+        public float ProgressToNextLevel;
+        public string RoomUniqueIdentifierForDB;
+
+        public int Skill_Cooking;
+        public int Skill_Navigation;
+        public int Skill_Medical;
+        public int Skill_Fighting;
+        public int Level;
+
+        public string CurrentRoomStringForDB;
+    }
+
+    public DataToSerialize data;
+
+    public string CrewName
+    {
+        get
+        {
+            return data.CrewName;
+        }
+        set
+        {
+            data.CrewName = value;
+        }
+    }
+
+
 
     // Use this for initialization
     public void CrewCreatorStart(string identifier)
