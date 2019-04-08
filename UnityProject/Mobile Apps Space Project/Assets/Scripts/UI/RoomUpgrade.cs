@@ -18,7 +18,7 @@ public class RoomUpgrade : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        selectedRoom = FindSelectedRoom();
+        selectedRoom = FindSelectedRoom(gameManager);
         if (selectedRoom == null)
         {
             for (int i = 0; i < resourceCosts.Count; i++)
@@ -41,7 +41,7 @@ public class RoomUpgrade : MonoBehaviour {
         }
     }
 
-    Room FindSelectedRoom()
+    public static Room FindSelectedRoom(GameManager gameManager)
     {
         for (int i=0; i<gameManager.Rooms.Count; i++)
         {
