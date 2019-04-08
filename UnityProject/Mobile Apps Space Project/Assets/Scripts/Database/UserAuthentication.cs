@@ -340,7 +340,7 @@ public class UserAuthentication : MonoBehaviour
             DisableUI();
             if (signInAndFetchProfile)
             {
-            PlayerPrefs.SetString(token, FetchUserToken());
+            PlayerPrefs.SetString("UserAuthToken", FetchUserToken());
             PlayerPrefs.Save();
             return auth.SignInAndRetrieveDataWithCredentialAsync(
                   Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
