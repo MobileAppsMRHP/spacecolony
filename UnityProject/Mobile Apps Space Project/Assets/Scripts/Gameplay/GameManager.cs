@@ -76,7 +76,6 @@ public class GameManager : MonoBehaviour
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, DebugFlags.GeneralInfo);
         user_string = Authenticate();
-        //user_string = "User1"; //TODO: get actual from auth
 
         resourceManager = new ResourceManager();
         //resourceManager.DEBUG_SetupResourcesList();
