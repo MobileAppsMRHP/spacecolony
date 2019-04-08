@@ -6,7 +6,7 @@ using System;
 
 
 
-public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
+public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime {
 
     public string crewName;
     public int skillPoints;
@@ -24,6 +24,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
     public string identifier = "_BLANK"; //don't change this! only fresh crew members get this changed by the code
 
     [System.NonSerialized] public static List<string> Possible_Names = new List<string>();
+    public static float Exp_Per_Sec = 0.01f;
 
     //private GameManager gameManager;
 
@@ -36,6 +37,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier).ValueChanged += HandleValueChanged;
         GameManager.DebugLog("Crew startup done for " + identifier, DebugFlags.CrewLoadingOps);
         GameManager.instance.AddToFirebaseTimedUpdates(this);
+        GameManager.instance.AddToProcessElapsedTime(this);
     }
 
     // Update is called once per frame
@@ -163,9 +165,21 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
 
     void IncreaseExperience()
     {
-        if (GetComponent<DragAndDrop>().inRoom)
+        ProcessTime(Time.deltaTime);
+    }
+
+    public void ProcessTime(float deltaTime)
+    {
+        if (currentRoom != null)
         {
-            progressToNextLevel += 0.01f * Time.deltaTime;
+            float progress = Exp_Per_Sec * deltaTime;
+            progressToNextLevel += progress;
+            if (deltaTime > Shared.ProcessElapsedTime_ConsiderLoggedOff)
+            {
+                GameManager.DebugLog("[ElapsedTime] " + deltaTime + " seconds passed, causing crew " + identifier + " to increase ProgressToNextLevel by " + progress, DebugFlags.ElapsedTime);
+                FirebaseUpdate(false);
+            }
+            
         }
     }
 

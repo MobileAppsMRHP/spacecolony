@@ -15,7 +15,7 @@ using static UnityEngine.UI.DefaultControls;
     GeneralInfo = 64,
     CrewLoadingOps = 128,
     Resources = 256,
-    option11 = 512,
+    ElapsedTime = 512,
     option12 = 1024,
     option13 = 2048,
     option14 = 4096
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     //7: 
     //255: log EEEEVERYTHING
 
-    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.Resources | DebugFlags.CollisionOps | DebugFlags.GeneralInfo;
+    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.Resources | DebugFlags.CollisionOps | DebugFlags.GeneralInfo | DebugFlags.ElapsedTime;
     //add or subtract values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
     //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
 
@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
     public RoomSpawner roomCreator;
     protected static UserAuthentication auth;
     private List<IFirebaseTimedUpdateable> toFirebasePush;
+    private List<IProcessElapsedTime> toProcessElapsedTime;
 
     public static bool IsDoneLoading { get; private set; }
 
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
         DisplayLoadingScreen();
 
         toFirebasePush = new List<IFirebaseTimedUpdateable>();
+        toProcessElapsedTime = new List<IProcessElapsedTime>();
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, DebugFlags.GeneralInfo);
         user_string = Authenticate();
@@ -165,8 +167,13 @@ public class GameManager : MonoBehaviour
             else if (task.IsCompleted)
             {
                 System.Int64 lastTime = (System.Int64)task.Result.Value;
+                var deltaTime = (CurrentEpochTime - lastTime);
                 //Debug.Log(task.Result.Value.GetType());
-                Debug.Log("Last logon time: " + lastTime + "\tTime difference: " + (CurrentEpochTime - lastTime));
+                DebugLog("Last logon time: " + lastTime + "\tTime difference: " + deltaTime, DebugFlags.ElapsedTime);
+                foreach (var item in toProcessElapsedTime)
+                {
+                    item.ProcessTime(deltaTime);
+                }
             }
             else
             {
@@ -176,14 +183,29 @@ public class GameManager : MonoBehaviour
         });
     }
 
+    public void AddToProcessElapsedTime(IProcessElapsedTime thingToAdd)
+    {
+        if (toProcessElapsedTime.Contains(thingToAdd))
+            DebugLog("[ProcessElapsed] '" + thingToAdd + "' is already on the process elapsed list and wasn't added a second time.", DebugFlags.ElapsedTime);
+        else
+        {
+            DebugLog("[ProcessElapsed] Adding '" + thingToAdd + "' to the process elapsed list.", DebugFlags.ElapsedTime);
+            toProcessElapsedTime.Add(thingToAdd);
+        }
+    }
+
     public string Authenticate()
     {
-        auth = gameObject.AddComponent<UserAuthentication>();
+        /*auth = gameObject.AddComponent<UserAuthentication>();
         Firebase.Auth.Credential token= auth.getCredential();
         auth.DisableUI();
-        DebugLog("Auth user token: " + token, DebugFlags.Auth);
-        auth.DisableUI();
-        return "User1";
+        auth.DisableUI();*/
+        string authToken = PlayerPrefs.GetString("UserAuthToken", "User1");
+        if (authToken.Equals("User1"))
+            DebugLog("PlayerPrefs did not contain user auth token. Proceeding with User1 token instead.", DebugFlags.Warning);
+        else
+            DebugLog("Auth user token: " + authToken, DebugFlags.Auth);
+        return authToken;
     }
 
     void LoadCrew()
