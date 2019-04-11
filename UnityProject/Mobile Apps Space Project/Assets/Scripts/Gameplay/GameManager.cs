@@ -153,10 +153,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ProcessTimeSinceLastLogon()
+    System.Collections.IEnumerator ProcessTimeSinceLastLogon()
     {
         DebugLog("Requesting time since last logon...", DebugFlags.GeneralInfo);
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").GetValueAsync().ContinueWith(task =>
+        yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
@@ -180,6 +180,7 @@ public class GameManager : MonoBehaviour
                 DebugLog("Task error when prompting for EpochTimeLastLogon", DebugFlags.Critical);
             }
         });
+        resourceManager.StartAveragesProcessing();
     }
 
     public void AddToProcessElapsedTime(IProcessElapsedTime thingToAdd)

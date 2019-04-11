@@ -7,7 +7,7 @@ using Firebase.Unity.Editor;
 
 using UnityEngine;
 
-public class ResourceManager : IFirebaseTimedUpdateable, IProcessElapsedTime {
+public class ResourceManager : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime {
 
     //public Dictionary<Shared.ResourceTypes, int> resources;
     public DictionaryOfResourceAndFloat resources;
@@ -74,6 +74,11 @@ public class ResourceManager : IFirebaseTimedUpdateable, IProcessElapsedTime {
 
     }
 
+    public void StartAveragesProcessing()
+    {
+        StartCoroutine(CalculateAverages(10.0f));
+    }
+
     private IEnumerator CalculateAverages(float intervalSeconds)
     {
         GameManager.DebugLog("Calculating resource averages over " + intervalSeconds + " seconds...", DebugFlags.DatabaseOpsOnTimer);
@@ -127,8 +132,9 @@ public class ResourceManager : IFirebaseTimedUpdateable, IProcessElapsedTime {
                 JsonUtility.FromJsonOverwrite(json, resourcesAverages);
                 foreach (var item in resourcesAverages)
                 {
-                    GameManager.DebugLog("Changed " + item.Key + " by " + item.Value, DebugFlags.ElapsedTime);
-                    ChangeResource(item.Key, FIXTHISLATER, true);
+                    float deltaValue = item.Value * deltaTime;
+                    GameManager.DebugLog("Changed " + item.Key + " by " + deltaValue, DebugFlags.ElapsedTime);
+                    ChangeResource(item.Key, deltaValue, true);
                 }
             }
             else
