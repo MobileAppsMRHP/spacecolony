@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     //7: 
     //255: log EEEEVERYTHING
 
-    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.Resources | DebugFlags.CollisionOps | DebugFlags.GeneralInfo | DebugFlags.ElapsedTime;
+    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.DatabaseOpsOnTimer | DebugFlags.Resources | DebugFlags.CollisionOps | DebugFlags.GeneralInfo | DebugFlags.ElapsedTime;
     //add or subtract values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
     //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
 
@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
         DebugLog("Running on a " + running_on, DebugFlags.GeneralInfo);
         user_string = Authenticate();
 
-        resourceManager = new ResourceManager();
+        resourceManager = gameObject.AddComponent(typeof(ResourceManager)) as ResourceManager;
         //resourceManager.DEBUG_SetupResourcesList();
         
 
@@ -121,7 +121,8 @@ public class GameManager : MonoBehaviour
         IsDoneLoading = true;
         //StartCoroutine("CreateFreshCrewMember", 2);
         StartCoroutine(FirebaseTimedUpdates(10.0f));
-        ProcessTimeSinceLastLogon();
+        yield return ProcessTimeSinceLastLogon();
+        resourceManager.StartAveragesProcessing();
 
     }
 
@@ -131,14 +132,14 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(waitTimeSeconds);
-            DebugLog("[TimedUpdate] Triggered", DebugFlags.DatabaseOpsOnTimer);
-            
+            DebugLog("[TimedUpdate] TimedUpdate occurring", DebugFlags.DatabaseOpsOnTimer);
             
             FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").SetValueAsync(CurrentEpochTime);
             foreach (var item in toFirebasePush)
             {
                 item.FirebaseUpdate(true); //run the update, marking it as a timed update
             }
+            DebugLog("[TimedUpdate] TimedUpdate done", DebugFlags.DatabaseOpsOnTimer);
         }
     }
 
@@ -180,7 +181,6 @@ public class GameManager : MonoBehaviour
                 DebugLog("Task error when prompting for EpochTimeLastLogon", DebugFlags.Critical);
             }
         });
-        resourceManager.StartAveragesProcessing();
     }
 
     public void AddToProcessElapsedTime(IProcessElapsedTime thingToAdd)

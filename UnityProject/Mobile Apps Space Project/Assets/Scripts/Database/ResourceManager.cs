@@ -14,7 +14,7 @@ public class ResourceManager : MonoBehaviour, IFirebaseTimedUpdateable, IProcess
 
     public DictionaryOfResourceAndFloat resourcesAverages;
 
-    public ResourceManager()
+    public void Start()
     {
         GameManager.DebugLog("Starting resource manager...");
         resources = new DictionaryOfResourceAndFloat();
@@ -76,33 +76,37 @@ public class ResourceManager : MonoBehaviour, IFirebaseTimedUpdateable, IProcess
 
     public void StartAveragesProcessing()
     {
+        GameManager.DebugLog("Starting averages coroutine...", DebugFlags.DatabaseOpsOnTimer);
         StartCoroutine(CalculateAverages(10.0f));
     }
 
-    private IEnumerator CalculateAverages(float intervalSeconds)
+    public IEnumerator CalculateAverages(float intervalSeconds)
     {
-        GameManager.DebugLog("Calculating resource averages over " + intervalSeconds + " seconds...", DebugFlags.DatabaseOpsOnTimer);
-        DictionaryOfResourceAndFloat pastResources = new DictionaryOfResourceAndFloat();
-
-        foreach (var item in resources)
+        while (true)
         {
-            pastResources.Add(item.Key, item.Value);
+            GameManager.DebugLog("Calculating resource averages over " + intervalSeconds + " seconds...", DebugFlags.DatabaseOpsOnTimer);
+            DictionaryOfResourceAndFloat pastResources = new DictionaryOfResourceAndFloat();
+
+            foreach (var item in resources)
+            {
+                pastResources.Add(item.Key, item.Value);
+            }
+
+            yield return new WaitForSeconds(intervalSeconds);
+
+            resourcesAverages.Clear();
+            foreach (var item in resources)
+            {
+                float average = (item.Value - pastResources[item.Key]) / intervalSeconds;
+                //GameManager.DebugLog("Resource " + item.Key + " average calculated to be " + average, DebugFlags.DatabaseOpsOnTimer);
+                resourcesAverages.Add(item.Key, average);
+            }
+
+            string json2 = JsonUtility.ToJson(resourcesAverages);
+            FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/ResourceAverages").SetRawJsonValueAsync(json2);
+            GameManager.DebugLog("Updated user's resources averages database contents with " + json2 /*+ "\n Waiting " + intervalSeconds + " seconds for next round."*/, DebugFlags.DatabaseOpsOnTimer);
+            //yield return new WaitForSeconds(intervalSeconds);
         }
-
-        yield return new WaitForSeconds(intervalSeconds);
-
-        resourcesAverages.Clear();
-        foreach (var item in resources)
-        {
-            float average = (item.Value - pastResources[item.Key]) / intervalSeconds;
-            GameManager.DebugLog("Resource " + item.Key + " average calculated to be " + average, DebugFlags.DatabaseOpsOnTimer);
-            resourcesAverages.Add(item.Key, average);
-        }
-
-        string json2 = JsonUtility.ToJson(resourcesAverages);
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/ResourceAverages").SetRawJsonValueAsync(json2);
-        GameManager.DebugLog("Updated user's resources averages database contents with " + json2, DebugFlags.DatabaseOpsOnTimer);
-        yield return new WaitForSeconds(intervalSeconds);
     }
 
     public void FirebaseUpdate(bool wasTimedUpdate)
