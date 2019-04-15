@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     //7: 
     //255: log EEEEVERYTHING
 
-    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.Resources | DebugFlags.CollisionOps | DebugFlags.GeneralInfo | DebugFlags.ElapsedTime;
+    public const DebugFlags debugLevelFlags = DebugFlags.CrewLoadingOps | DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.DatabaseOpsOnTimer | DebugFlags.Resources | DebugFlags.CollisionOps | DebugFlags.GeneralInfo | DebugFlags.ElapsedTime;
     //add or subtract values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
     //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
 
@@ -76,9 +76,8 @@ public class GameManager : MonoBehaviour
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, DebugFlags.GeneralInfo);
         user_string = Authenticate();
-        //user_string = "User1"; //TODO: get actual from auth
 
-        resourceManager = new ResourceManager();
+        resourceManager = gameObject.AddComponent(typeof(ResourceManager)) as ResourceManager;
         //resourceManager.DEBUG_SetupResourcesList();
         
 
@@ -113,8 +112,8 @@ public class GameManager : MonoBehaviour
 
     System.Collections.IEnumerator DebugDelayedStart()
     {
-        DEBUG_WriteNewCrewTemplate();
-        DEBUG_WriteNewRoomTemplate();
+        //DEBUG_WriteNewCrewTemplate();
+        //DEBUG_WriteNewRoomTemplate();
 
         DebugLog("Waiting 4 seconds to start delayed actions...");
         yield return new WaitForSeconds(4);
@@ -122,24 +121,27 @@ public class GameManager : MonoBehaviour
         IsDoneLoading = true;
         //StartCoroutine("CreateFreshCrewMember", 2);
         StartCoroutine(FirebaseTimedUpdates(10.0f));
-        ProcessTimeSinceLastLogon();
+        yield return ProcessTimeSinceLastLogon();
+        resourceManager.StartAveragesProcessing();
 
     }
 
     System.Collections.IEnumerator FirebaseTimedUpdates(float waitTimeSeconds)
     {
         DebugLog("Starting timed update sequence with interval " + waitTimeSeconds + " seconds.");
+        int counter = 0;
         while (true)
         {
             yield return new WaitForSeconds(waitTimeSeconds);
-            DebugLog("[TimedUpdate] Triggered", DebugFlags.DatabaseOpsOnTimer);
-            
+            counter++;
+            DebugLog("[TimedUpdate] TimedUpdate #" + counter + " occurring", DebugFlags.DatabaseOpsOnTimer);
             
             FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").SetValueAsync(CurrentEpochTime);
             foreach (var item in toFirebasePush)
             {
                 item.FirebaseUpdate(true); //run the update, marking it as a timed update
             }
+            DebugLog("[TimedUpdate] TimedUpdate #" + counter + " done", DebugFlags.DatabaseOpsOnTimer);
         }
     }
 
@@ -154,10 +156,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ProcessTimeSinceLastLogon()
+    System.Collections.IEnumerator ProcessTimeSinceLastLogon()
     {
         DebugLog("Requesting time since last logon...", DebugFlags.GeneralInfo);
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").GetValueAsync().ContinueWith(task =>
+        yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
