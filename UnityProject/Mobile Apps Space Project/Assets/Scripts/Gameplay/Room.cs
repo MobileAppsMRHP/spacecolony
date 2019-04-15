@@ -74,7 +74,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         yield return new WaitUntil(() => !GameManager.instance.user_string.Equals("StillLoading"));
         GameManager.DebugLog("... user string loaded as '" + GameManager.instance.user_string + "', setting up room " + data.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + data.RoomUniqueIdentifierForDB).ValueChanged += HandleValueChanged;
-        DEBUG_WriteMyRoomData();
+        //DEBUG_WriteMyRoomData();
     }
 	
 	// Update is called once per frame

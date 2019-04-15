@@ -5,9 +5,10 @@ using UnityEngine.UI;
 
 public class StoreScreen : MonoBehaviour {
     public GameObject startButtons;
+    public GameObject buyMode;
+    public GameObject sellMode;
+    public GameObject commonMode;
     public GameManager gameManager;
-    public Button buyButton;
-    public Button sellButton;
     public Button confirmButton;
     public Text moneyAmountText;
     public Text resourceAmountText;
@@ -26,14 +27,20 @@ public class StoreScreen : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         moneyAmount = resourceAmount * 15;
+        moneyAmountText.text = moneyAmount.ToString();
+        resourceAmountText.text = resourceAmount.ToString();
         switch (storeMode)
         {
             case StoreMode.none:
                 startButtons.SetActive(true);
+                commonMode.SetActive(false);
+                buyMode.SetActive(false);
+                sellMode.SetActive(false);
                 break;
             
             case StoreMode.buy:
                 startButtons.SetActive(false);
+                commonMode.SetActive(true);
                 if (gameManager.GetResource(Shared.ResourceTypes.money) < moneyAmount)
                     confirmButton.interactable = false;
                 else
@@ -41,6 +48,9 @@ public class StoreScreen : MonoBehaviour {
                 break;
 
             case StoreMode.sell:
+                startButtons.SetActive(false);
+                sellMode.SetActive(true);
+                commonMode.SetActive(true);
                 if (gameManager.GetResource(resourceSelected) < resourceAmount)
                     confirmButton.interactable = false;
                 else
@@ -48,6 +58,7 @@ public class StoreScreen : MonoBehaviour {
                 startButtons.SetActive(false);
                 break;
         }
+
 	}
 
     public void StartStoreScreen()
@@ -62,7 +73,7 @@ public class StoreScreen : MonoBehaviour {
         storeMode = newStoreMode;
     }
 
-    public void ChangeValue(float num) //thinking about just making a sell or buy 50 resource button
+    public void ChangeValue(float num) 
     {
         resourceAmount += num;
         if (resourceAmount < 1f)
