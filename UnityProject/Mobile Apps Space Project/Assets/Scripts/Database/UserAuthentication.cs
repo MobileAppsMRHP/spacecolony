@@ -743,6 +743,14 @@ public class UserAuthentication : MonoBehaviour
         }
     }
 
+    public Boolean UserLoggedIn()
+    {
+        if (auth.CurrentUser != null)
+            return true;
+        else
+            return false;
+    }
+
 
 }
 
