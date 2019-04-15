@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
 
@@ -14,6 +15,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     public Shared.RoomTypes RoomType;
     public bool currentlySelected;
     private GameManager gameManager;
+    public GameObject mainScreen;
     List<CrewSkills> crewSkillsResourceMultipliers;
 
     //public string RoomUniqueIdentifierForDB;
@@ -44,22 +46,9 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     {
         public int RoomLevel;
         public string RoomUniqueIdentifierForDB;
-        /*private string roomUniqueIdentifierForDB;
-        public string RoomUniqueIdentifierForDB
-        {
-            get
-            {
-                return roomUniqueIdentifierForDB == null || roomUniqueIdentifierForDB.Equals("") ? "UNSET_ROOM_ID" : roomUniqueIdentifierForDB;
-            }
-            set
-            {
-                roomUniqueIdentifierForDB = value;
-            }
-        }*/
     }
 
     public DataToSerialize data;
-
     // Use this for initialization
     void Start () {
         UpgradeResourceMultiplier = new List<Vector3>()
@@ -85,15 +74,20 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         yield return new WaitUntil(() => !GameManager.instance.user_string.Equals("StillLoading"));
         GameManager.DebugLog("... user string loaded as '" + GameManager.instance.user_string + "', setting up room " + data.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + data.RoomUniqueIdentifierForDB).ValueChanged += HandleValueChanged;
-        DEBUG_WriteMyRoomData();
+        //DEBUG_WriteMyRoomData();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) //if there are touch events in the buffer to process...
+        if (mainScreen.activeSelf && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) //if there are touch events in the buffer to process...
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position)), new Vector2(0f, 0f)); //do a raycast to see what they hit
-            if (hit.collider.name == gameObject.name) //if it hit something, anything, ....
+            //Debug.Log(EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId));
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+            {
+                //do nothing
+            }
+            else if (hit.collider.name == gameObject.name)
             {
                 GameManager.DebugLog("Room " + data.RoomUniqueIdentifierForDB + " selected", DebugFlags.CollisionOps); //log that something was hit by the touch event
                 Debug.Log(hit.collider);
@@ -142,7 +136,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         crewInThisRoom.Remove(crewToRemove);
     }
 
-    public void CrewIntoPosition(Crew crewToMove)
+    public void CrewIntoPosition()
     {
         for (int i = 0; i < crewInThisRoom.Count; i++)
         {
@@ -152,7 +146,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
                 {
                     Vector3 oldPosition = crewInThisRoom[i].transform.position;
                     Vector3 newPosition = crewLocations[i].transform.position;
-                    oldPosition = newPosition;
+                    crewInThisRoom[i].transform.position = newPosition;
                 }
                 else
                 {
@@ -177,6 +171,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
                 float resourceIncrease = CalculateTotalResourceIncrease(1); //still need to test this
                 gameManager.ChangeResource(Shared.ResourceTypes.energy, resourceIncrease);
                 break;
+            //water
             default: //empty room
                 //do nothing
             break;

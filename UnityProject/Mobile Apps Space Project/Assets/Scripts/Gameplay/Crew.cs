@@ -6,13 +6,17 @@ using System;
 
 
 
-public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
+public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime {
 
     public Room currentRoom;
     
     public string identifier = "_BLANK"; //don't change this! only fresh crew members get this changed by the code
 
     [System.NonSerialized] public static List<string> Possible_Names = new List<string>();
+    public static float Exp_Per_Sec = 0.01f;
+    public GameManager gameManager;
+
+    private int totalUpdatesRecieved = 0;
 
     //private GameManager gameManager;
 
@@ -56,8 +60,17 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
     {
         this.identifier = identifier;
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier).ValueChanged += HandleValueChanged;
-        GameManager.DebugLog("Crew startup done for " + identifier, DebugFlags.CrewLoadingOps);
+        StartCoroutine(CrewCreatorStartMultithread());
+    }
+
+    public IEnumerator CrewCreatorStartMultithread()
+    {
+        GameManager.DebugLog("Waiting for crew data to be recieved before proceeding...", DebugFlags.CrewLoadingOps);
+        yield return new WaitUntil(() => totalUpdatesRecieved > 0);
+        GameManager.DebugLog("...crew data recieved; proceeding.", DebugFlags.CrewLoadingOps);
         GameManager.instance.AddToFirebaseTimedUpdates(this);
+        GameManager.instance.AddToProcessElapsedTime(this);
+        GameManager.DebugLog("Crew startup done for " + identifier, DebugFlags.CrewLoadingOps);
     }
 
     // Update is called once per frame
@@ -104,6 +117,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
 
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
+        totalUpdatesRecieved++;
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " with JSON from database: " + json, DebugFlags.DatabaseOps);
         JsonUtility.FromJsonOverwrite(json, this);
@@ -185,20 +199,54 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable {
 
     void IncreaseExperience()
     {
-        if (GetComponent<DragAndDrop>().inRoom)
+        ProcessTime(Time.deltaTime);
+    }
+
+    public void ProcessTime(float deltaTime)
+    {
+        if (currentRoom != null)
         {
-            progressToNextLevel += 0.01f * Time.deltaTime;
+            float progress = Exp_Per_Sec * deltaTime;
+            progressToNextLevel += progress;
+            if (deltaTime > Shared.ProcessElapsedTime_ConsiderLoggedOff)
+            {
+                GameManager.DebugLog("[ElapsedTime] " + deltaTime + " seconds passed, causing crew " + identifier + " to increase ProgressToNextLevel by " + progress, DebugFlags.ElapsedTime);
+                FirebaseUpdate(false);
+            }
+            
         }
     }
 
     public void FirebaseUpdate(bool wasTimedUpdate)
     {
-        string json = JsonUtility.ToJson(this);
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier).SetRawJsonValueAsync(json);
-        if (wasTimedUpdate)
-            GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
-        else
-            GameManager.DebugLog("[>TriggeredUpdate] Updated crew " + identifier + " database contents with " + json, DebugFlags.DatabaseOps);
+        UnityMainThreadDispatcher.Instance().Enqueue(() => {
+            //Debug.Log("This is executed from the main thread");
+            string json = JsonUtility.ToJson(this);
+            FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier).SetRawJsonValueAsync(json);
+            if (wasTimedUpdate)
+                GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
+            else
+                GameManager.DebugLog("[>TriggeredUpdate] Updated crew " + identifier + " database contents with " + json, DebugFlags.DatabaseOps);
+        });
+    }
 
+    public IEnumerator MoveCrewBasedOnString()
+    {
+        Room roomToMoveCrewTo = null;
+        foreach (var item in gameManager.Rooms)
+        {
+            if (item.data.RoomUniqueIdentifierForDB.Equals(CurrentRoomStringForDB))
+            {
+                roomToMoveCrewTo = item;
+            }
+            else
+            {
+                GameManager.DebugLog("Tried to move crew to room that doesn't exist", DebugFlags.Warning);
+                return null;
+            }
+        }
+        transform.position = roomToMoveCrewTo.GetComponent<Transform>().position;
+        GameManager.DebugLog("Crew moving to room successful!!", DebugFlags.CollisionOps);
+        return null;
     }
 }

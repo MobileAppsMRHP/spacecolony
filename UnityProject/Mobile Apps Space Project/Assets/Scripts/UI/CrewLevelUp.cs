@@ -37,7 +37,7 @@ public class CrewLevelUp : MonoBehaviour {
             //change a text to show lack of skill points
         }
         //show progress to next level of crew
-        experienceBar.transform.localScale = new Vector3(selectedCrew.progressToNextLevel, 1, 1);
+        experienceBar.transform.localScale = new Vector3(selectedCrew.progressToNextLevel / 100f, 1, 1);
 	}
 
     public void SwitchCrew(bool right)

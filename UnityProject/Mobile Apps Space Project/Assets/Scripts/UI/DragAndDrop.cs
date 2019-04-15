@@ -55,18 +55,23 @@ public class DragAndDrop : MonoBehaviour
 
             if (collider.tag == "Room")
             {
+                
+                //Debug.Assert(!droppedRoom.crewInThisRoom.Contains(droppedCrew));
                 if (!droppedRoom.crewInThisRoom.Contains(droppedCrew) && droppedRoom.SpacesAvailable())
                 { //if the room does not already contain this crew member && the room has spaces avalible
                     droppedRoom.AddPerson(droppedCrew); //add the crew member to the new room
                     if (oldRoom != null) //if the crew member had an old room...
                         oldRoom.RemovePerson(droppedCrew); //remove the crew member from the room it is currently in
                     GameManager.DebugLog("Moving " + droppedCrew.crewName + " into room " + droppedRoom, DebugFlags.CollisionOps);
+                    GetComponent<Crew>().CurrentRoomStringForDB = droppedRoom.data.RoomUniqueIdentifierForDB;
+                    GetComponent<Crew>().FirebaseUpdate(false);
+                    
                 }
                 else if (!droppedRoom.crewInThisRoom.Contains(droppedCrew))
                 {
                     GameManager.DebugLog("Can't enter room for some reason", DebugFlags.CollisionOps);
                 }
-                droppedRoom.CrewIntoPosition(droppedCrew);
+                droppedRoom.CrewIntoPosition();
                 inRoom = true;
                 droppedCrew.currentRoom = droppedRoom; //add the crew memeber to the room's list of the crew it contains
             }
@@ -74,6 +79,10 @@ public class DragAndDrop : MonoBehaviour
             {
                 transform.position = initialPosition;
                 GameManager.DebugLog("Returning to original room", DebugFlags.CollisionOps);
+            }
+            else
+            {
+                GameManager.DebugLog("It did none of the collision things", DebugFlags.CollisionOps);
             }
         }
 
