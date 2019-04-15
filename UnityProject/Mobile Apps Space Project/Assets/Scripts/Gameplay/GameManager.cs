@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     //7: 
     //255: log EEEEVERYTHING
 
-    public const DebugFlags debugLevelFlags = DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.DatabaseOpsOnTimer | DebugFlags.Resources | DebugFlags.CollisionOps | DebugFlags.GeneralInfo | DebugFlags.ElapsedTime;
+    public const DebugFlags debugLevelFlags = DebugFlags.CrewLoadingOps | DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.DatabaseOpsOnTimer | DebugFlags.Resources | DebugFlags.CollisionOps | DebugFlags.GeneralInfo | DebugFlags.ElapsedTime;
     //add or subtract values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
     //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
 
@@ -112,8 +112,8 @@ public class GameManager : MonoBehaviour
 
     System.Collections.IEnumerator DebugDelayedStart()
     {
-        DEBUG_WriteNewCrewTemplate();
-        DEBUG_WriteNewRoomTemplate();
+        //DEBUG_WriteNewCrewTemplate();
+        //DEBUG_WriteNewRoomTemplate();
 
         DebugLog("Waiting 4 seconds to start delayed actions...");
         yield return new WaitForSeconds(4);
@@ -129,17 +129,19 @@ public class GameManager : MonoBehaviour
     System.Collections.IEnumerator FirebaseTimedUpdates(float waitTimeSeconds)
     {
         DebugLog("Starting timed update sequence with interval " + waitTimeSeconds + " seconds.");
+        int counter = 0;
         while (true)
         {
             yield return new WaitForSeconds(waitTimeSeconds);
-            DebugLog("[TimedUpdate] TimedUpdate occurring", DebugFlags.DatabaseOpsOnTimer);
+            counter++;
+            DebugLog("[TimedUpdate] TimedUpdate #" + counter + " occurring", DebugFlags.DatabaseOpsOnTimer);
             
             FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").SetValueAsync(CurrentEpochTime);
             foreach (var item in toFirebasePush)
             {
                 item.FirebaseUpdate(true); //run the update, marking it as a timed update
             }
-            DebugLog("[TimedUpdate] TimedUpdate done", DebugFlags.DatabaseOpsOnTimer);
+            DebugLog("[TimedUpdate] TimedUpdate #" + counter + " done", DebugFlags.DatabaseOpsOnTimer);
         }
     }
 

@@ -82,9 +82,11 @@ public class ResourceManager : MonoBehaviour, IFirebaseTimedUpdateable, IProcess
 
     public IEnumerator CalculateAverages(float intervalSeconds)
     {
+        int counter = 0;
         while (true)
         {
-            GameManager.DebugLog("Calculating resource averages over " + intervalSeconds + " seconds...", DebugFlags.DatabaseOpsOnTimer);
+            counter++;
+            GameManager.DebugLog("(Loop #" + counter + ") Calculating resource averages over " + intervalSeconds + " seconds...", DebugFlags.DatabaseOpsOnTimer);
             DictionaryOfResourceAndFloat pastResources = new DictionaryOfResourceAndFloat();
 
             foreach (var item in resources)
@@ -104,8 +106,8 @@ public class ResourceManager : MonoBehaviour, IFirebaseTimedUpdateable, IProcess
 
             string json2 = JsonUtility.ToJson(resourcesAverages);
             FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/ResourceAverages").SetRawJsonValueAsync(json2);
-            GameManager.DebugLog("Updated user's resources averages database contents with " + json2 /*+ "\n Waiting " + intervalSeconds + " seconds for next round."*/, DebugFlags.DatabaseOpsOnTimer);
-            //yield return new WaitForSeconds(intervalSeconds);
+            GameManager.DebugLog("(Loop #" + counter + ") Updated user's resources averages database contents with " + json2 /*+ "\n Waiting " + intervalSeconds + " seconds for next round."*/, DebugFlags.DatabaseOpsOnTimer);
+            yield return new WaitForSeconds(1.0f);
         }
     }
 
