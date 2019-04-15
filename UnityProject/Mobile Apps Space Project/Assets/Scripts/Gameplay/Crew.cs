@@ -25,6 +25,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
 
     [System.NonSerialized] public static List<string> Possible_Names = new List<string>();
     public static float Exp_Per_Sec = 0.01f;
+    public GameManager gameManager;
 
     private int totalUpdatesRecieved = 0;
 
@@ -205,5 +206,25 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
             else
                 GameManager.DebugLog("[>TriggeredUpdate] Updated crew " + identifier + " database contents with " + json, DebugFlags.DatabaseOps);
         });
+    }
+
+    public IEnumerator MoveCrewBasedOnString()
+    {
+        Room roomToMoveCrewTo = null;
+        foreach (var item in gameManager.Rooms)
+        {
+            if (item.data.RoomUniqueIdentifierForDB.Equals(CurrentRoomStringForDB))
+            {
+                roomToMoveCrewTo = item;
+            }
+            else
+            {
+                GameManager.DebugLog("Tried to move crew to room that doesn't exist", DebugFlags.Warning);
+                return null;
+            }
+        }
+        transform.position = roomToMoveCrewTo.GetComponent<Transform>().position;
+        GameManager.DebugLog("Crew moving to room successful!!", DebugFlags.CollisionOps);
+        return null;
     }
 }
