@@ -4,10 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class StoreScreen : MonoBehaviour {
-    public GameObject startButtons;
-    public GameObject buyMode;
-    public GameObject sellMode;
-    public GameObject commonMode;
     public GameManager gameManager;
     public Button confirmButton;
     public Text moneyAmountText;
@@ -32,15 +28,9 @@ public class StoreScreen : MonoBehaviour {
         switch (storeMode)
         {
             case StoreMode.none:
-                startButtons.SetActive(true);
-                commonMode.SetActive(false);
-                buyMode.SetActive(false);
-                sellMode.SetActive(false);
                 break;
             
             case StoreMode.buy:
-                startButtons.SetActive(false);
-                commonMode.SetActive(true);
                 if (gameManager.GetResource(Shared.ResourceTypes.money) < moneyAmount)
                     confirmButton.interactable = false;
                 else
@@ -48,14 +38,10 @@ public class StoreScreen : MonoBehaviour {
                 break;
 
             case StoreMode.sell:
-                startButtons.SetActive(false);
-                sellMode.SetActive(true);
-                commonMode.SetActive(true);
                 if (gameManager.GetResource(resourceSelected) < resourceAmount)
                     confirmButton.interactable = false;
                 else
                     confirmButton.interactable = true;
-                startButtons.SetActive(false);
                 break;
         }
 
@@ -68,9 +54,9 @@ public class StoreScreen : MonoBehaviour {
         resourceAmount = 1f;
     }
 
-    public void ChangeStoreMode(StoreMode newStoreMode)
+    public void ChangeStoreMode(int num)//StoreMode newStoreMode
     {
-        storeMode = newStoreMode;
+        storeMode = (StoreMode)num;
     }
 
     public void ChangeValue(float num) 
@@ -82,9 +68,9 @@ public class StoreScreen : MonoBehaviour {
         }
     }
 
-    public void ChangeResource(Shared.ResourceTypes newResource)
+    public void ChangeResource(int num)
     {
-        resourceSelected = newResource;
+        resourceSelected = (Shared.ResourceTypes)num;
     }
 
     public void ConfirmTransaction()
