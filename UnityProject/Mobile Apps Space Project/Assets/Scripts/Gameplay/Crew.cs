@@ -23,35 +23,34 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     //public bool newCharacter;
 
     [System.Serializable]
-    public struct DataToSerialize
+    public struct TimedDataToSerialize
     {
-        public string CrewName;
-        public int SkillPoints;
         public float ProgressToNextLevel;
-        public string RoomUniqueIdentifierForDB;
+    }
 
+    [System.Serializable]
+    public struct RoomStuff
+    {
+        public string CurrentRoomStringForDB;
+    }
+
+    ;
+
+    [System.Serializable]
+    public struct Skills
+    {
+        public int SkillPoints;
         public int Skill_Cooking;
         public int Skill_Navigation;
         public int Skill_Medical;
         public int Skill_Fighting;
         public int Level;
-
-        public string CurrentRoomStringForDB;
     }
 
-    public DataToSerialize data;
-
-    public string CrewName
-    {
-        get
-        {
-            return data.CrewName;
-        }
-        set
-        {
-            data.CrewName = value;
-        }
-    }
+    public TimedDataToSerialize TimedData;
+    public Skills SkillData;
+    public RoomStuff RoomData;
+    public string CrewName;
 
 
 
@@ -144,27 +143,28 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
             GameManager.DebugLog("Names list done building. Continuing with name setting. Length: " + Possible_Names.Count, DebugFlags.CrewLoadingOps);
         }
         System.Random rand = new System.Random();
-        this.crewName = Possible_Names[rand.Next(Possible_Names.Count)];
+        CrewName = Possible_Names[rand.Next(Possible_Names.Count)];
 
         //write self to database
-        GameManager.DebugLog("Writing FRESH crew with name " + crewName + " and id " + identifier + " to database...", DebugFlags.CrewLoadingOps);
-        yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier).SetRawJsonValueAsync(JsonUtility.ToJson(this));
+        GameManager.DebugLog("Writing FRESH crew with name " + CrewName + " and id " + identifier + " to database...", DebugFlags.CrewLoadingOps);
+        yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "CrewName").SetRawJsonValueAsync(JsonUtility.ToJson(CrewName));
+
         GameManager.DebugLog("FRESH crew setup done for " + identifier, DebugFlags.CrewLoadingOps);
         CrewCreatorStart(identifier); //run regular setup
     }
 
-    public string GetName()
+    /*public string GetName()
     {
         return crewName;
-    }
+    }*/
 
     public bool NextLevel()
     {
-        if (GetComponent<DragAndDrop>().inRoom && progressToNextLevel > 100)
+        if (GetComponent<DragAndDrop>().inRoom && TimedData.ProgressToNextLevel > 100)
         {
-            progressToNextLevel -= 100;
-            skillPoints += 3;
-            level++;
+            TimedData.ProgressToNextLevel -= 100;
+            SkillData.SkillPoints += 3;
+            SkillData.Level++;
             FirebaseUpdate(false);
             GameManager.DebugLog("Crew " + identifier + " leveled up!", DebugFlags.GeneralInfo);
             return true;
@@ -175,24 +175,24 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
 
     public void IncreaseSkill(int skillNum)
     {
-        if (skillPoints > 0)
+        if (SkillData.SkillPoints > 0)
         {
             switch (skillNum)
             {
                 case 0:
-                    cooking++;
+                    SkillData.Skill_Cooking++;
                     break;
                 case 1:
-                    navigation++;
+                    SkillData.Skill_Navigation++;
                     break;
                 case 2:
-                    medical++;
+                    SkillData.Skill_Medical++;
                     break;
                 case 3:
-                    fighting++;
+                    SkillData.Skill_Fighting++;
                     break;
             }
-            skillPoints--;
+            SkillData.SkillPoints--;
             FirebaseUpdate(false);
         }
     }
@@ -207,7 +207,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         if (currentRoom != null)
         {
             float progress = Exp_Per_Sec * deltaTime;
-            progressToNextLevel += progress;
+            TimedData.ProgressToNextLevel += progress;
             if (deltaTime > Shared.ProcessElapsedTime_ConsiderLoggedOff)
             {
                 GameManager.DebugLog("[ElapsedTime] " + deltaTime + " seconds passed, causing crew " + identifier + " to increase ProgressToNextLevel by " + progress, DebugFlags.ElapsedTime);
@@ -221,8 +221,8 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     {
         UnityMainThreadDispatcher.Instance().Enqueue(() => {
             //Debug.Log("This is executed from the main thread");
-            string json = JsonUtility.ToJson(this);
-            FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier).SetRawJsonValueAsync(json);
+            string json = JsonUtility.ToJson(TimedData);
+            FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/TimedDataToSerialize").SetRawJsonValueAsync(json);
             if (wasTimedUpdate)
                 GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
             else
@@ -235,7 +235,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         Room roomToMoveCrewTo = null;
         foreach (var item in gameManager.Rooms)
         {
-            if (item.data.RoomUniqueIdentifierForDB.Equals(CurrentRoomStringForDB))
+            if (item.data.RoomUniqueIdentifierForDB.Equals(RoomData.CurrentRoomStringForDB))
             {
                 roomToMoveCrewTo = item;
             }
