@@ -31,10 +31,19 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     [System.Serializable]
     public struct RoomStuff
     {
+        /*private String currentRoomString;
+        public string CurrentRoomStringForDB {
+            get
+            {
+                return currentRoomString;
+            }
+            set
+            {
+                currentRoomString = value;
+                DatabaseUpdateRoomData();
+            }*/
         public string CurrentRoomStringForDB;
     }
-
-    ;
 
     [System.Serializable]
     public struct Skills
@@ -58,7 +67,10 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     public void CrewCreatorStart(string identifier)
     {
         this.identifier = identifier;
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier).ValueChanged += HandleValueChanged;
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/RoomData").ValueChanged += HandleRoomValueChanged;
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/SkillData").ValueChanged += HandleSkillValueChanged;
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/TimedData").ValueChanged += HandleTimedValueChanged;
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/CrewName").ValueChanged += HandleNameValueChanged;
         StartCoroutine(CrewCreatorStartMultithread());
     }
 
@@ -122,6 +134,8 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         JsonUtility.FromJsonOverwrite(json, this);
     }
 
+
+
     public void FreshCrewSetup()
     {
         //few things here need initial values because they are set by the prefab. to give initial values, edit the prefab.
@@ -165,7 +179,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
             TimedData.ProgressToNextLevel -= 100;
             SkillData.SkillPoints += 3;
             SkillData.Level++;
-            FirebaseUpdate(false);
+            DatabaseUpdateSkillsData();
             GameManager.DebugLog("Crew " + identifier + " leveled up!", DebugFlags.GeneralInfo);
             return true;
         }
@@ -193,7 +207,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
                     break;
             }
             SkillData.SkillPoints--;
-            FirebaseUpdate(false);
+            DatabaseUpdateSkillsData();
         }
     }
 
@@ -224,29 +238,44 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
             string json = JsonUtility.ToJson(TimedData);
             FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/TimedDataToSerialize").SetRawJsonValueAsync(json);
             if (wasTimedUpdate)
-                GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
+                GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " TimedData database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
             else
-                GameManager.DebugLog("[>TriggeredUpdate] Updated crew " + identifier + " database contents with " + json, DebugFlags.DatabaseOps);
+                GameManager.DebugLog("[>TriggeredUpdate] Updated crew " + identifier + " TimedData database contents with " + json, DebugFlags.DatabaseOps);
         });
     }
 
-    public IEnumerator MoveCrewBasedOnString()
+    public void DatabaseUpdateRoomData()
+    {
+        string json = JsonUtility.ToJson(RoomData);
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/RoomData").SetRawJsonValueAsync(json);
+        GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " RoomData database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
+    }
+
+    public void DatabaseUpdateSkillsData()
+    {
+        string json = JsonUtility.ToJson(SkillData);
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/SkillData").SetRawJsonValueAsync(json);
+        GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " SkillData database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
+    }
+
+    public void MoveCrewBasedOnString(string roomToMoveTo)
     {
         Room roomToMoveCrewTo = null;
         foreach (var item in gameManager.Rooms)
         {
-            if (item.data.RoomUniqueIdentifierForDB.Equals(RoomData.CurrentRoomStringForDB))
+            if (item.data.RoomUniqueIdentifierForDB.Equals(roomToMoveTo))
             {
                 roomToMoveCrewTo = item;
-            }
-            else
-            {
-                GameManager.DebugLog("Tried to move crew to room that doesn't exist", DebugFlags.Warning);
-                return null;
+                break;
             }
         }
+        if(roomToMoveCrewTo == null) //if still null, error
+        {
+            GameManager.DebugLog("Tried to move crew '" + identifier + "' to a room that doesn't exist ('" + roomToMoveTo + "')", DebugFlags.Warning);
+            return;// null;
+        }
         transform.position = roomToMoveCrewTo.GetComponent<Transform>().position;
-        GameManager.DebugLog("Crew moving to room successful!!", DebugFlags.CollisionOps);
-        return null;
+        GameManager.DebugLog("Successfully moved crew '" + identifier + "' to room '" + roomToMoveTo + "'", DebugFlags.CollisionOps);
+        DatabaseUpdateRoomData();
     }
 }

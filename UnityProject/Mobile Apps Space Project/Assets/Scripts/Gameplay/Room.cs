@@ -37,7 +37,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
 
         public float MultipliedSum(Crew nCrew)
         {
-            return nCrew.fighting * fighting + nCrew.medical * medical + nCrew.cooking * cooking + nCrew.navigation * navigation;
+            return nCrew.SkillData.Skill_Fighting * fighting + nCrew.SkillData.Skill_Medical * medical + nCrew.SkillData.Skill_Cooking * cooking + nCrew.SkillData.Skill_Navigation * navigation;
         }
     }
 

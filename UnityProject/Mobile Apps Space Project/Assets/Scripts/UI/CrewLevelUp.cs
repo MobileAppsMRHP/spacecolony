@@ -19,25 +19,25 @@ public class CrewLevelUp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        crewInfo[0].text = selectedCrew.crewName;
-        crewInfo[1].text = selectedCrew.cooking.ToString();
-        crewInfo[2].text = selectedCrew.navigation.ToString();
-        crewInfo[3].text = selectedCrew.medical.ToString();
-        crewInfo[4].text = selectedCrew.fighting.ToString();
-        crewInfo[5].text = selectedCrew.skillPoints.ToString();
-        crewInfo[6].text = selectedCrew.level.ToString();
+        crewInfo[0].text = selectedCrew.CrewName;
+        crewInfo[1].text = selectedCrew.SkillData.Skill_Cooking.ToString();
+        crewInfo[2].text = selectedCrew.SkillData.Skill_Navigation.ToString();
+        crewInfo[3].text = selectedCrew.SkillData.Skill_Medical.ToString();
+        crewInfo[4].text = selectedCrew.SkillData.Skill_Fighting.ToString();
+        crewInfo[5].text = selectedCrew.SkillData.SkillPoints.ToString();
+        crewInfo[6].text = selectedCrew.SkillData.Level.ToString();
         crewImage.sprite = selectedCrew.GetComponent<SpriteRenderer>().sprite;
         for (int i=0; i<gameManager.CrewMembers.Count; i++)
         {
             gameManager.CrewMembers[i].GetComponent<DragAndDrop>().selected = false;
         }
-        if (selectedCrew.skillPoints == 0)
+        if (selectedCrew.SkillData.SkillPoints== 0)
         {
             //change button color or disable button
             //change a text to show lack of skill points
         }
         //show progress to next level of crew
-        experienceBar.transform.localScale = new Vector3(selectedCrew.progressToNextLevel / 100f, 1, 1);
+        experienceBar.transform.localScale = new Vector3(selectedCrew.TimedData.ProgressToNextLevel / 100f, 1, 1);
 	}
 
     public void SwitchCrew(bool right)
