@@ -112,8 +112,8 @@ public class GameManager : MonoBehaviour
 
     System.Collections.IEnumerator DebugDelayedStart()
     {
-        //DEBUG_WriteNewCrewTemplate();
-        //DEBUG_WriteNewRoomTemplate();
+        DEBUG_WriteNewCrewTemplate();
+        DEBUG_WriteNewRoomTemplate();
 
         DebugLog("Waiting 4 seconds to start delayed actions...");
         yield return new WaitForSeconds(4);
@@ -277,13 +277,13 @@ public class GameManager : MonoBehaviour
     void DEBUG_WriteNewCrewTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data
     {
         DebugLog("[DEBUG] Replacing new CREW MEMBER templace with crew prefab.");
-        FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/crew").SetRawJsonValueAsync(JsonUtility.ToJson(crewCreator.prefab));
+        FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/crew").SetRawJsonValueAsync(JsonUtility.ToJson(crewCreator.prefab.AllData));
     }
 
     void DEBUG_WriteNewRoomTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data
     {
         DebugLog("[DEBUG] Replacing new ROOM templace with room prefab.");
-        FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").SetRawJsonValueAsync(JsonUtility.ToJson(roomCreator.prefab));
+        FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").SetRawJsonValueAsync(JsonUtility.ToJson(roomCreator.prefab.data));
     }
 
     //TODO: make this actually display a loading screen

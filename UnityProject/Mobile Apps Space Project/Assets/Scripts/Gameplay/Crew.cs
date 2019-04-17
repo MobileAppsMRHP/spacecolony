@@ -9,7 +9,7 @@ using System;
 public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime {
 
     public Room currentRoom;
-    
+
     public string identifier = "_BLANK"; //don't change this! only fresh crew members get this changed by the code
 
     [System.NonSerialized] public static List<string> Possible_Names = new List<string>();
@@ -22,51 +22,94 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
 
     //public bool newCharacter;
 
-    [System.Serializable]
-    public struct TimedDataToSerialize
-    {
-        public float ProgressToNextLevel;
-    }
 
     [System.Serializable]
-    public struct RoomStuff
+    public struct Data
     {
-        /*private String currentRoomString;
-        public string CurrentRoomStringForDB {
-            get
-            {
-                return currentRoomString;
-            }
-            set
-            {
-                currentRoomString = value;
-                DatabaseUpdateRoomData();
-            }*/
-        public string CurrentRoomStringForDB;
+        [System.Serializable]
+        public struct TimedDataToSerialize
+        {
+            public float ProgressToNextLevel;
+        }
+
+        [System.Serializable]
+        public struct RoomStuff
+        {
+            /*private String currentRoomString;
+            public string CurrentRoomStringForDB {
+                get
+                {
+                    return currentRoomString;
+                }
+                set
+                {
+                    currentRoomString = value;
+                    DatabaseUpdateRoomData();
+                }*/
+            public string CurrentRoomStringForDB;
+        }
+
+        [System.Serializable]
+        public struct Skills
+        {
+            public int SkillPoints;
+            public int Skill_Cooking;
+            public int Skill_Navigation;
+            public int Skill_Medical;
+            public int Skill_Fighting;
+            public int Level;
+        }
+
+        public TimedDataToSerialize TimedData;
+        public Skills SkillData;
+        public RoomStuff RoomData;
+        public string CrewName;
     }
 
-    [System.Serializable]
-    public struct Skills
+    public Data AllData;
+
+    /*public Data.TimedDataToSerialize TimedData
     {
-        public int SkillPoints;
-        public int Skill_Cooking;
-        public int Skill_Navigation;
-        public int Skill_Medical;
-        public int Skill_Fighting;
-        public int Level;
+        get
+        {
+            return AllData.TimedData;
+        }
     }
-
-    public TimedDataToSerialize TimedData;
-    public Skills SkillData;
-    public RoomStuff RoomData;
-    public string CrewName;
-
-
+    public Data.Skills SkillData
+    {
+        get
+        {
+            return AllData.SkillData;
+        }
+        set
+        {
+            AllData.SkillData = value;
+        }
+    }
+    public Data.RoomStuff RoomData
+    {
+        get
+        {
+            return AllData.RoomData;
+        }
+    }*/
+    public string CrewName
+    {
+        get
+        {
+            return AllData.CrewName;
+        }
+        set
+        {
+            AllData.CrewName = value;
+        }
+    }
 
     // Use this for initialization
     public void CrewCreatorStart(string identifier)
     {
         this.identifier = identifier;
+        //LoadAllData();
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/RoomData").ValueChanged += HandleRoomValueChanged;
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/SkillData").ValueChanged += HandleSkillValueChanged;
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/TimedData").ValueChanged += HandleTimedValueChanged;
@@ -126,12 +169,65 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         });
     }
 
-    void HandleValueChanged(object sender, ValueChangedEventArgs args)
+    private void LoadAllData()
+    {
+        FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/possible-crew-names").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                // Handle the error...
+                GameManager.DebugLog("Data retrival error when prompting for crew AllData!", DebugFlags.Critical);
+            }
+            else if (task.IsCompleted)
+            {
+                
+                string json = task.Result.Value.ToString();
+                GameManager.DebugLog("Recieved AllData: " + json, DebugFlags.Critical);
+                JsonUtility.FromJsonOverwrite(json, AllData);
+                totalUpdatesRecieved++;
+            }
+            else
+            {
+                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
+                GameManager.DebugLog("Task error when prompting for crew AllData", DebugFlags.Critical);
+            }
+        });
+    }
+
+    /*void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
         totalUpdatesRecieved++;
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " with JSON from database: " + json, DebugFlags.DatabaseOps);
         JsonUtility.FromJsonOverwrite(json, this);
+    }*/
+
+    void HandleRoomValueChanged(object sender, ValueChangedEventArgs args)
+    {
+        string json = args.Snapshot.GetRawJsonValue();
+        GameManager.DebugLog("Overwrote crew member " + this.name + " ROOM data with JSON from database: " + json, DebugFlags.DatabaseOps);
+        JsonUtility.FromJsonOverwrite(json, AllData.RoomData);
+    }
+
+    void HandleSkillValueChanged(object sender, ValueChangedEventArgs args)
+    {
+        string json = args.Snapshot.GetRawJsonValue();
+        GameManager.DebugLog("Overwrote crew member " + this.name + " SKILL data with JSON from database: " + json, DebugFlags.DatabaseOps);
+        JsonUtility.FromJsonOverwrite(json, AllData.SkillData);
+    }
+
+    void HandleTimedValueChanged(object sender, ValueChangedEventArgs args)
+    {
+        string json = args.Snapshot.GetRawJsonValue();
+        GameManager.DebugLog("Overwrote crew member " + this.name + " TIMED data with JSON from database: " + json, DebugFlags.DatabaseOps);
+        JsonUtility.FromJsonOverwrite(json, AllData.TimedData);
+    }
+
+    void HandleNameValueChanged(object sender, ValueChangedEventArgs args)
+    {
+        string json = args.Snapshot.GetRawJsonValue();
+        GameManager.DebugLog("Overwrote crew member " + this.name + " NAME data with JSON from database: " + json, DebugFlags.DatabaseOps);
+        JsonUtility.FromJsonOverwrite(json, AllData.CrewName);
     }
 
 
@@ -174,11 +270,11 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
 
     public bool NextLevel()
     {
-        if (GetComponent<DragAndDrop>().inRoom && TimedData.ProgressToNextLevel > 100)
+        if (GetComponent<DragAndDrop>().inRoom && AllData.TimedData.ProgressToNextLevel > 100)
         {
-            TimedData.ProgressToNextLevel -= 100;
-            SkillData.SkillPoints += 3;
-            SkillData.Level++;
+            AllData.TimedData.ProgressToNextLevel -= 100;
+            AllData.SkillData.SkillPoints += 3;
+            AllData.SkillData.Level++;
             DatabaseUpdateSkillsData();
             GameManager.DebugLog("Crew " + identifier + " leveled up!", DebugFlags.GeneralInfo);
             return true;
@@ -189,24 +285,24 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
 
     public void IncreaseSkill(int skillNum)
     {
-        if (SkillData.SkillPoints > 0)
+        if (AllData.SkillData.SkillPoints > 0)
         {
             switch (skillNum)
             {
                 case 0:
-                    SkillData.Skill_Cooking++;
+                    AllData.SkillData.Skill_Cooking++;
                     break;
                 case 1:
-                    SkillData.Skill_Navigation++;
+                    AllData.SkillData.Skill_Navigation++;
                     break;
                 case 2:
-                    SkillData.Skill_Medical++;
+                    AllData.SkillData.Skill_Medical++;
                     break;
                 case 3:
-                    SkillData.Skill_Fighting++;
+                    AllData.SkillData.Skill_Fighting++;
                     break;
             }
-            SkillData.SkillPoints--;
+            AllData.SkillData.SkillPoints--;
             DatabaseUpdateSkillsData();
         }
     }
@@ -221,7 +317,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         if (currentRoom != null)
         {
             float progress = Exp_Per_Sec * deltaTime;
-            TimedData.ProgressToNextLevel += progress;
+            AllData.TimedData.ProgressToNextLevel += progress;
             if (deltaTime > Shared.ProcessElapsedTime_ConsiderLoggedOff)
             {
                 GameManager.DebugLog("[ElapsedTime] " + deltaTime + " seconds passed, causing crew " + identifier + " to increase ProgressToNextLevel by " + progress, DebugFlags.ElapsedTime);
@@ -235,7 +331,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     {
         UnityMainThreadDispatcher.Instance().Enqueue(() => {
             //Debug.Log("This is executed from the main thread");
-            string json = JsonUtility.ToJson(TimedData);
+            string json = JsonUtility.ToJson(AllData.TimedData);
             FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/TimedDataToSerialize").SetRawJsonValueAsync(json);
             if (wasTimedUpdate)
                 GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " TimedData database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
@@ -246,14 +342,14 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
 
     public void DatabaseUpdateRoomData()
     {
-        string json = JsonUtility.ToJson(RoomData);
+        string json = JsonUtility.ToJson(AllData.RoomData);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/RoomData").SetRawJsonValueAsync(json);
         GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " RoomData database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
     }
 
     public void DatabaseUpdateSkillsData()
     {
-        string json = JsonUtility.ToJson(SkillData);
+        string json = JsonUtility.ToJson(AllData.SkillData);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/SkillData").SetRawJsonValueAsync(json);
         GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " SkillData database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
     }
