@@ -9,11 +9,13 @@ public class StoreScreen : MonoBehaviour {
     public Text moneyAmountText;
     public Text resourceAmountText;
     float moneyAmount;
-    float resourceAmount;
+    float resourceAmount = 1;
     public enum StoreMode {none, buy, sell};
     public Vector3[] resourceSelectorPositions;
     Shared.ResourceTypes resourceSelected;
     StoreMode storeMode = StoreMode.none;
+    public GameObject[] resourceButtonLocations;
+    public GameObject resourceHighlight;
 	// Use this for initialization
 	void Start () {
         gameManager = GameManager.instance;
@@ -61,6 +63,7 @@ public class StoreScreen : MonoBehaviour {
 
     public void ChangeValue(float num) 
     {
+        Debug.Log("changing value by " + num);
         resourceAmount += num;
         if (resourceAmount < 1f)
         {
