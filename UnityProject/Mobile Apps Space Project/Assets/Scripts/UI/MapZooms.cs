@@ -9,6 +9,7 @@ public class MapZooms : MonoBehaviour {
     public int speed = 2;
     public int camx;
     public int camy;
+    public int camz;
     bool camera_move_enabled = false;
 
     void Update()
@@ -24,7 +25,7 @@ public class MapZooms : MonoBehaviour {
 
     public void UserClickedCameraResetButton()
     {
-        TargetPosition.transform.position = new Vector3(camx, camy, 0f);
+        TargetPosition.transform.position = new Vector3(camx, camy, camz);
         TargetPosition.transform.rotation = Quaternion.Euler(0, 0, 0);
         camera_move_enabled = true;
     }

@@ -679,6 +679,7 @@ MonoBehaviour:
   speed: 2
   camx: 650
   camy: 950
+  camz: 0
 --- !u!1 &392718975
 GameObject:
   m_ObjectHideFlags: 0
@@ -1072,7 +1073,7 @@ Prefab:
     - target: {fileID: 114835238990509962, guid: a0698dd537049864897d33de6277d9b0,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Zoom
+      value: UserClickedCameraResetButton
       objectReference: {fileID: 0}
     - target: {fileID: 114835238990509962, guid: a0698dd537049864897d33de6277d9b0,
         type: 2}
@@ -1100,10 +1101,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 560709251}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 357b951cc01d57f47b0c4cdb9c3e8ed4, type: 3}
+  m_Script: {fileID: 11500000, guid: e093bfec8fba9a7439b519442e15706e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cam: {fileID: 0}
+  MainCamera: {fileID: 1118855914}
+  TargetPosition: {fileID: 1666044870}
+  speed: 2
+  camx: 225
+  camy: -200
+  camz: 0
 --- !u!1 &576785354
 GameObject:
   m_ObjectHideFlags: 0
@@ -1401,10 +1407,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainCamera: {fileID: 1118855914}
-  TargetPosition: {fileID: 601144730}
+  TargetPosition: {fileID: 2014732282}
   speed: 2
-  camx: 450
+  camx: 225
   camy: 950
+  camz: 0
 --- !u!1 &646326659
 GameObject:
   m_ObjectHideFlags: 0
@@ -1677,6 +1684,7 @@ GameObject:
   - component: {fileID: 724544917}
   - component: {fileID: 724544916}
   - component: {fileID: 724544915}
+  - component: {fileID: 724544918}
   m_Layer: 5
   m_Name: MapButtonSplt4
   m_TagString: Untagged
@@ -1741,7 +1749,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 724544916}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 724544918}
+        m_MethodName: UserClickedCameraResetButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &724544916
@@ -1777,6 +1796,23 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 724544913}
+--- !u!114 &724544918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 724544913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e093bfec8fba9a7439b519442e15706e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainCamera: {fileID: 1118855914}
+  TargetPosition: {fileID: 153544850}
+  speed: 2
+  camx: 650
+  camy: -200
+  camz: 0
 --- !u!1 &776918407
 GameObject:
   m_ObjectHideFlags: 0
