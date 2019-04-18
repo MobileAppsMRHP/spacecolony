@@ -74,6 +74,15 @@ public class StoreScreen : MonoBehaviour {
     public void ChangeResource(int num)
     {
         resourceSelected = (Shared.ResourceTypes)num;
+        Debug.Log("switching resources to " + (Shared.ResourceTypes)num);
+        if (num == 4)
+        {
+            resourceHighlight.transform.position = resourceButtonLocations[3].transform.position;
+        }
+        else
+        {
+            resourceHighlight.transform.position = resourceButtonLocations[num].transform.position;
+        }
     }
 
     public void ConfirmTransaction()
