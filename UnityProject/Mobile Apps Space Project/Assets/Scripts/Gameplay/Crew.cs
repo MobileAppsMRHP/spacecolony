@@ -120,7 +120,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     public IEnumerator CrewCreatorStartMultithread()
     {
         GameManager.DebugLog("Waiting for crew data to be recieved before proceeding...", DebugFlags.CrewLoadingOps);
-        yield return new WaitUntil(() => totalUpdatesRecieved > 0);
+        yield return new WaitUntil(() => totalUpdatesRecieved >= 4); //4 pieces of data to get
         GameManager.DebugLog("...crew data recieved; proceeding.", DebugFlags.CrewLoadingOps);
         GameManager.instance.AddToFirebaseTimedUpdates(this);
         GameManager.instance.AddToProcessElapsedTime(this);
@@ -207,6 +207,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " ROOM data with JSON from database: " + json, DebugFlags.DatabaseOps);
         JsonUtility.FromJsonOverwrite(json, AllData.RoomData);
+        totalUpdatesRecieved++;
     }
 
     void HandleSkillValueChanged(object sender, ValueChangedEventArgs args)
@@ -214,6 +215,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " SKILL data with JSON from database: " + json, DebugFlags.DatabaseOps);
         JsonUtility.FromJsonOverwrite(json, AllData.SkillData);
+        totalUpdatesRecieved++;
     }
 
     void HandleTimedValueChanged(object sender, ValueChangedEventArgs args)
@@ -221,13 +223,16 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " TIMED data with JSON from database: " + json, DebugFlags.DatabaseOps);
         JsonUtility.FromJsonOverwrite(json, AllData.TimedData);
+        totalUpdatesRecieved++;
     }
 
     void HandleNameValueChanged(object sender, ValueChangedEventArgs args)
     {
+        
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " NAME data with JSON from database: " + json, DebugFlags.DatabaseOps);
-        JsonUtility.FromJsonOverwrite(json, AllData.CrewName);
+        AllData.CrewName = json;
+        totalUpdatesRecieved++;
     }
 
 
@@ -257,9 +262,9 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
 
         //write self to database
         GameManager.DebugLog("Writing FRESH crew with name " + CrewName + " and id " + identifier + " to database...", DebugFlags.CrewLoadingOps);
-        yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "CrewName").SetRawJsonValueAsync(JsonUtility.ToJson(CrewName));
-
-        GameManager.DebugLog("FRESH crew setup done for " + identifier, DebugFlags.CrewLoadingOps);
+        yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/").SetRawJsonValueAsync(JsonUtility.ToJson(AllData));
+        //yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/CrewName").SetRawJsonValueAsync(JsonUtility.ToJson(CrewName));
+        GameManager.DebugLog("...FRESH crew setup done for " + identifier, DebugFlags.CrewLoadingOps);
         CrewCreatorStart(identifier); //run regular setup
     }
 
