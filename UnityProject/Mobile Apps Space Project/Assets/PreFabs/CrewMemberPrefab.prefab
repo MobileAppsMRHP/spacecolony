@@ -131,17 +131,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6ee61ca72cdb54693148b641aeb290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crewName: FRESH_CREW
-  skillPoints: 0
-  progressToNextLevel: 0
-  cooking: 0
-  navigation: 0
-  medical: 0
-  fighting: 0
-  level: 0
   currentRoom: {fileID: 0}
-  CurrentRoomStringForDB: NO_ROOM
   identifier: _BLANK
+  gameManager: {fileID: 0}
+  AllData:
+    TimedData:
+      ProgressToNextLevel: 0
+    SkillData:
+      SkillPoints: 0
+      Skill_Cooking: 0
+      Skill_Navigation: 0
+      Skill_Medical: 0
+      Skill_Fighting: 0
+      Level: 0
+    RoomData:
+      CurrentRoomStringForDB: '"NO_ROOM"'
+    CrewName: '"FRESH_CREW"'
 --- !u!114 &114876239281259676
 MonoBehaviour:
   m_ObjectHideFlags: 1

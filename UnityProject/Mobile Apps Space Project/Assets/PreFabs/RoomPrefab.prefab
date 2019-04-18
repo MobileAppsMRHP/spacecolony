@@ -80,10 +80,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peopleLimit: 2
+  roomLevel: 0
   crewInThisRoom: []
   crewLocations: []
-  roomType: 0
-  selected: 0
+  upgradeCosts: {x: 0, y: 0, z: 0}
+  RoomType: 0
+  currentlySelected: 0
+  mainScreen: {fileID: 0}
+  data:
+    RoomLevel: 0
+    RoomUniqueIdentifierForDB: 
 --- !u!114 &114918558709920864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -96,10 +102,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peopleLimit: 2
+  roomLevel: 0
   crewInThisRoom: []
   crewLocations: []
-  roomType: 0
-  selected: 0
+  upgradeCosts: {x: 0, y: 0, z: 0}
+  RoomType: 0
+  currentlySelected: 0
+  mainScreen: {fileID: 0}
+  data:
+    RoomLevel: 0
+    RoomUniqueIdentifierForDB: '"UNSET_ROOM_IDENTIFIER"'
 --- !u!212 &212310903063762346
 SpriteRenderer:
   m_ObjectHideFlags: 1
