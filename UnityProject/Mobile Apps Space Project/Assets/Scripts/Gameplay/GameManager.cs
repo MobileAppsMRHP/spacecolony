@@ -334,7 +334,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("=======================================\nThe following types of debug are enabled...");
         foreach (DebugFlags flag in (DebugFlags[]) System.Enum.GetValues(typeof(DebugFlags)))
         {
-            DebugLog("" + flag.ToString(), flag);
+            if(flag != DebugFlags.Warning && flag != DebugFlags.Critical)
+                DebugLog("" + flag.ToString(), flag);
+            else
+                DebugLog("" + flag.ToString());
         }
         Debug.Log("=======================================");
     }
