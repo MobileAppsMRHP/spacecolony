@@ -51,7 +51,15 @@ public class DragAndDrop : MonoBehaviour
             Room droppedRoom = collider.gameObject.GetComponent<Room>();
             Crew droppedCrew = GetComponent<Crew>();
 
-            GameManager.DebugLog("Running collision with " + collider.ToString() + " and " + GetComponent<Crew>().CrewName, DebugFlags.CollisionOps);
+            if (GetComponent<Crew>().DoCollisions)
+            {
+                GameManager.DebugLog("Running collision with " + collider.ToString() + " and " + GetComponent<Crew>().CrewName, DebugFlags.CollisionOps);
+            }
+            else
+            {
+                GameManager.DebugLog("SKIPPED Collision with " + collider.ToString() + " and " + GetComponent<Crew>().CrewName + " because crew wasn't ready.", DebugFlags.CollisionOps);
+                return;
+            }
 
             if (collider.tag == "Room")
             {

@@ -9,6 +9,7 @@ using System;
 public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime {
 
     public Room currentRoom;
+    public bool DoCollisions = false;
 
     public string identifier = "_BLANK"; //don't change this! only fresh crew members get this changed by the code
 
@@ -68,32 +69,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
 
     public Data AllData;
 
-    /*public Data.TimedDataToSerialize TimedData
-    {
-        get
-        {
-            return AllData.TimedData;
-        }
-    }
-    public Data.Skills SkillData
-    {
-        get
-        {
-            return AllData.SkillData;
-        }
-        set
-        {
-            AllData.SkillData = value;
-        }
-    }
-    public Data.RoomStuff RoomData
-    {
-        get
-        {
-            return AllData.RoomData;
-        }
-    }*/
-    public string CrewName
+    public string CrewName //convenience
     {
         get
         {
@@ -124,6 +100,8 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         GameManager.DebugLog("...crew data recieved; proceeding.", DebugFlags.CrewLoadingOps);
         GameManager.instance.AddToFirebaseTimedUpdates(this);
         GameManager.instance.AddToProcessElapsedTime(this);
+        DoCollisions = true;
+        StartCoroutine(MoveCrewBasedOnString(AllData.RoomData.CurrentRoomStringForDB));
         GameManager.DebugLog("Crew startup done for " + identifier, DebugFlags.CrewLoadingOps);
     }
 
@@ -169,8 +147,9 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         });
     }
 
-    private void LoadAllData()
+    /*private void LoadAllData()
     {
+        //Unused?
         FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/possible-crew-names").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -192,7 +171,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
                 GameManager.DebugLog("Task error when prompting for crew AllData", DebugFlags.Critical);
             }
         });
-    }
+    }*/
 
     /*void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
@@ -207,6 +186,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " ROOM data with JSON from database: " + json, DebugFlags.DatabaseOps);
         JsonUtility.FromJsonOverwrite(json, AllData.RoomData);
+        //this.MoveCrewBasedOnString(AllData.RoomData.CurrentRoomStringForDB);
         totalUpdatesRecieved++;
     }
 
@@ -337,7 +317,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         UnityMainThreadDispatcher.Instance().Enqueue(() => {
             //Debug.Log("This is executed from the main thread");
             string json = JsonUtility.ToJson(AllData.TimedData);
-            FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/TimedDataToSerialize").SetRawJsonValueAsync(json);
+            FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/TimedData").SetRawJsonValueAsync(json);
             if (wasTimedUpdate)
                 GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " TimedData database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
             else
@@ -359,9 +339,12 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " SkillData database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
     }
 
-    public void MoveCrewBasedOnString(string roomToMoveTo)
+    public IEnumerator MoveCrewBasedOnString(string roomToMoveTo)
     {
         Room roomToMoveCrewTo = null;
+        Debug.Log("Waiting for Rooms to be loaded to move crew member...");
+        yield return new WaitWhile(() => gameManager.Rooms == null);
+        GameManager.DebugLog("...Rooms loaded. Moving.");
         foreach (var item in gameManager.Rooms)
         {
             if (item.data.RoomUniqueIdentifierForDB.Equals(roomToMoveTo))
@@ -373,7 +356,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         if(roomToMoveCrewTo == null) //if still null, error
         {
             GameManager.DebugLog("Tried to move crew '" + identifier + "' to a room that doesn't exist ('" + roomToMoveTo + "')", DebugFlags.Warning);
-            return;// null;
+            yield break;// null;
         }
         transform.position = roomToMoveCrewTo.GetComponent<Transform>().position;
         GameManager.DebugLog("Successfully moved crew '" + identifier + "' to room '" + roomToMoveTo + "'", DebugFlags.CollisionOps);
