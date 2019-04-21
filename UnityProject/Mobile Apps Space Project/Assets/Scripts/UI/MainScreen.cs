@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MainScreen : MonoBehaviour {
     public Button roomUpgradeButton;
     public GameManager gameManager;
+    public GameObject roomHighlighter;
 	// Use this for initialization
 	void Start () {
         gameManager = GameManager.instance;
@@ -15,10 +16,13 @@ public class MainScreen : MonoBehaviour {
 	void Update () {
 		if (RoomUpgrade.FindSelectedRoom(gameManager) == null)
         {
+            roomHighlighter.SetActive(false);
             roomUpgradeButton.interactable = false;
         }
         else
         {
+            roomHighlighter.SetActive(true);
+            roomHighlighter.transform.position = RoomUpgrade.FindSelectedRoom(gameManager).transform.position;
             roomUpgradeButton.interactable = true;
         }
 	}

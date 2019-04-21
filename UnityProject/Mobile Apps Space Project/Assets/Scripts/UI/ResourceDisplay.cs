@@ -18,11 +18,15 @@ public class ResourceDisplay : MonoBehaviour {
         //resourceManager = gameManager.resourceManager;
         if (GameManager.IsDoneLoading)
         {
-            resources[0].text = gameManager.GetResource(Shared.ResourceTypes.minerals).ToString();
-            resources[1].text = gameManager.GetResource(Shared.ResourceTypes.energy).ToString();
-            resources[2].text = gameManager.GetResource(Shared.ResourceTypes.money).ToString();
-            resources[3].text = gameManager.GetResource(Shared.ResourceTypes.food).ToString();
-            resources[4].text = gameManager.GetResource(Shared.ResourceTypes.water).ToString();
+            for (int i = 0; i < resources.Count; i++)
+            {
+                resources[i].text = Mathf.Round(gameManager.GetResource((Shared.ResourceTypes)i)).ToString();
+            }
+            /*resources[0].text = Mathf.Round(gameManager.GetResource(Shared.ResourceTypes.minerals)).ToString();
+            resources[1].text = Mathf.Round(gameManager.GetResource(Shared.ResourceTypes.energy)).ToString();
+            resources[2].text = Mathf.Round(gameManager.GetResource(Shared.ResourceTypes.money)).ToString();
+            resources[3].text = Mathf.Round(gameManager.GetResource(Shared.ResourceTypes.food)).ToString();
+            resources[4].text = Mathf.Round(gameManager.GetResource(Shared.ResourceTypes.water)).ToString();*/
         }   
     }
 

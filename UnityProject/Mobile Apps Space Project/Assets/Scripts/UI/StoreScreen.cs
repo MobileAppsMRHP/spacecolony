@@ -16,10 +16,14 @@ public class StoreScreen : MonoBehaviour {
     StoreMode storeMode = StoreMode.none;
     public GameObject[] resourceButtonLocations;
     public GameObject resourceHighlight;
+    public GameObject buyMode;
+    public GameObject sellMode;
+    public GameObject commonMode;
+    public GameObject storeStarter;
 	// Use this for initialization
 	void Start () {
         gameManager = GameManager.instance;
-        resourceSelected = Shared.ResourceTypes.energy;
+        resourceSelected = Shared.ResourceTypes.minerals;
 	}
 	
 	// Update is called once per frame
@@ -30,6 +34,10 @@ public class StoreScreen : MonoBehaviour {
         switch (storeMode)
         {
             case StoreMode.none:
+                buyMode.SetActive(false);
+                sellMode.SetActive(false);
+                commonMode.SetActive(false);
+                storeStarter.SetActive(true);
                 break;
             
             case StoreMode.buy:
@@ -52,6 +60,7 @@ public class StoreScreen : MonoBehaviour {
     public void StartStoreScreen()
     {
         storeMode = StoreMode.none;
+        ChangeResource(0);
         moneyAmount = 15f;
         resourceAmount = 1f;
     }
