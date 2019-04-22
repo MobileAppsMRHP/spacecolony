@@ -10,13 +10,14 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     public int roomLevel;
     public List<Crew> crewInThisRoom;
     public List<GameObject> crewLocations;
-    List<Vector3> UpgradeResourceMultiplier; //mineral (scraps), energy, money
+    List<Vector3> UpgradeResourceMultiplier; //mineral, energy, money
     public Vector3 upgradeCosts;
     public Shared.RoomTypes RoomType;
     public bool currentlySelected;
     private GameManager gameManager;
     public GameObject mainScreen;
     List<CrewSkills> crewSkillsResourceMultipliers;
+    public bool isPlanet;
 
     //public string RoomUniqueIdentifierForDB;
     Vector3 baseUpgradeCost = new Vector3(50, 50, 50);
@@ -53,14 +54,21 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     void Start () {
         UpgradeResourceMultiplier = new List<Vector3>()
         {
+            new Vector3(0f, 0f, 0f), //none
             new Vector3(1.2f, 1.5f, 1.1f), //bridge
             new Vector3(1.5f, 1.1f, 1.2f), //energy
-            new Vector3(1.1f, 1.3f, 1.1f) //food
+            new Vector3(1.1f, 1.3f, 1.1f), //food
+            new Vector3(1.4f, 1.3f, 1.6f), //minerals
+            new Vector3(1.5f, 1.3f, 1.7f) //water
         };
         crewSkillsResourceMultipliers = new List<CrewSkills>()
         {
-            new CrewSkills(1f, 1f, 1f, 1f),
-            new CrewSkills(0.8f, 0.5f, 2f, 0.3f)
+            new CrewSkills(0f, 0f, 0f, 0f), //none
+            new CrewSkills(1f, 1f, 1f, 1f), //bridge
+            new CrewSkills(0.8f, 0.5f, 2f, 0.3f), //energy
+            new CrewSkills(0.1f, 0.2f, 0.5f, 0.1f), //food
+            new CrewSkills(0.4f, 0.3f, 0.8f, 0.9f), //minerals
+            new CrewSkills(0.2f, 0.2f, 0.2f, 0.2f) //water
         };
         
         gameManager = GameManager.instance;
@@ -162,16 +170,25 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
 
     void IncreaseResources()
     {
+        float resourceIncrease = 0;
         switch (RoomType)
         {
             case Shared.RoomTypes.food:
-                //
+                resourceIncrease = CalculateTotalResourceIncrease((int)Shared.RoomTypes.food);
+                gameManager.ChangeResource(Shared.ResourceTypes.food, resourceIncrease);
                 break;
             case Shared.RoomTypes.energy:
-                float resourceIncrease = CalculateTotalResourceIncrease(1); //still need to test this
+                resourceIncrease = CalculateTotalResourceIncrease((int)Shared.RoomTypes.energy); //still need to test this
                 gameManager.ChangeResource(Shared.ResourceTypes.energy, resourceIncrease);
                 break;
-            //water
+            case Shared.RoomTypes.water:
+                resourceIncrease = CalculateTotalResourceIncrease((int)Shared.RoomTypes.water);
+                gameManager.ChangeResource(Shared.ResourceTypes.water, resourceIncrease);
+                break;
+            case Shared.RoomTypes.mineral:
+                resourceIncrease = CalculateTotalResourceIncrease((int)Shared.RoomTypes.mineral);
+                gameManager.ChangeResource(Shared.ResourceTypes.minerals, resourceIncrease);
+                break;
             default: //empty room
                 //do nothing
             break;
