@@ -17,12 +17,14 @@ public static class Shared {
         lifesupport
     }
 
-    public enum RoomTypes
+    public enum RoomTypes //don't reorder, might break database
     {
         empty = 0,
         bridge,
         energy,
-        food
+        food,
+        mineral,
+        water
     }
 
     public enum ResourceTypes
