@@ -15,9 +15,9 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
 
     [System.NonSerialized] public static List<string> Possible_Names = new List<string>();
     public static float Exp_Per_Sec = 0.01f;
-    public GameManager gameManager;
+    //public GameManager gameManager;
 
-    private int totalUpdatesRecieved = 0;
+    
 
     //private GameManager gameManager;
 
@@ -81,6 +81,8 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         }
     }
 
+    private int totalUpdatesRecieved = 0;
+
     // Use this for initialization
     public void CrewCreatorStart(string identifier)
     {
@@ -100,6 +102,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         GameManager.DebugLog("...crew data recieved; proceeding.", DebugFlags.CrewLoadingOps);
         GameManager.instance.AddToFirebaseTimedUpdates(this);
         GameManager.instance.AddToProcessElapsedTime(this);
+        yield return new WaitUntil(() => !AllData.RoomData.CurrentRoomStringForDB.Equals("NO_ROOM")); //wait until room data loads in on this thread
         DoCollisions = true;
         StartCoroutine(MoveCrewBasedOnString(AllData.RoomData.CurrentRoomStringForDB));
         GameManager.DebugLog("Crew startup done for " + identifier, DebugFlags.CrewLoadingOps);
@@ -185,7 +188,9 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     {
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " ROOM data with JSON from database: " + json, DebugFlags.DatabaseOps);
-        JsonUtility.FromJsonOverwrite(json, AllData.RoomData);
+        object boxedDataCloneForJsonUtility = AllData.RoomData; //needs special boxing because https://docs.unity3d.com/ScriptReference/EditorJsonUtility.FromJsonOverwrite.html
+        JsonUtility.FromJsonOverwrite(json, boxedDataCloneForJsonUtility);
+        AllData.RoomData = (Data.RoomStuff)boxedDataCloneForJsonUtility;
         //this.MoveCrewBasedOnString(AllData.RoomData.CurrentRoomStringForDB);
         totalUpdatesRecieved++;
     }
@@ -194,7 +199,9 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     {
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " SKILL data with JSON from database: " + json, DebugFlags.DatabaseOps);
-        JsonUtility.FromJsonOverwrite(json, AllData.SkillData);
+        object boxedDataCloneForJsonUtility = AllData.SkillData; //needs special boxing because https://docs.unity3d.com/ScriptReference/EditorJsonUtility.FromJsonOverwrite.html
+        JsonUtility.FromJsonOverwrite(json, boxedDataCloneForJsonUtility);
+        AllData.SkillData = (Data.Skills)boxedDataCloneForJsonUtility;
         totalUpdatesRecieved++;
     }
 
@@ -202,20 +209,19 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     {
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " TIMED data with JSON from database: " + json, DebugFlags.DatabaseOps);
-        JsonUtility.FromJsonOverwrite(json, AllData.TimedData);
+        object boxedDataCloneForJsonUtility = AllData.TimedData; //needs special boxing because https://docs.unity3d.com/ScriptReference/EditorJsonUtility.FromJsonOverwrite.html
+        JsonUtility.FromJsonOverwrite(json, boxedDataCloneForJsonUtility);
+        AllData.TimedData = (Data.TimedDataToSerialize)boxedDataCloneForJsonUtility;
         totalUpdatesRecieved++;
     }
 
     void HandleNameValueChanged(object sender, ValueChangedEventArgs args)
     {
-        
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.name + " NAME data with JSON from database: " + json, DebugFlags.DatabaseOps);
         AllData.CrewName = json;
         totalUpdatesRecieved++;
     }
-
-
 
     public void FreshCrewSetup()
     {
@@ -342,10 +348,10 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     public IEnumerator MoveCrewBasedOnString(string roomToMoveTo)
     {
         Room roomToMoveCrewTo = null;
-        Debug.Log("Waiting for Rooms to be loaded to move crew member...");
-        yield return new WaitWhile(() => gameManager.Rooms == null);
+        Debug.Log("Waiting for Rooms to be loaded to move crew member to " + roomToMoveTo + "...");
+        yield return new WaitUntil(() => GameManager.instance.Rooms != null);
         GameManager.DebugLog("...Rooms loaded. Moving.");
-        foreach (var item in gameManager.Rooms)
+        foreach (var item in GameManager.instance.Rooms)
         {
             if (item.data.RoomUniqueIdentifierForDB.Equals(roomToMoveTo))
             {
@@ -355,11 +361,11 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         }
         if(roomToMoveCrewTo == null) //if still null, error
         {
-            GameManager.DebugLog("Tried to move crew '" + identifier + "' to a room that doesn't exist ('" + roomToMoveTo + "')", DebugFlags.Warning);
+            GameManager.DebugLog("Tried to teleport crew '" + identifier + "' to a room that doesn't exist ('" + roomToMoveTo + "')", DebugFlags.Warning);
             yield break;// null;
         }
         transform.position = roomToMoveCrewTo.GetComponent<Transform>().position;
-        GameManager.DebugLog("Successfully moved crew '" + identifier + "' to room '" + roomToMoveTo + "'", DebugFlags.CollisionOps);
-        DatabaseUpdateRoomData();
+        GameManager.DebugLog("Successfully teleported crew '" + identifier + "' to room '" + roomToMoveTo + "'", DebugFlags.CollisionOps);
+        //DatabaseUpdateRoomData();
     }
 }

@@ -226,7 +226,9 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
     {
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote room " + data.RoomUniqueIdentifierForDB + " with JSON from database: " + json, DebugFlags.DatabaseOps);
-        JsonUtility.FromJsonOverwrite(json, data);
+        object boxedDataCloneForJsonUtility = data; //needs special boxing because https://docs.unity3d.com/ScriptReference/EditorJsonUtility.FromJsonOverwrite.html
+        JsonUtility.FromJsonOverwrite(json, boxedDataCloneForJsonUtility);
+        data = (DataToSerialize)boxedDataCloneForJsonUtility;
     }
 
     public void DEBUG_WriteMyRoomData()
