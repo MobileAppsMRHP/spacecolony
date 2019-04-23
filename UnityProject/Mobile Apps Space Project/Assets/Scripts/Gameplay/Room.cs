@@ -78,7 +78,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
 
     IEnumerator AwaitSetup()
     {
-        GameManager.DebugLog("Awaiting user string loading to set up rooms...", DebugFlags.GeneralInfo);
+        GameManager.DebugLog("Room " + data.RoomUniqueIdentifierForDB + " awaiting user string loading to set up rooms...", DebugFlags.GeneralInfo);
         yield return new WaitUntil(() => !GameManager.instance.user_string.Equals("StillLoading"));
         GameManager.DebugLog("... user string loaded as '" + GameManager.instance.user_string + "', setting up room " + data.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + data.RoomUniqueIdentifierForDB).ValueChanged += HandleValueChanged;
@@ -87,29 +87,32 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
 	
 	// Update is called once per frame
 	void Update () {
-        if (mainScreen.activeSelf && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) //if there are touch events in the buffer to process...
+        if (GameManager.IsDoneLoading)
         {
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position)), new Vector2(0f, 0f)); //do a raycast to see what they hit
-            //Debug.Log(EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId));
-            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+            if (mainScreen.activeSelf && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) //if there are touch events in the buffer to process...
             {
-                //do nothing
+                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint((Input.GetTouch(0).position)), new Vector2(0f, 0f)); //do a raycast to see what they hit
+                                                                                                                                         //Debug.Log(EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId));
+                if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+                {
+                    //do nothing
+                }
+                else if (hit.collider.name == gameObject.name)
+                {
+                    GameManager.DebugLog("Room " + data.RoomUniqueIdentifierForDB + " selected", DebugFlags.CollisionOps); //log that something was hit by the touch event
+                    Debug.Log(hit.collider);
+                    currentlySelected = true;
+                }
+                else
+                {
+                    GameManager.DebugLog("Room " + data.RoomUniqueIdentifierForDB + " no longer selected", DebugFlags.CollisionOps);
+                    currentlySelected = false;
+                }
             }
-            else if (hit.collider.name == gameObject.name)
-            {
-                GameManager.DebugLog("Room " + data.RoomUniqueIdentifierForDB + " selected", DebugFlags.CollisionOps); //log that something was hit by the touch event
-                Debug.Log(hit.collider);
-                currentlySelected = true;
-            }
-            else
-            {
-                GameManager.DebugLog("Room " + data.RoomUniqueIdentifierForDB + " no longer selected", DebugFlags.CollisionOps);
-                currentlySelected = false;
-            }
+            Vector3 tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel));
+            upgradeCosts = Vector3.Scale(baseUpgradeCost, tempCost);
+            IncreaseResources();
         }
-        Vector3 tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel));
-        upgradeCosts = Vector3.Scale(baseUpgradeCost, tempCost);
-        IncreaseResources();
     }
 
     void ChangeCrew(Crew member)
@@ -190,8 +193,8 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
                 gameManager.ChangeResource(Shared.ResourceTypes.minerals, resourceIncrease);
                 break;
             default: //empty room
-                //do nothing
-            break;
+                        //do nothing
+                break;
         }
     }
 
