@@ -18,7 +18,6 @@ public class MapZooms : MonoBehaviour {
         if (camera_move_enabled)
         {
             MainCamera.transform.position = Vector3.Lerp(transform.position, TargetPosition.transform.position, speed * Time.deltaTime);
-            MainCamera.transform.rotation = Quaternion.Lerp(transform.rotation, TargetPosition.transform.rotation, speed * Time.deltaTime);
         }
 
     }
@@ -26,7 +25,6 @@ public class MapZooms : MonoBehaviour {
     public void UserClickedCameraResetButton()
     {
         TargetPosition.transform.position = new Vector3(camx, camy, camz);
-        TargetPosition.transform.rotation = Quaternion.Euler(0, 0, 0);
-        camera_move_enabled = true;
+        camera_move_enabled = false;
     }
 }
