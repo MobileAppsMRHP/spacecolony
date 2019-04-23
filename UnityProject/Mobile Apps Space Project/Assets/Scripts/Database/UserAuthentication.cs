@@ -630,23 +630,11 @@ public class UserAuthentication : MonoBehaviour
                 {
                     CreateUserWithEmailAsync();
                 }
-                if (GUILayout.Button("Sign In With Email"))
-                {
-                    SigninWithEmailAsync();
-                }
                 if (GUILayout.Button("Sign In With Email Credential"))
                 {
                     SigninWithEmailCredentialAsync();
                     SceneManager.LoadScene("01Gameplay");
             }
-                if (GUILayout.Button("Link With Email Credential"))
-                {
-                    LinkWithEmailCredentialAsync();
-                }
-                if (GUILayout.Button("Reauthenticate with Email"))
-                {
-                    ReauthenticateAsync();
-                }
                 if (GUILayout.Button("Reload User"))
                 {
                     ReloadUser();
@@ -659,10 +647,6 @@ public class UserAuthentication : MonoBehaviour
                 {
                     GetUserInfo();
                 }
-                if (GUILayout.Button("Unlink Email Credential"))
-                {
-                    UnlinkEmailAsync();
-                }
                 if (GUILayout.Button("Sign Out"))
                 {
                     SignOut();
@@ -671,10 +655,7 @@ public class UserAuthentication : MonoBehaviour
                 {
                     DeleteUserAsync();
                 }
-                if (GUILayout.Button("Show Providers For Email"))
-                {
-                    DisplayProvidersForEmail();
-                }
+   
                 if (GUILayout.Button(String.Format("Fetch Profile on Sign-in {0}",
                                                     signInAndFetchProfile ?
                                                       "Enabled" : "Disabled")))
