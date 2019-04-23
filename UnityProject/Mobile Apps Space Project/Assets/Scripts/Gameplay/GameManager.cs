@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     //7: 
     //255: log EEEEVERYTHING
 
-    public const DebugFlags debugLevelFlags = DebugFlags.CrewLoadingOps | DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.DatabaseOpsOnTimer | DebugFlags.Resources | DebugFlags.CollisionOps | DebugFlags.GeneralInfo | DebugFlags.ElapsedTime;
+    public const DebugFlags debugLevelFlags = DebugFlags.CrewLoadingOps | DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.DatabaseOpsOnTimer | /*DebugFlags.Resources |*/ DebugFlags.CollisionOps | DebugFlags.GeneralInfo | DebugFlags.ElapsedTime;
     //add or subtract values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
     //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
 

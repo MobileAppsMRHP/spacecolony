@@ -111,6 +111,14 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     // Update is called once per frame
     void Update() {
         IncreaseExperience();
+        if (GetComponent<DragAndDrop>().inRoom && AllData.TimedData.ProgressToNextLevel > 100)
+        {
+            AllData.TimedData.ProgressToNextLevel -= 100;
+            AllData.SkillData.SkillPoints += 3;
+            AllData.SkillData.Level++;
+            DatabaseUpdateSkillsData();
+            GameManager.DebugLog("Crew " + identifier + " leveled up!", DebugFlags.GeneralInfo);
+        }
     }
 
     public static void BuildRandomNameList() //run first to build name list
@@ -258,21 +266,6 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     {
         return crewName;
     }*/
-
-    public bool NextLevel()
-    {
-        if (GetComponent<DragAndDrop>().inRoom && AllData.TimedData.ProgressToNextLevel > 100)
-        {
-            AllData.TimedData.ProgressToNextLevel -= 100;
-            AllData.SkillData.SkillPoints += 3;
-            AllData.SkillData.Level++;
-            DatabaseUpdateSkillsData();
-            GameManager.DebugLog("Crew " + identifier + " leveled up!", DebugFlags.GeneralInfo);
-            return true;
-        }
-        else
-            return false;
-    }
 
     public void IncreaseSkill(int skillNum)
     {

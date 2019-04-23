@@ -110,6 +110,10 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         Vector3 tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel));
         upgradeCosts = Vector3.Scale(baseUpgradeCost, tempCost);
         IncreaseResources();
+        if (isPlanet)
+        {
+            currentlySelected = false;
+        }
     }
 
     void ChangeCrew(Crew member)
@@ -230,12 +234,16 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
 
     float CalculateTotalResourceIncrease(int roomTypeNum)
     {
-        float sum = 1;
+        float sum = 0;
         for (int i = 0; i < crewInThisRoom.Count; i++)
         {
             sum += crewSkillsResourceMultipliers[roomTypeNum].MultipliedSum(crewInThisRoom[i]);
         }
-        Debug.Log(sum);
+        //Debug.Log(RoomType + "" + sum);
+        if (isPlanet)
+        {
+            sum = sum * 20;
+        }
         return sum * Time.deltaTime;
     }
 
