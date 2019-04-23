@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
+public class Room : MonoBehaviour {
 
     public int peopleLimit;
     public int roomLevel;
@@ -228,7 +228,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         gameManager.ChangeResource(Shared.ResourceTypes.minerals, -upgradeCosts.x);
         gameManager.ChangeResource(Shared.ResourceTypes.energy, -upgradeCosts.y);
         gameManager.ChangeResource(Shared.ResourceTypes.money, -upgradeCosts.z);
-        FirebaseUpdate(false);
+        //FirebaseUpdate(false);
     }
 
     float CalculateTotalResourceIncrease(int roomTypeNum)
@@ -238,7 +238,7 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         {
             sum += crewSkillsResourceMultipliers[roomTypeNum].MultipliedSum(crewInThisRoom[i]);
         }
-        Debug.Log(sum);
+        //Debug.Log(sum);
         return sum * Time.deltaTime;
     }
 
@@ -258,13 +258,14 @@ public class Room : MonoBehaviour, IFirebaseTimedUpdateable {
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + data.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
     }
 
-    public void FirebaseUpdate(bool wasTimedUpdate)
+    /*public void FirebaseUpdate(bool wasTimedUpdate)
     {
+        Debug.Log("Deprecated method called");
         string json = JsonUtility.ToJson(this);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + data.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
         if (wasTimedUpdate)
             GameManager.DebugLog("[TimedUpdate] Updated room " + data.RoomUniqueIdentifierForDB + " database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
         else
             GameManager.DebugLog("[>TriggeredUpdate] Updated room " + data.RoomUniqueIdentifierForDB + " database contents with " + json, DebugFlags.DatabaseOps);
-    }
+    }*/
 }
