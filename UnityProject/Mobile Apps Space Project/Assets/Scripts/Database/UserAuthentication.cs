@@ -23,7 +23,7 @@ public class UserAuthentication : MonoBehaviour
         protected string displayName = "";
         protected string phoneNumber = "";
         protected string receivedCode = "";
-    protected string token = "";
+        protected string token = "";
         // Whether to sign in / link or reauthentication *and* fetch user profile data.
         protected bool signInAndFetchProfile = false;
         // Flag set when a token is being fetched.  This is used to avoid printing the token
@@ -46,6 +46,7 @@ public class UserAuthentication : MonoBehaviour
         // add them if possible.
         public virtual void Start()
         {
+            Debug.Log("Auth script starting...");
             Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
             {
                 dependencyStatus = task.Result;
@@ -60,7 +61,7 @@ public class UserAuthentication : MonoBehaviour
                 }
             });
         }
-
+        
         // Handle initialization of the necessary firebase modules:
         protected void InitializeFirebase()
         {
@@ -338,18 +339,20 @@ public class UserAuthentication : MonoBehaviour
         {
             DebugLog(String.Format("Attempting to sign in as {0}...", email));
             DisableUI();
-            if (signInAndFetchProfile)
-            {
+            Debug.Log("Writing " + FetchUserToken() + "to PlayerPrefs");
             PlayerPrefs.SetString("UserAuthToken", FetchUserToken());
             PlayerPrefs.Save();
-            return auth.SignInAndRetrieveDataWithCredentialAsync(
-                  Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
-                    HandleSignInWithSignInResult);
+            if (signInAndFetchProfile)
+            {
+                
+                return auth.SignInAndRetrieveDataWithCredentialAsync(
+                        Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
+                        HandleSignInWithSignInResult);
             }
             else
             {
                 return auth.SignInWithCredentialAsync(
-                  Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
+                    Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
                     HandleSignInWithUser);
             }
         }
@@ -488,8 +491,8 @@ public class UserAuthentication : MonoBehaviour
 
         public string FetchUserToken()
         {
-        Task<string> a = auth.CurrentUser.TokenAsync(false);
-        return a.Result;
+            Task<string> a = auth.CurrentUser.TokenAsync(false);
+            return a.Result;
         }   
 
         // Display information about the currently logged in user.
@@ -726,7 +729,12 @@ public class UserAuthentication : MonoBehaviour
 
     public Boolean UserLoggedIn()
     {
-        if (auth.CurrentUser != null)
+        if (auth == null)
+        {
+            Debug.Log("UserLoggedIn was called when auth was null!");
+            return false;
+        }
+        else if (auth.CurrentUser != null)
             return true;
         else
             return false;
