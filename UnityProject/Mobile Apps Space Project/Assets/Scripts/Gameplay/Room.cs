@@ -120,6 +120,7 @@ public class Room : MonoBehaviour {
         if (isPlanet)
         {
             currentlySelected = false;
+
         }
     }
 
