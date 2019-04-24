@@ -87,6 +87,7 @@ public class Room : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        Vector3 tempCost;
         if (GameManager.IsDoneLoading)
         {
             if (mainScreen.activeSelf && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) //if there are touch events in the buffer to process...
@@ -109,11 +110,11 @@ public class Room : MonoBehaviour {
                     currentlySelected = false;
                 }
             }
-            Vector3 tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel));
+            tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel));
             upgradeCosts = Vector3.Scale(baseUpgradeCost, tempCost);
             IncreaseResources();
         }
-        Vector3 tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel));
+        tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel));
         upgradeCosts = Vector3.Scale(baseUpgradeCost, tempCost);
         IncreaseResources();
         if (isPlanet)
