@@ -369,4 +369,9 @@ public class GameManager : MonoBehaviour
     {
         DebugLog(message, DebugFlags.GeneralInfo);
     }
+
+    public void CreateNewCrew()
+    {
+        StartCoroutine(CreateFreshCrewMember(1));
+    }
 }
