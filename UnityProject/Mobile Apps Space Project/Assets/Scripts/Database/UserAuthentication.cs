@@ -65,7 +65,8 @@ public class UserAuthentication : MonoBehaviour
         // Handle initialization of the necessary firebase modules:
         protected void InitializeFirebase()
         {
-            DebugLog("Setting up Firebase Auth");
+            Debug.Log("Initializing Firebase Auth");
+            DebugLog("Please enter your email and password to log in.");
             auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
             auth.StateChanged += AuthStateChanged;
             auth.IdTokenChanged += IdTokenChanged;
@@ -75,6 +76,8 @@ public class UserAuthentication : MonoBehaviour
         // Exit if escape (or back, on mobile) is pressed.
         protected virtual void Update()
         {
+            if (auth == null)
+                Debug.LogWarning("An instance of UserAuthentication exists (" + this.ToString() + "), but does not have an initialized Auth!");
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.Quit();
@@ -676,7 +679,7 @@ public class UserAuthentication : MonoBehaviour
             GUI.skin = fb_GUISkin;
             if (dependencyStatus != Firebase.DependencyStatus.Available)
             {
-                GUILayout.Label("One or more Firebase dependencies are not present.");
+                GUILayout.Label("Error: One or more Firebase dependencies are not present.");
                 GUILayout.Label("Current dependency status: " + dependencyStatus.ToString());
                 return;
             }
@@ -727,7 +730,7 @@ public class UserAuthentication : MonoBehaviour
     {
         if (auth == null)
         {
-            Debug.Log("UserLoggedIn was called when auth was null!");
+            Debug.LogError("UserLoggedIn was called when auth was null!");
             return false;
         }
         else if (auth.CurrentUser != null)
