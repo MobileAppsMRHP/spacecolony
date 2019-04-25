@@ -25,7 +25,7 @@ public class UserAuthentication : MonoBehaviour
         protected string receivedCode = "";
         protected string token = "";
         // Whether to sign in / link or reauthentication *and* fetch user profile data.
-        protected bool signInAndFetchProfile = false;
+        protected bool signInAndFetchProfile = true;
         // Flag set when a token is being fetched.  This is used to avoid printing the token
         // in IdTokenChanged() when the user presses the get token button.
         private bool fetchingToken = false;
@@ -339,15 +339,12 @@ public class UserAuthentication : MonoBehaviour
         {
             DebugLog(String.Format("Attempting to sign in as {0}...", email));
             DisableUI();
-            Debug.Log("Writing " + FetchUserToken() + "to PlayerPrefs");
-            PlayerPrefs.SetString("UserAuthToken", FetchUserToken());
-            PlayerPrefs.Save();
             if (signInAndFetchProfile)
             {
                 
-                return auth.SignInAndRetrieveDataWithCredentialAsync(
-                        Firebase.Auth.EmailAuthProvider.GetCredential(email, password)).ContinueWith(
-                        HandleSignInWithSignInResult);
+                Task a= auth.SignInAndRetrieveDataWithCredentialAsync(
+                        Firebase.Auth.EmailAuthProvider.GetCredential(email, password));
+                return a;
             }
             else
             {
@@ -484,16 +481,11 @@ public class UserAuthentication : MonoBehaviour
                 fetchingToken = false;
                 if (LogTaskCompletion(task, "User token fetch"))
                 {
-                    DebugLog("Token = " + task.Result);
+                    token = task.Result;
+                    DebugLog("Token Set");
                 }
             });
         }
-
-        public string FetchUserToken()
-        {
-            Task<string> a = auth.CurrentUser.TokenAsync(false);
-            return a.Result;
-        }   
 
         // Display information about the currently logged in user.
         void GetUserInfo()
@@ -636,6 +628,10 @@ public class UserAuthentication : MonoBehaviour
                 if (GUILayout.Button("Sign In With Email Credential"))
                 {
                     SigninWithEmailCredentialAsync();
+                    GetUserToken();
+                    Debug.Log("Writing " + token + "to PlayerPrefs");
+                    PlayerPrefs.SetString("UserAuthToken", token);
+                    PlayerPrefs.Save();
                     SceneManager.LoadScene("01Gameplay");
             }
                 if (GUILayout.Button("Reload User"))
