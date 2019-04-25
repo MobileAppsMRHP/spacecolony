@@ -607,25 +607,25 @@ public class UserAuthentication : MonoBehaviour
 
                 GUILayout.Space(20);
 
-                GUILayout.BeginHorizontal();
+                /*GUILayout.BeginHorizontal();
                 GUILayout.Label("Phone Number:", GUILayout.Width(Screen.width * 0.20f));
                 phoneNumber = GUILayout.TextField(phoneNumber);
-                GUILayout.EndHorizontal();
+                GUILayout.EndHorizontal();*/
 
-                GUILayout.Space(20);
+                //GUILayout.Space(20);
 
-                GUILayout.BeginHorizontal();
+                /*GUILayout.BeginHorizontal();
                 GUILayout.Label("Phone Auth Received Code:", GUILayout.Width(Screen.width * 0.20f));
                 receivedCode = GUILayout.TextField(receivedCode);
-                GUILayout.EndHorizontal();
+                GUILayout.EndHorizontal();*/
 
-                GUILayout.Space(20);
+                //GUILayout.Space(20);
 
                 if (GUILayout.Button("Create User"))
                 {
                     CreateUserWithEmailAsync();
                 }
-                if (GUILayout.Button("Sign In With Email Credential"))
+                if (GUILayout.Button("Sign In with Email"))
                 {
                     SigninWithEmailCredentialAsync();
                     GetUserToken();
@@ -638,14 +638,14 @@ public class UserAuthentication : MonoBehaviour
                 {
                     ReloadUser();
                 }
-                if (GUILayout.Button("Get User Token"))
+                /*if (GUILayout.Button("Get User Token"))
                 {
                     GetUserToken();
-                }
-                if (GUILayout.Button("Get User Info"))
+                }*/
+                /*if (GUILayout.Button("Get User Info"))
                 {
                     GetUserInfo();
-                }
+                }*/
                 if (GUILayout.Button("Sign Out"))
                 {
                     SignOut();
@@ -655,12 +655,12 @@ public class UserAuthentication : MonoBehaviour
                     DeleteUserAsync();
                 }
    
-                if (GUILayout.Button(String.Format("Fetch Profile on Sign-in {0}",
+                /*if (GUILayout.Button(String.Format("Fetch Profile on Sign-in {0}",
                                                     signInAndFetchProfile ?
                                                       "Enabled" : "Disabled")))
                 {
                     signInAndFetchProfile = !signInAndFetchProfile;
-                }
+                }*/
                 GUIDisplayCustomControls();
                 GUILayout.EndVertical();
                 GUILayout.EndScrollView();
