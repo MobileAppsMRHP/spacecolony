@@ -470,22 +470,25 @@ public class UserAuthentication : MonoBehaviour
         }
 
         // Fetch and display current user's auth token.
-        public void GetUserToken()
+        public System.Collections.IEnumerator GetUserToken()
         {
             if (auth.CurrentUser == null)
             {
                 DebugLog("Not signed in, unable to get token.");
-                return;
+                yield break;
             }
             DebugLog("Fetching user token");
             fetchingToken = true;
-            auth.CurrentUser.TokenAsync(false).ContinueWith(task =>
+            yield return auth.CurrentUser.TokenAsync(false).ContinueWith(task =>
             {
                 fetchingToken = false;
                 if (LogTaskCompletion(task, "User token fetch"))
                 {
                     token = task.Result;
-                    DebugLog("Token Set");
+                    DebugLog("Token Set to " + token);
+                    Debug.Log("Writing '" + token + "' to PlayerPrefs at " + Shared.PlayerPrefs_AuthTokenKey);
+                    PlayerPrefs.SetString(Shared.PlayerPrefs_AuthTokenKey, token);
+                    PlayerPrefs.Save();
                 }
             });
         }
@@ -630,13 +633,8 @@ public class UserAuthentication : MonoBehaviour
                 }
                 if (GUILayout.Button("Sign In with Email"))
                 {
-                    SigninWithEmailCredentialAsync();
-                    GetUserToken();
-                    Debug.Log("Writing " + token + "to PlayerPrefs");
-                    PlayerPrefs.SetString("UserAuthToken", token);
-                    PlayerPrefs.Save();
-                    SceneManager.LoadScene("01Gameplay");
-            }
+                    StartCoroutine("SignInEmailCoroutine");
+                }
                 if (GUILayout.Button("Reload User"))
                 {
                     ReloadUser();
@@ -668,6 +666,15 @@ public class UserAuthentication : MonoBehaviour
                 GUILayout.EndVertical();
                 GUILayout.EndScrollView();
             }
+        }
+        
+        System.Collections.IEnumerator SignInEmailCoroutine()
+        {
+            yield return SigninWithEmailCredentialAsync();
+            yield return GetUserToken();
+            yield return new WaitForSeconds(5.0f);
+            
+            SceneManager.LoadScene("01Gameplay");
         }
 
         // Overridable function to allow additional controls to be added.

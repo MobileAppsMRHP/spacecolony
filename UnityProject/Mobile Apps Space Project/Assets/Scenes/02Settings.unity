@@ -1025,9 +1025,8 @@ GameObject:
   - component: {fileID: 1449316122}
   - component: {fileID: 1449316124}
   - component: {fileID: 1449316123}
-  - component: {fileID: 1449316125}
   m_Layer: 5
-  m_Name: Text
+  m_Name: AccountButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1094,20 +1093,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1449316121}
---- !u!114 &1449316125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1449316121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7a53984e025b024c904727045123f94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textShowed: {fileID: 676953171}
-  tracker: 1
-  message: 
 --- !u!1 &1494698102
 GameObject:
   m_ObjectHideFlags: 0
@@ -1526,7 +1511,7 @@ GameObject:
   - component: {fileID: 1927792208}
   - component: {fileID: 1927792211}
   m_Layer: 5
-  m_Name: Log Out
+  m_Name: Account Status
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1592,7 +1577,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1927792211}
-        m_MethodName: ChangeWordStatus
+        m_MethodName: UpdateText
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1648,9 +1633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7a53984e025b024c904727045123f94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textShowed: {fileID: 676953171}
-  tracker: 1
-  message: 
+  TextElement: {fileID: 676953171}
 --- !u!1 &2003116195
 GameObject:
   m_ObjectHideFlags: 0

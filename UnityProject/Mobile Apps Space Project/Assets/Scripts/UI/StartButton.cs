@@ -10,12 +10,13 @@ public class StartButton : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //auth = gameObject.AddComponent<UserAuthentication>();
-        
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
     }
 
     public void ChangeScreen()
     {
-        if (PlayerPrefs.HasKey("UserAuthToken"))
+        if (PlayerPrefs.HasKey(Shared.PlayerPrefs_AuthTokenKey))
         {
             Debug.Log("PlayerPrefs has a token, going to gameplay screen.");
             SceneManager.LoadScene("01Gameplay");

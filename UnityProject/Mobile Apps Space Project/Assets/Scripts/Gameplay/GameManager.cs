@@ -202,7 +202,9 @@ public class GameManager : MonoBehaviour
         Firebase.Auth.Credential token= auth.getCredential();
         auth.DisableUI();
         auth.DisableUI();*/
-        string authToken = PlayerPrefs.GetString("UserAuthToken", "User1");
+        string authToken = PlayerPrefs.GetString(Shared.PlayerPrefs_AuthTokenKey, "User1");
+        if (authToken.Equals(""))
+            authToken = "User1";
         if (authToken.Equals("User1"))
             DebugLog("PlayerPrefs did not contain user auth token. Proceeding with User1 token instead.", DebugFlags.Warning);
         else
