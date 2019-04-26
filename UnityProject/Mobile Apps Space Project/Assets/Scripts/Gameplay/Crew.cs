@@ -241,6 +241,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
 
     IEnumerator SetUpAndWriteFreshCrew()
     {
+
         System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc); //from https://answers.unity.com/questions/417939/how-can-i-get-the-time-since-the-epoch-date-in-uni.html
         int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
         identifier = "" + cur_time;
@@ -253,13 +254,14 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         }
         System.Random rand = new System.Random();
         CrewName = Possible_Names[rand.Next(Possible_Names.Count)];
-
+        transform.position = GameManager.instance.startRoom.transform.position;
         //write self to database
         GameManager.DebugLog("Writing FRESH crew with name " + CrewName + " and id " + identifier + " to database...", DebugFlags.CrewLoadingOps);
         yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/").SetRawJsonValueAsync(JsonUtility.ToJson(AllData));
         //yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/CrewName").SetRawJsonValueAsync(JsonUtility.ToJson(CrewName));
         GameManager.DebugLog("...FRESH crew setup done for " + identifier, DebugFlags.CrewLoadingOps);
         CrewCreatorStart(identifier); //run regular setup
+        
     }
 
     /*public string GetName()

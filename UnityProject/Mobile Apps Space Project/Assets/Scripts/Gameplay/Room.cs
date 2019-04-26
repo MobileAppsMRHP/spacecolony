@@ -110,13 +110,13 @@ public class Room : MonoBehaviour {
                     currentlySelected = false;
                 }
             }
-            tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel));
-            upgradeCosts = Vector3.Scale(baseUpgradeCost, tempCost);
-            IncreaseResources();
+            if (!(RoomType == Shared.RoomTypes.empty))
+            {
+                tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel));
+                upgradeCosts = Vector3.Scale(baseUpgradeCost, tempCost);
+                IncreaseResources();
+            }
         }
-        tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel));
-        upgradeCosts = Vector3.Scale(baseUpgradeCost, tempCost);
-        IncreaseResources();
         if (isPlanet)
         {
             currentlySelected = false;

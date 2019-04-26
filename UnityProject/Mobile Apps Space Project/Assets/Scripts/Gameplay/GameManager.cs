@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     public List<Crew> CrewMembers;
     public List<Room> Rooms;
+    public GameObject startRoom;
     //private Dictionary<string, int> Resources; //{ get; }
 
     //private bool IsLoading; //indicates to other things if the game is loading
@@ -373,5 +374,6 @@ public class GameManager : MonoBehaviour
     public void CreateNewCrew()
     {
         StartCoroutine(CreateFreshCrewMember(1));
+
     }
 }
