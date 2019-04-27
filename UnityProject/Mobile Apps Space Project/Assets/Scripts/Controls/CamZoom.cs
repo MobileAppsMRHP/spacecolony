@@ -7,6 +7,7 @@ public class CamZoom : MonoBehaviour {
     public float zoomMax;
     public float zoomRate;
     public bool isZooming;
+    public bool isMapScreen;
     
 
 	// Use this for initialization
