@@ -680,6 +680,7 @@ public class UserAuthentication : MonoBehaviour
         
     System.Collections.IEnumerator SignInEmailCoroutine()
     {
+        //TODO: ADD INSTANCE OF MAIN THREAD THING
         yield return SigninWithEmailCredentialAsync();
         Debug.Log("Attempted sign in");
         yield return new WaitForSeconds(2.0f); //TODO: Figure out why the sign in task isn't actually awaited. This wait for seconds is an ugly bandaid
