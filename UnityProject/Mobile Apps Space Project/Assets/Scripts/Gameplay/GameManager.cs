@@ -23,7 +23,8 @@ using static UnityEngine.UI.DefaultControls;
 
 public class GameManager : MonoBehaviour
 {
-
+    public enum SceneSelected { title, login, main, option, map };
+    public SceneSelected sceneCurrentlySelected = SceneSelected.main;
     public List<Crew> CrewMembers;
     public List<Room> Rooms;
     public Shared.Planets CurrentPlanetStringForDB = Shared.Planets.Loading;
@@ -376,5 +377,10 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(CreateFreshCrewMember(1));
 
+    }
+
+    public void ChangeCurrentScene(int newSceneNum)
+    {
+        sceneCurrentlySelected = (SceneSelected)newSceneNum;
     }
 }

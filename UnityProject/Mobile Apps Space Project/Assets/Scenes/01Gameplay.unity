@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -340,6 +340,58 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 3
   m_TargetDisplay: 0
+--- !u!1001 &48832252
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4255623370144354, guid: 44e1ca206d356d540b50a7fe331e25fc, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -14.722921
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255623370144354, guid: 44e1ca206d356d540b50a7fe331e25fc, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.9698564
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255623370144354, guid: 44e1ca206d356d540b50a7fe331e25fc, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.12207031
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255623370144354, guid: 44e1ca206d356d540b50a7fe331e25fc, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255623370144354, guid: 44e1ca206d356d540b50a7fe331e25fc, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255623370144354, guid: 44e1ca206d356d540b50a7fe331e25fc, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255623370144354, guid: 44e1ca206d356d540b50a7fe331e25fc, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255623370144354, guid: 44e1ca206d356d540b50a7fe331e25fc, type: 2}
+      propertyPath: m_RootOrder
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 114643840947000126, guid: 44e1ca206d356d540b50a7fe331e25fc,
+        type: 2}
+      propertyPath: sceneUI
+      value: 
+      objectReference: {fileID: 352248800}
+    - target: {fileID: 114643840947000126, guid: 44e1ca206d356d540b50a7fe331e25fc,
+        type: 2}
+      propertyPath: sceneNum
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 44e1ca206d356d540b50a7fe331e25fc, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &69513831
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,7 +669,7 @@ Prefab:
     - target: {fileID: 114240072660833228, guid: bf49bab51cfdb4849a47caf004774a57,
         type: 2}
       propertyPath: Rooms.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4380888415586964, guid: bf49bab51cfdb4849a47caf004774a57, type: 2}
       propertyPath: m_LocalPosition.x
@@ -700,6 +752,16 @@ Prefab:
       propertyPath: startRoom
       value: 
       objectReference: {fileID: 1318847774}
+    - target: {fileID: 114240072660833228, guid: bf49bab51cfdb4849a47caf004774a57,
+        type: 2}
+      propertyPath: Rooms.Array.data[6]
+      value: 
+      objectReference: {fileID: 501744076}
+    - target: {fileID: 114240072660833228, guid: bf49bab51cfdb4849a47caf004774a57,
+        type: 2}
+      propertyPath: sceneCurrentlySelected
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bf49bab51cfdb4849a47caf004774a57, type: 2}
   m_IsPrefabParent: 0
@@ -883,6 +945,17 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 92023498}
+        m_MethodName: ChangeCurrentScene
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4211,6 +4284,7 @@ GameObject:
   - component: {fileID: 501744075}
   - component: {fileID: 501744074}
   - component: {fileID: 501744076}
+  - component: {fileID: 501744077}
   m_Layer: 0
   m_Name: planet
   m_TagString: Untagged
@@ -4270,7 +4344,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 501744073}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.419998, y: 4.39, z: 0}
+  m_LocalPosition: {x: -20.92, y: 5.36, z: 0}
   m_LocalScale: {x: 0.1856779, y: 0.1856779, z: 0.1856779}
   m_Children:
   - {fileID: 2002119380}
@@ -4319,6 +4393,31 @@ MonoBehaviour:
   data:
     RoomLevel: 0
     RoomUniqueIdentifierForDB: Room_Debug_Planet
+--- !u!61 &501744077
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 501744073}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 11.76, y: 11.76}
+    newSize: {x: 11.76, y: 11.76}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 11.76, y: 11.76}
+  m_EdgeRadius: 0
 --- !u!1 &507261988
 GameObject:
   m_ObjectHideFlags: 0
@@ -12617,6 +12716,17 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 92023498}
+        m_MethodName: ChangeCurrentScene
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
