@@ -159,20 +159,20 @@ public class GameManager : MonoBehaviour
 
     System.Collections.IEnumerator ProcessTimeSinceLastLogon()
     {
-        DebugLog("Requesting time since last logon...", DebugFlags.GeneralInfo);
+        DebugLog("Requesting time since last log-on...", DebugFlags.GeneralInfo);
         yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
                 // Handle the error...
-                DebugLog("Data retrival error when prompting for EpochTimeLastLogon!", DebugFlags.Critical);
+                DebugLog("Data retrieval error when prompting for EpochTimeLastLogon!", DebugFlags.Critical);
             }
             else if (task.IsCompleted)
             {
                 System.Int64 lastTime = (System.Int64)task.Result.Value;
                 var deltaTime = (CurrentEpochTime - lastTime);
                 //Debug.Log(task.Result.Value.GetType());
-                DebugLog("Last logon time: " + lastTime + "\tTime difference: " + deltaTime, DebugFlags.ElapsedTime);
+                DebugLog("Last log-on time: " + lastTime + "\tTime difference: " + deltaTime, DebugFlags.ElapsedTime);
                 foreach (var item in toProcessElapsedTime)
                 {
                     item.ProcessTime(deltaTime);
@@ -221,13 +221,13 @@ public class GameManager : MonoBehaviour
            if (task.IsFaulted)
            {
                // Handle the error...
-               DebugLog("Data retrival error when prompting for crew data!", DebugFlags.Critical);
+               DebugLog("Data retrieval error when prompting for crew data!", DebugFlags.Critical);
            }
            else if (task.IsCompleted)
            {
                foreach(DataSnapshot crewMember in task.Result.Children)
                {
-                   DebugLog("Found crewmember with ID " + crewMember.Key, DebugFlags.CrewLoadingOps);
+                   DebugLog("Found crew member with ID " + crewMember.Key, DebugFlags.CrewLoadingOps);
                    SpawnCrew(crewMember.Key /*new List<object> { crewMember.Key, crewCreator }*/);
                }
            }
@@ -271,7 +271,7 @@ public class GameManager : MonoBehaviour
                     CrewMembers.Add(newCrewMember);
                     newCrewMember.transform.SetParent(crewCreator.transform);
                 });
-                yield return new WaitForSecondsRealtime(1.0f); //TODO: Fix this bandaid. Because the spawn task is being enqueud in the main thread, this wait doesn't acutally wait for the purposes of the RNG, just enqueue time, which is why it has to be so long. Even then there might be overlap.
+                yield return new WaitForSecondsRealtime(1.0f); //TODO: Fix this band-aid. Because the spawn task is being enqueued in the main thread, this wait doesn't actually wait for the purposes of the RNG, just enqueue time, which is why it has to be so long. Even then there might be overlap.
             }
             DebugLog("Done spawning requested " + count + " fresh crew members.");
         }
@@ -279,13 +279,13 @@ public class GameManager : MonoBehaviour
 
     void DEBUG_WriteNewCrewTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data
     {
-        DebugLog("[DEBUG] Replacing new CREW MEMBER templace with crew prefab.");
+        DebugLog("[DEBUG] Replacing new CREW MEMBER template with crew prefab.");
         FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/crew").SetRawJsonValueAsync(JsonUtility.ToJson(crewCreator.prefab.AllData));
     }
 
     void DEBUG_WriteNewRoomTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data
     {
-        DebugLog("[DEBUG] Replacing new ROOM templace with room prefab.");
+        DebugLog("[DEBUG] Replacing new ROOM template with room prefab.");
         FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").SetRawJsonValueAsync(JsonUtility.ToJson(roomCreator.prefab.data));
     }
 

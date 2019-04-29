@@ -57,7 +57,7 @@ public class ResourceManager : MonoBehaviour, IFirebaseTimedUpdateable, IProcess
 
     public void DEBUG_SetupResourcesList()
     {
-        GameManager.DebugLog("[DEBUG] Creating demo resouces and writing to database...");
+        GameManager.DebugLog("[DEBUG] Creating demo resources and writing to database...");
 
         resources.Add(Shared.ResourceTypes.minerals, 5.4f);
         resources.Add(Shared.ResourceTypes.food, 25.5f);
@@ -129,7 +129,7 @@ public class ResourceManager : MonoBehaviour, IFirebaseTimedUpdateable, IProcess
             if (task.IsFaulted)
             {
                 // Handle the error...
-                GameManager.DebugLog("Data retrival error when prompting for Resource Averages!", DebugFlags.Critical);
+                GameManager.DebugLog("Data retrieval error when prompting for Resource Averages!", DebugFlags.Critical);
             }
             else if (task.IsCompleted)
             {

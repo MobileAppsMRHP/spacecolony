@@ -97,9 +97,9 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
 
     public IEnumerator CrewCreatorStartMultithread()
     {
-        GameManager.DebugLog("Waiting for crew data to be recieved before proceeding...", DebugFlags.CrewLoadingOps);
+        GameManager.DebugLog("Waiting for crew data to be received before proceeding...", DebugFlags.CrewLoadingOps);
         yield return new WaitUntil(() => totalUpdatesRecieved >= 4); //4 pieces of data to get
-        GameManager.DebugLog("...crew data recieved; proceeding.", DebugFlags.CrewLoadingOps);
+        GameManager.DebugLog("...crew data received; proceeding.", DebugFlags.CrewLoadingOps);
         GameManager.instance.AddToFirebaseTimedUpdates(this);
         GameManager.instance.AddToProcessElapsedTime(this);
         yield return new WaitUntil(() => !AllData.RoomData.CurrentRoomStringForDB.Equals("NO_ROOM")); //wait until room data loads in on this thread
@@ -130,7 +130,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
             if (task.IsFaulted)
             {
                 // Handle the error...
-                GameManager.DebugLog("Data retrival error when prompting for possible crew names!", DebugFlags.Critical);
+                GameManager.DebugLog("Data retrieval error when prompting for possible crew names!", DebugFlags.Critical);
             }
             else if (task.IsCompleted)
             {
@@ -166,13 +166,13 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
             if (task.IsFaulted)
             {
                 // Handle the error...
-                GameManager.DebugLog("Data retrival error when prompting for crew AllData!", DebugFlags.Critical);
+                GameManager.DebugLog("Data retrieval error when prompting for crew AllData!", DebugFlags.Critical);
             }
             else if (task.IsCompleted)
             {
                 
                 string json = task.Result.Value.ToString();
-                GameManager.DebugLog("Recieved AllData: " + json, DebugFlags.Critical);
+                GameManager.DebugLog("Received AllData: " + json, DebugFlags.Critical);
                 JsonUtility.FromJsonOverwrite(json, AllData);
                 totalUpdatesRecieved++;
             }
