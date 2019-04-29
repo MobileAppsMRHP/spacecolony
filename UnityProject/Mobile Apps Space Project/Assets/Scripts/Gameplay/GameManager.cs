@@ -243,7 +243,7 @@ public class GameManager : MonoBehaviour
             Crew newCrewMember = Instantiate(crewCreator.prefab);
 
             //newCrewMember.SendMessage("CrewCreatorStart", identifier);
-            newCrewMember.StartCoroutine(newCrewMember.CrewCreatorStartMultithread());
+            newCrewMember.StartCoroutine(newCrewMember.CrewCreatorStartMultithread(identifier));
             //DebugLog("Loaded crew member with ID " + identifier, DebugFlags.CrewLoadingOps);
 
             CrewMembers.Add(newCrewMember);

@@ -78,8 +78,9 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         StartCoroutine(CrewCreatorStartMultithread()); //needs to do this because coroutines can't be called from outside the class*/
     //}
 
-    public IEnumerator CrewCreatorStartMultithread()
+    public IEnumerator CrewCreatorStartMultithread(string identifier)
     {
+        this.identifier = identifier;
         //attach data listeners to load in the data
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/RoomData").ValueChanged += HandleRoomValueChanged;
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/SkillData").ValueChanged += HandleSkillValueChanged;
@@ -250,7 +251,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         //yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/CrewName").SetRawJsonValueAsync(JsonUtility.ToJson(CrewName));
         GameManager.DebugLog("...FRESH crew setup done for " + identifier, DebugFlags.CrewLoadingOps);
         //CrewCreatorStart(identifier); //run regular setup
-        StartCoroutine(CrewCreatorStartMultithread());
+        StartCoroutine(CrewCreatorStartMultithread(identifier));
         
     }
 
