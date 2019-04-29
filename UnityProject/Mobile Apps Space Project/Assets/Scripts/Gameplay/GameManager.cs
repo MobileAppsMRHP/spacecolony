@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     public List<Crew> CrewMembers;
     public List<Room> Rooms;
+    public Shared.Planets CurrentPlanetStringForDB = Shared.Planets.Loading;
     public GameObject startRoom;
     //private Dictionary<string, int> Resources; //{ get; }
 

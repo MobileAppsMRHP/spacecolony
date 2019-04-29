@@ -39,4 +39,17 @@ public static class Shared {
         premiumCurrency
     }
 
+    public enum Planets
+    {
+        Loading = 0,
+        MineralPlanet,
+        FoodPlanet,
+        WaterPlanet,
+        MoneyPlanet, //probably don't use this; here for consistency
+        EnergyPlanet,//probably don't use this; here for consistency
+        PreciousMetalPlanet,
+        PremiumCurrencyPlanet//probably don't use this; here for consistency
+
+    }
+
 }
