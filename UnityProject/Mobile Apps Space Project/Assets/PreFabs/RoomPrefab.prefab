@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4952384370962232}
   - component: {fileID: 212310903063762346}
   - component: {fileID: 61701641567232668}
-  - component: {fileID: 114864710342572286}
   - component: {fileID: 114918558709920864}
   m_Layer: 0
   m_Name: RoomPrefab
@@ -68,28 +67,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.12, y: 5.12}
   m_EdgeRadius: 0
---- !u!114 &114864710342572286
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1180773634941354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a2ff8a516a9ad41968e603407b80b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  peopleLimit: 2
-  roomLevel: 0
-  crewInThisRoom: []
-  crewLocations: []
-  upgradeCosts: {x: 0, y: 0, z: 0}
-  RoomType: 0
-  currentlySelected: 0
-  mainScreen: {fileID: 0}
-  data:
-    RoomLevel: 0
-    RoomUniqueIdentifierForDB: 
 --- !u!114 &114918558709920864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -109,6 +86,7 @@ MonoBehaviour:
   RoomType: 0
   currentlySelected: 0
   mainScreen: {fileID: 0}
+  isPlanet: 0
   data:
     RoomLevel: 0
     RoomUniqueIdentifierForDB: '"UNSET_ROOM_IDENTIFIER"'
