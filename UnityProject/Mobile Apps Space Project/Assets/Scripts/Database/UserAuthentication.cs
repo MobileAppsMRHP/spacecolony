@@ -18,8 +18,8 @@ public class UserAuthentication : MonoBehaviour
     public GUISkin fb_GUISkin;
     private string logText = "";
     protected Firebase.Auth.Credential credential;
-    protected string email = "";
-    protected string password = "";
+    protected string email = "test@test.com";
+    protected string password = "123456";
     protected string displayName = "";
     protected string phoneNumber = "";
     protected string receivedCode = "";
