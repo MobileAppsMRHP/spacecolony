@@ -112,7 +112,7 @@ public class Room : MonoBehaviour {
             }
             if (!(RoomType == Shared.RoomTypes.empty))
             {
-                tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType - 1].z, roomLevel));
+                tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType].z, roomLevel));
                 upgradeCosts = Vector3.Scale(baseUpgradeCost, tempCost);
                 IncreaseResources();
             }
