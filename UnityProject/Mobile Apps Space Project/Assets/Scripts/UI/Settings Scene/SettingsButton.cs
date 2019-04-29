@@ -9,6 +9,7 @@ public class SettingsButton : MonoBehaviour
     {
         Debug.Log("SettingsButton: Loading settings scene");
         SceneManager.LoadScene("02Settings", LoadSceneMode.Additive);
+        GameManager.instance.ChangeCurrentScene(3);
         /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
     }
@@ -18,6 +19,7 @@ public class SettingsButton : MonoBehaviour
         Debug.Log("SettingsButton: Unloading map scene");
         //SceneManager.LoadScene("01Gameplay", LoadSceneMode.Single);
         SceneManager.UnloadSceneAsync("03Map");
+        GameManager.instance.ChangeCurrentScene(2);
         /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
     }
@@ -27,6 +29,7 @@ public class SettingsButton : MonoBehaviour
         Debug.Log("SettingsButton: Unloading settings screen");
         //SceneManager.LoadScene("00TitleScreen", LoadSceneMode.Single);
         SceneManager.UnloadSceneAsync("02Settings");
+        GameManager.instance.ChangeCurrentScene(0);
         /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
     }
