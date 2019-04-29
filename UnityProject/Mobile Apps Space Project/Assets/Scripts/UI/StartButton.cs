@@ -19,12 +19,16 @@ public class StartButton : MonoBehaviour {
         if (PlayerPrefs.HasKey(Shared.PlayerPrefs_AuthTokenKey))
         {
             Debug.Log("PlayerPrefs has a token, going to gameplay screen.");
-            SceneManager.LoadScene("01Gameplay");
+            SceneManager.LoadScene("01Gameplay", LoadSceneMode.Single);
+            /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
         }
         else 
         {
             Debug.Log("PlayerPrefs does NOT have a token, going to login screen.");
-            SceneManager.LoadScene("login");
+            SceneManager.LoadScene("Login", LoadSceneMode.Single);
+            /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
 
         }
     }

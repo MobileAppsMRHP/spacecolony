@@ -52,8 +52,10 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance = null; //singleton pattern
 
+    
+
     public ResourceManager resourceManager;
-    public CrewSpawner crewCreator;
+    public CrewSpawner crewCreator;// = UnityEngine.SceneManagement.SceneManager.GetSceneByName("01Gameplay").GetRootGameObjects().GetValue(0).;
     public RoomSpawner roomCreator;
     protected static UserAuthentication auth;
     private List<IFirebaseTimedUpdateable> toFirebasePush;

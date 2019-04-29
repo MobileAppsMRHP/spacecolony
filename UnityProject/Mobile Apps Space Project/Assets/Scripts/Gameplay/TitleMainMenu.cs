@@ -7,7 +7,10 @@ public class TitleMainMenu : MonoBehaviour {
 
     public void StartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        Debug.Log("Loading scene 01Gameplay");
+        SceneManager.LoadScene("01Gameplay", LoadSceneMode.Single);//SceneManager.GetActiveScene().buildIndex + 1);
+        /*Debug.Log("Unloading scene 00TitleScreen");
+        SceneManager.UnloadSceneAsync("00TitleScreen");*/
     }
 
     public void QuitGame()

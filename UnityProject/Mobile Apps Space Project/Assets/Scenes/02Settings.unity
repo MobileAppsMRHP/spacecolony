@@ -957,9 +957,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Exit to Title
-
-'
+  m_Text: Exit Options
 --- !u!222 &1078954140
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -17,11 +17,18 @@ public class ToMapScreenScene : MonoBehaviour {
 
     public void SwitchToMapScreen()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+        Debug.Log("Loading map scene");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2, LoadSceneMode.Additive);
+        /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
     }
 
     public void MapScreenToMainScreen()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
+        Debug.Log("Unloading map scene");
+        SceneManager.UnloadSceneAsync("03Map");
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2, LoadSceneMode.Additive);
+        /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
     }
 }
