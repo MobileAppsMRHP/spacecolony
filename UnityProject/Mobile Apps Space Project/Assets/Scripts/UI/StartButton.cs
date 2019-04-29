@@ -10,6 +10,7 @@ public class StartButton : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //auth = gameObject.AddComponent<UserAuthentication>();
+        Debug.Log("DEBUG: Erasing playerprefs");
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
     }

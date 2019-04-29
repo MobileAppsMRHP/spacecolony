@@ -10,7 +10,7 @@
 // startup.
 public class UserAuthentication : MonoBehaviour
 {
-    protected Firebase.Auth.FirebaseAuth auth;
+    public Firebase.Auth.FirebaseAuth auth;
     protected Firebase.Auth.FirebaseAuth otherAuth;
     protected Dictionary<string, Firebase.Auth.FirebaseUser> userByAuth =
         new Dictionary<string, Firebase.Auth.FirebaseUser>();
@@ -18,8 +18,8 @@ public class UserAuthentication : MonoBehaviour
     public GUISkin fb_GUISkin;
     private string logText = "";
     protected Firebase.Auth.Credential credential;
-    protected string email = "test@test.com";
-    protected string password = "123456";
+    protected string email = "mason@gamil.com";
+    protected string password = "masonharrsch";
     protected string displayName = "";
     protected string phoneNumber = "";
     protected string receivedCode = "";
@@ -36,6 +36,7 @@ public class UserAuthentication : MonoBehaviour
     private Vector2 controlsScrollViewVector = Vector2.zero;
     private Vector2 scrollViewVector = Vector2.zero;
     bool UIEnabled = false;
+    bool doneStarting = false;
 
 
     const int kMaxLogSize = 16382;
@@ -71,16 +72,20 @@ public class UserAuthentication : MonoBehaviour
         auth.StateChanged += AuthStateChanged;
         auth.IdTokenChanged += IdTokenChanged;
         AuthStateChanged(this, null);
+        doneStarting = true;
     }
 
     // Exit if escape (or back, on mobile) is pressed.
     protected virtual void Update()
     {
-        if (auth == null)
-            Debug.LogWarning("An instance of UserAuthentication exists (" + this.ToString() + "), but does not have an initialized Auth!");
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (doneStarting)
         {
-            Application.Quit();
+            if (auth == null)
+                DebugLog("An instance of UserAuthentication exists (" + this.ToString() + "), but does not have an initialized Auth!");
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
         }
     }
 
@@ -341,10 +346,9 @@ public class UserAuthentication : MonoBehaviour
     public Task SigninWithEmailCredentialAsync()
     {
         DebugLog(String.Format("Attempting to sign in as {0}...", email));
-        DisableUI();
+        //DisableUI();
         if (signInAndFetchProfile)
         {
-                
             Task a= auth.SignInAndRetrieveDataWithCredentialAsync(
                     Firebase.Auth.EmailAuthProvider.GetCredential(email, password));
             return a;
@@ -486,9 +490,14 @@ public class UserAuthentication : MonoBehaviour
             {
                 token = task.Result;
                 DebugLog("Token Set to " + token);
-                Debug.Log("Writing '" + token + "' to PlayerPrefs at " + Shared.PlayerPrefs_AuthTokenKey);
-                PlayerPrefs.SetString(Shared.PlayerPrefs_AuthTokenKey, token);
-                PlayerPrefs.Save();
+                Debug.Log("Writing to PlayerPrefs at " + Shared.PlayerPrefs_AuthTokenKey + ", " + token + "'");
+                UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                {
+                    PlayerPrefs.SetString(Shared.PlayerPrefs_AuthTokenKey, token);
+                    PlayerPrefs.Save();
+                    Debug.Log("Done with enqueued playerprefs changes");
+                });
+                
             }
         });
     }
@@ -575,12 +584,12 @@ public class UserAuthentication : MonoBehaviour
     // Render the log output in a scroll view.
     void GUIDisplayLog()
     {
-    if (UIEnabled)
-    {
-        scrollViewVector = GUILayout.BeginScrollView(scrollViewVector);
-        GUILayout.Label(logText);
-        GUILayout.EndScrollView();
-    }
+        if (UIEnabled)
+        {
+            scrollViewVector = GUILayout.BeginScrollView(scrollViewVector);
+            GUILayout.Label(logText);
+            GUILayout.EndScrollView();
+        }
     }
 
     // Render the buttons and other controls.
@@ -672,9 +681,12 @@ public class UserAuthentication : MonoBehaviour
     System.Collections.IEnumerator SignInEmailCoroutine()
     {
         yield return SigninWithEmailCredentialAsync();
+        Debug.Log("Attempted sign in");
+        yield return new WaitForSeconds(2.0f); //TODO: Figure out why the sign in task isn't actually awaited. This wait for seconds is an ugly bandaid
         yield return GetUserToken();
-        //yield return new WaitForSeconds(5.0f);
-
+        Debug.Log("Attempted token");
+        yield return new WaitForSeconds(5.0f);
+        DisableUI();
         SceneManager.LoadScene("01Gameplay", LoadSceneMode.Single);
         /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/

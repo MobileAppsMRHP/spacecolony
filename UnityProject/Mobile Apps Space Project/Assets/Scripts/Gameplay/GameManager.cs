@@ -203,6 +203,7 @@ public class GameManager : MonoBehaviour
     public string Authenticate()
     {
         string authToken = PlayerPrefs.GetString(Shared.PlayerPrefs_AuthTokenKey, "User1");
+        Debug.Log("PlayerPrefs contains '" + authToken + "'");
         if (authToken.Equals("")) //deal with empty auth tokens
             authToken = "User1";
         if (authToken.Equals("User1")) //If failed to load an auth token, use default user
