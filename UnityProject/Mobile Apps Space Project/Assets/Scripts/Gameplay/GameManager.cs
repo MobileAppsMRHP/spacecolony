@@ -199,14 +199,10 @@ public class GameManager : MonoBehaviour
 
     public string Authenticate()
     {
-        /*auth = gameObject.AddComponent<UserAuthentication>();
-        Firebase.Auth.Credential token= auth.getCredential();
-        auth.DisableUI();
-        auth.DisableUI();*/
         string authToken = PlayerPrefs.GetString(Shared.PlayerPrefs_AuthTokenKey, "User1");
-        if (authToken.Equals(""))
+        if (authToken.Equals("")) //deal with empty auth tokens
             authToken = "User1";
-        if (authToken.Equals("User1"))
+        if (authToken.Equals("User1")) //If failed to load an auth token, use default user
             DebugLog("PlayerPrefs did not contain user auth token. Proceeding with User1 token instead.", DebugFlags.Warning);
         else
             DebugLog("Auth user token: " + authToken, DebugFlags.Auth);
@@ -227,8 +223,8 @@ public class GameManager : MonoBehaviour
            {
                foreach(DataSnapshot crewMember in task.Result.Children)
                {
-                   DebugLog("Found crew member with ID " + crewMember.Key, DebugFlags.CrewLoadingOps);
-                   SpawnCrew(crewMember.Key /*new List<object> { crewMember.Key, crewCreator }*/);
+                   DebugLog("Retrieved crew member with ID " + crewMember.Key, DebugFlags.CrewLoadingOps);
+                   SpawnCrew(crewMember.Key);
                }
            }
            else
@@ -243,11 +239,11 @@ public class GameManager : MonoBehaviour
     {
         DebugLog("Loading crew member " + identifier + " via dispatch...", DebugFlags.CrewLoadingOps);
         UnityMainThreadDispatcher.Instance().Enqueue(() => {
-            //Debug.Log("This is executed from the main thread");
             Crew newCrewMember = Instantiate(crewCreator.prefab);
 
-            newCrewMember.SendMessage("CrewCreatorStart", identifier);
-            DebugLog("Loaded crew member with ID " + identifier, DebugFlags.CrewLoadingOps);
+            //newCrewMember.SendMessage("CrewCreatorStart", identifier);
+            newCrewMember.StartCoroutine(newCrewMember.CrewCreatorStartMultithread());
+            //DebugLog("Loaded crew member with ID " + identifier, DebugFlags.CrewLoadingOps);
 
             CrewMembers.Add(newCrewMember);
             newCrewMember.transform.SetParent(crewCreator.transform);
@@ -265,8 +261,8 @@ public class GameManager : MonoBehaviour
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
                     Crew newCrewMember = Instantiate(crewCreator.prefab);
-
-                    newCrewMember.SendMessage("FreshCrewSetup");
+                    //newCrewMember.SendMessage("FreshCrewSetup");
+                    newCrewMember.StartCoroutine(newCrewMember.SetUpAndWriteFreshCrew());
                     DebugLog("MainThread: Created a fresh crew member", DebugFlags.CrewLoadingOps);
                     CrewMembers.Add(newCrewMember);
                     newCrewMember.transform.SetParent(crewCreator.transform);

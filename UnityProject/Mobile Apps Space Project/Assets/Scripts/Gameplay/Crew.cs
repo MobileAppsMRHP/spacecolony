@@ -15,14 +15,6 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
 
     [System.NonSerialized] public static List<string> Possible_Names = new List<string>();
     public static float Exp_Per_Sec = 0.01f;
-    //public GameManager gameManager;
-
-    
-
-    //private GameManager gameManager;
-
-    //public bool newCharacter;
-
 
     [System.Serializable]
     public struct Data
@@ -70,41 +62,38 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     public Data AllData;
 
     public string CrewName //convenience
-    {
-        get
-        {
-            return AllData.CrewName;
-        }
-        set
-        {
-            AllData.CrewName = value;
-        }
-    }
+    {get {return AllData.CrewName;} set {AllData.CrewName = value;}}
 
     private int totalUpdatesRecieved = 0;
 
     // Use this for initialization
-    public void CrewCreatorStart(string identifier)
-    {
-        this.identifier = identifier;
+    //public void CrewCreatorStart(string identifier)
+    //{
+        /*this.identifier = identifier;
         //LoadAllData();
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/RoomData").ValueChanged += HandleRoomValueChanged;
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/SkillData").ValueChanged += HandleSkillValueChanged;
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/TimedData").ValueChanged += HandleTimedValueChanged;
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/CrewName").ValueChanged += HandleNameValueChanged;
-        StartCoroutine(CrewCreatorStartMultithread());
-    }
+        StartCoroutine(CrewCreatorStartMultithread()); //needs to do this because coroutines can't be called from outside the class*/
+    //}
 
     public IEnumerator CrewCreatorStartMultithread()
     {
-        GameManager.DebugLog("Waiting for crew data to be received before proceeding...", DebugFlags.CrewLoadingOps);
-        yield return new WaitUntil(() => totalUpdatesRecieved >= 4); //4 pieces of data to get
+        //attach data listeners to load in the data
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/RoomData").ValueChanged += HandleRoomValueChanged;
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/SkillData").ValueChanged += HandleSkillValueChanged;
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/TimedData").ValueChanged += HandleTimedValueChanged;
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/CrewName").ValueChanged += HandleNameValueChanged;
+        GameManager.DebugLog("Spawning crew - Waiting for this crew's data to be received before proceeding...", DebugFlags.CrewLoadingOps);
+        yield return new WaitUntil(() => totalUpdatesRecieved >= 4); //4 pieces of data to get. need to wait for data to load so the database contents aren't overwritten
         GameManager.DebugLog("...crew data received; proceeding.", DebugFlags.CrewLoadingOps);
-        GameManager.instance.AddToFirebaseTimedUpdates(this);
-        GameManager.instance.AddToProcessElapsedTime(this);
+        GameManager.instance.AddToFirebaseTimedUpdates(this); //write experience increases on a timer
+        GameManager.instance.AddToProcessElapsedTime(this); //allow elapsed time to be calculated on this crew member
+        //UnityEngine.Assertions.Assert.IsTrue("NO_ROOM".Equals(GameManager.instance.crewCreator.prefab.AllData.RoomData.CurrentRoomStringForDB)); //ensure that the prefab has blank room value
         yield return new WaitUntil(() => !AllData.RoomData.CurrentRoomStringForDB.Equals("NO_ROOM")); //wait until room data loads in on this thread
-        DoCollisions = true;
-        StartCoroutine(MoveCrewBasedOnString(AllData.RoomData.CurrentRoomStringForDB));
+        DoCollisions = true; //allow collisions to cause the crew member to move rooms now
+        StartCoroutine(MoveCrewBasedOnString(AllData.RoomData.CurrentRoomStringForDB)); //move the crew to the room they're supposed to be in
         GameManager.DebugLog("Crew startup done for " + identifier, DebugFlags.CrewLoadingOps);
     }
 
@@ -195,7 +184,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     void HandleRoomValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote crew member " + this.name + " ROOM data with JSON from database: " + json, DebugFlags.DatabaseOps);
+        GameManager.DebugLog("Overwrote crew member " + this.CrewName + " (" + identifier + ") ROOM data with JSON from database: " + json, DebugFlags.DatabaseOps);
         object boxedDataCloneForJsonUtility = AllData.RoomData; //needs special boxing because https://docs.unity3d.com/ScriptReference/EditorJsonUtility.FromJsonOverwrite.html
         JsonUtility.FromJsonOverwrite(json, boxedDataCloneForJsonUtility);
         AllData.RoomData = (Data.RoomStuff)boxedDataCloneForJsonUtility;
@@ -206,7 +195,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     void HandleSkillValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote crew member " + this.name + " SKILL data with JSON from database: " + json, DebugFlags.DatabaseOps);
+        GameManager.DebugLog("Overwrote crew member " + this.CrewName + " (" + identifier + ") SKILL data with JSON from database: " + json, DebugFlags.DatabaseOps);
         object boxedDataCloneForJsonUtility = AllData.SkillData; //needs special boxing because https://docs.unity3d.com/ScriptReference/EditorJsonUtility.FromJsonOverwrite.html
         JsonUtility.FromJsonOverwrite(json, boxedDataCloneForJsonUtility);
         AllData.SkillData = (Data.Skills)boxedDataCloneForJsonUtility;
@@ -216,7 +205,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     void HandleTimedValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote crew member " + this.name + " TIMED data with JSON from database: " + json, DebugFlags.DatabaseOps);
+        GameManager.DebugLog("Overwrote crew member " + this.CrewName + " (" + identifier + ") TIMED data with JSON from database: " + json, DebugFlags.DatabaseOps);
         object boxedDataCloneForJsonUtility = AllData.TimedData; //needs special boxing because https://docs.unity3d.com/ScriptReference/EditorJsonUtility.FromJsonOverwrite.html
         JsonUtility.FromJsonOverwrite(json, boxedDataCloneForJsonUtility);
         AllData.TimedData = (Data.TimedDataToSerialize)boxedDataCloneForJsonUtility;
@@ -226,22 +215,22 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     void HandleNameValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote crew member " + this.name + " NAME data with JSON from database: " + json, DebugFlags.DatabaseOps);
+        GameManager.DebugLog("Overwrote crew member " + this.CrewName + " (" + identifier + ") NAME data with JSON from database: " + json, DebugFlags.DatabaseOps);
         AllData.CrewName = json;
         totalUpdatesRecieved++;
     }
 
-    public void FreshCrewSetup()
+    /*public void FreshCrewSetup()
     {
         //few things here need initial values because they are set by the prefab. to give initial values, edit the prefab.
         //setup unique crew identifier
         GameManager.DebugLog("FRESH Crew Coroutine Start", DebugFlags.CrewLoadingOps);
         StartCoroutine(SetUpAndWriteFreshCrew());
-    }
+    }*/
 
-    IEnumerator SetUpAndWriteFreshCrew()
+    public IEnumerator SetUpAndWriteFreshCrew()
     {
-
+        GameManager.DebugLog("FRESH Crew Coroutine Start", DebugFlags.CrewLoadingOps);
         System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc); //from https://answers.unity.com/questions/417939/how-can-i-get-the-time-since-the-epoch-date-in-uni.html
         int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
         identifier = "" + cur_time;
@@ -260,14 +249,10 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/").SetRawJsonValueAsync(JsonUtility.ToJson(AllData));
         //yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/CrewName").SetRawJsonValueAsync(JsonUtility.ToJson(CrewName));
         GameManager.DebugLog("...FRESH crew setup done for " + identifier, DebugFlags.CrewLoadingOps);
-        CrewCreatorStart(identifier); //run regular setup
+        //CrewCreatorStart(identifier); //run regular setup
+        StartCoroutine(CrewCreatorStartMultithread());
         
     }
-
-    /*public string GetName()
-    {
-        return crewName;
-    }*/
 
     public void IncreaseSkill(int skillNum)
     {
@@ -293,7 +278,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         }
     }
 
-    void IncreaseExperience()
+    public void IncreaseExperience()
     {
         ProcessTime(Time.deltaTime);
     }
@@ -340,15 +325,18 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " SkillData database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
     }
 
-    public IEnumerator MoveCrewBasedOnString(string roomToMoveTo)
+    public IEnumerator MoveCrewBasedOnString(string roomStringToMoveTo)
     {
         Room roomToMoveCrewTo = null;
-        Debug.Log("Waiting for Rooms to be loaded to move crew member to " + roomToMoveTo + "...");
-        yield return new WaitUntil(() => GameManager.instance.Rooms != null);
-        GameManager.DebugLog("...Rooms loaded. Moving.");
-        foreach (var item in GameManager.instance.Rooms)
+        if (GameManager.instance.Rooms == null) //wait for room data if needed
         {
-            if (item.data.RoomUniqueIdentifierForDB.Equals(roomToMoveTo))
+            Debug.Log("Waiting for Rooms to be loaded to move crew member to " + roomStringToMoveTo + "...");
+            yield return new WaitUntil(() => GameManager.instance.Rooms != null);
+            GameManager.DebugLog("...Rooms loaded. Moving.");
+        }
+        foreach (var item in GameManager.instance.Rooms)//search rooms list for the room in question
+        {
+            if (item.data.RoomUniqueIdentifierForDB.Equals(roomStringToMoveTo))
             {
                 roomToMoveCrewTo = item;
                 break;
@@ -356,11 +344,11 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         }
         if(roomToMoveCrewTo == null) //if still null, error
         {
-            GameManager.DebugLog("Tried to teleport crew '" + identifier + "' to a room that doesn't exist ('" + roomToMoveTo + "')", DebugFlags.Warning);
+            GameManager.DebugLog("Tried to teleport crew '" + identifier + "' to a room that doesn't exist ('" + roomStringToMoveTo + "')", DebugFlags.Warning);
             yield break;// null;
         }
         transform.position = roomToMoveCrewTo.GetComponent<Transform>().position;
-        GameManager.DebugLog("Successfully teleported crew '" + identifier + "' to room '" + roomToMoveTo + "'", DebugFlags.CollisionOps);
+        GameManager.DebugLog("Successfully teleported crew '" + identifier + "' to room '" + roomStringToMoveTo + "'", DebugFlags.CollisionOps);
         //DatabaseUpdateRoomData();
     }
 }
