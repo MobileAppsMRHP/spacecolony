@@ -16,7 +16,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     [System.NonSerialized] public static List<string> Possible_Names = new List<string>();
     public static float Exp_Per_Sec = 0.01f;
 
-    [System.Serializable]
+    [System.Serializable] //contains all of the data to be serialized in the database. broken down into chunks so that the entire object isn't being overwritten be one thing being changed
     public struct Data
     {
         [System.Serializable]
@@ -59,24 +59,12 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         public string CrewName;
     }
 
-    public Data AllData;
+    public Data AllData; //access data contents through here
 
     public string CrewName //convenience
     {get {return AllData.CrewName;} set {AllData.CrewName = value;}}
 
     private int totalUpdatesRecieved = 0;
-
-    // Use this for initialization
-    //public void CrewCreatorStart(string identifier)
-    //{
-        /*this.identifier = identifier;
-        //LoadAllData();
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/RoomData").ValueChanged += HandleRoomValueChanged;
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/SkillData").ValueChanged += HandleSkillValueChanged;
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/TimedData").ValueChanged += HandleTimedValueChanged;
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + identifier + "/CrewName").ValueChanged += HandleNameValueChanged;
-        StartCoroutine(CrewCreatorStartMultithread()); //needs to do this because coroutines can't be called from outside the class*/
-    //}
 
     public IEnumerator CrewCreatorStartMultithread(string identifier)
     {
@@ -101,7 +89,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     // Update is called once per frame
     void Update() {
         IncreaseExperience();
-        if (GetComponent<DragAndDrop>().inRoom && AllData.TimedData.ProgressToNextLevel > 100)
+        if (GetComponent<DragAndDrop>().inRoom && AllData.TimedData.ProgressToNextLevel > 100) //process level up
         {
             AllData.TimedData.ProgressToNextLevel -= 100;
             AllData.SkillData.SkillPoints += 3;
@@ -111,7 +99,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         }
     }
 
-    public static void BuildRandomNameList() //run first to build name list
+    public static void BuildRandomNameList() //run to build name list for new crew before spawning new crew
     {
         GameManager.DebugLog("Building names list...", DebugFlags.CrewLoadingOps);
         List<string> temp_Possible_Names = new List<string>();
@@ -133,12 +121,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
                     tempString += val + "|";
                 }
                 Possible_Names = temp_Possible_Names;
-                GameManager.DebugLog("Name List done building, items: " + Possible_Names.Count + " | " + tempString/* + " | " + JsonUtility.ToJson(Possible_Names)*/, DebugFlags.CrewLoadingOps);
-                //GameManager.DebugLog("Name 1 " + Possible_Names[1]);
-                /*foreach (string thisName in Possible_Names)
-                {
-                    GameManager.DebugLog("Names list item : " + thisName, DebugFlags.CrewLoadingOps);
-                }*/
+                GameManager.DebugLog("Name List done building, items: " + Possible_Names.Count + " | " + tempString, DebugFlags.CrewLoadingOps);
             }
             else
             {
@@ -148,42 +131,8 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         });
     }
 
-    /*private void LoadAllData()
-    {
-        //Unused?
-        FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/possible-crew-names").GetValueAsync().ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-            {
-                // Handle the error...
-                GameManager.DebugLog("Data retrieval error when prompting for crew AllData!", DebugFlags.Critical);
-            }
-            else if (task.IsCompleted)
-            {
-                
-                string json = task.Result.Value.ToString();
-                GameManager.DebugLog("Received AllData: " + json, DebugFlags.Critical);
-                JsonUtility.FromJsonOverwrite(json, AllData);
-                totalUpdatesRecieved++;
-            }
-            else
-            {
-                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
-                GameManager.DebugLog("Task error when prompting for crew AllData", DebugFlags.Critical);
-            }
-        });
-    }*/
-
-    /*void HandleValueChanged(object sender, ValueChangedEventArgs args)
-    {
-        totalUpdatesRecieved++;
-        string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote crew member " + this.name + " with JSON from database: " + json, DebugFlags.DatabaseOps);
-        JsonUtility.FromJsonOverwrite(json, this);
-    }*/
-
     void HandleRoomValueChanged(object sender, ValueChangedEventArgs args)
-    {
+    {   //deal with Data's room subset changing value
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.CrewName + " (" + identifier + ") ROOM data with JSON from database: " + json, DebugFlags.DatabaseOps);
         object boxedDataCloneForJsonUtility = AllData.RoomData; //needs special boxing because https://docs.unity3d.com/ScriptReference/EditorJsonUtility.FromJsonOverwrite.html
@@ -194,7 +143,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     }
 
     void HandleSkillValueChanged(object sender, ValueChangedEventArgs args)
-    {
+    {//deal with Data's skill subset changing value
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.CrewName + " (" + identifier + ") SKILL data with JSON from database: " + json, DebugFlags.DatabaseOps);
         object boxedDataCloneForJsonUtility = AllData.SkillData; //needs special boxing because https://docs.unity3d.com/ScriptReference/EditorJsonUtility.FromJsonOverwrite.html
@@ -204,7 +153,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     }
 
     void HandleTimedValueChanged(object sender, ValueChangedEventArgs args)
-    {
+    {//deal with Data's TimedData subset changing value
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.CrewName + " (" + identifier + ") TIMED data with JSON from database: " + json, DebugFlags.DatabaseOps);
         object boxedDataCloneForJsonUtility = AllData.TimedData; //needs special boxing because https://docs.unity3d.com/ScriptReference/EditorJsonUtility.FromJsonOverwrite.html
@@ -214,37 +163,38 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     }
 
     void HandleNameValueChanged(object sender, ValueChangedEventArgs args)
-    {
+    {   //deal with Data's standalone name value changing
         string json = args.Snapshot.GetRawJsonValue();
         GameManager.DebugLog("Overwrote crew member " + this.CrewName + " (" + identifier + ") NAME data with JSON from database: " + json, DebugFlags.DatabaseOps);
         AllData.CrewName = json;
         totalUpdatesRecieved++;
     }
 
-    /*public void FreshCrewSetup()
-    {
-        //few things here need initial values because they are set by the prefab. to give initial values, edit the prefab.
-        //setup unique crew identifier
-        GameManager.DebugLog("FRESH Crew Coroutine Start", DebugFlags.CrewLoadingOps);
-        StartCoroutine(SetUpAndWriteFreshCrew());
-    }*/
-
     public IEnumerator SetUpAndWriteFreshCrew()
     {
         GameManager.DebugLog("FRESH Crew Coroutine Start", DebugFlags.CrewLoadingOps);
+        
+        //create unique identifier based off of epoch time stamp
         System.DateTime epochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc); //from https://answers.unity.com/questions/417939/how-can-i-get-the-time-since-the-epoch-date-in-uni.html
         int cur_time = (int)(System.DateTime.UtcNow - epochStart).TotalSeconds;
         identifier = "" + cur_time;
 
+        //build names list if needed
         if (Possible_Names.Count == 0)
         {
             GameManager.DebugLog("Waiting for names list to build...", DebugFlags.CrewLoadingOps);
             yield return new WaitUntil(() => Possible_Names.Count != 0);
             GameManager.DebugLog("Names list done building. Continuing with name setting. Length: " + Possible_Names.Count, DebugFlags.CrewLoadingOps);
         }
+        //select a random name for the crew
         System.Random rand = new System.Random();
         CrewName = Possible_Names[rand.Next(Possible_Names.Count)];
-        transform.position = GameManager.instance.startRoom.transform.position;
+
+        //transform.position = GameManager.instance.startRoom.transform.position;
+
+        //teleport to new crew room. wait for this to complete.
+        yield return MoveCrewBasedOnString("Room_Debug_Empty");
+
         //write self to database
         GameManager.DebugLog("Writing FRESH crew with name " + CrewName + " and id " + identifier + " to database...", DebugFlags.CrewLoadingOps);
         yield return FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/").SetRawJsonValueAsync(JsonUtility.ToJson(AllData));
@@ -256,7 +206,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     }
 
     public void IncreaseSkill(int skillNum)
-    {
+    {   //handle skill increase from button press
         if (AllData.SkillData.SkillPoints > 0)
         {
             switch (skillNum)
@@ -280,27 +230,27 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     }
 
     public void IncreaseExperience()
-    {
+    {   //handle xp increase based off of time difference from last frame
         ProcessTime(Time.deltaTime);
     }
 
     public void ProcessTime(float deltaTime)
-    {
-        if (currentRoom != null)
+    {   //process xp gains. used for both when loaded and elapsed time since last log on
+        if (currentRoom != null && !AllData.RoomData.CurrentRoomStringForDB.Equals("Room_Debug_Empty")) //needs to be in a room that isn't the starter room to gain xp
         {
             float progress = Exp_Per_Sec * deltaTime;
-            AllData.TimedData.ProgressToNextLevel += progress;
-            if (deltaTime > Shared.ProcessElapsedTime_ConsiderLoggedOff)
+            AllData.TimedData.ProgressToNextLevel += progress; //bump progress
+            if (deltaTime > Shared.ProcessElapsedTime_ConsiderLoggedOff) //if significant time passed, consider it a timed update
             {
                 GameManager.DebugLog("[ElapsedTime] " + deltaTime + " seconds passed, causing crew " + identifier + " to increase ProgressToNextLevel by " + progress, DebugFlags.ElapsedTime);
-                FirebaseUpdate(false);
+                FirebaseUpdate(false); //manually push timed data change to database
             }
             
         }
     }
 
     public void FirebaseUpdate(bool wasTimedUpdate)
-    {
+    {   //push timed data changes to database
         UnityMainThreadDispatcher.Instance().Enqueue(() => {
             //Debug.Log("This is executed from the main thread");
             string json = JsonUtility.ToJson(AllData.TimedData);
@@ -313,21 +263,21 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
     }
 
     public void DatabaseUpdateRoomData()
-    {
+    {   //push room data changes to database
         string json = JsonUtility.ToJson(AllData.RoomData);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/RoomData").SetRawJsonValueAsync(json);
         GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " RoomData database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
     }
 
     public void DatabaseUpdateSkillsData()
-    {
+    {   //push skill changes to database
         string json = JsonUtility.ToJson(AllData.SkillData);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Crew/" + this.identifier + "/SkillData").SetRawJsonValueAsync(json);
         GameManager.DebugLog("[TimedUpdate] Updated crew " + identifier + " SkillData database contents with " + json, DebugFlags.DatabaseOpsOnTimer);
     }
 
     public IEnumerator MoveCrewBasedOnString(string roomStringToMoveTo)
-    {
+    {   //teleport a crew member to a room in attempt to cause the collision code to add them to that room
         Room roomToMoveCrewTo = null;
         if (GameManager.instance.Rooms == null) //wait for room data if needed
         {
