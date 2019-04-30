@@ -6,6 +6,7 @@ public class SceneManage : MonoBehaviour {
     public GameManager gameManager;
     public int sceneNum;
     public GameObject sceneUI;
+    public GameObject mainCamera;
 	// Use this for initialization
 	void Start () {
         gameManager = GameManager.instance;
@@ -16,10 +17,12 @@ public class SceneManage : MonoBehaviour {
 		if ((GameManager.SceneSelected)sceneNum == gameManager.sceneCurrentlySelected)
         {
             sceneUI.SetActive(true);
+            mainCamera.SetActive(true);
         }
         else
         {
             sceneUI.SetActive(false);
+            mainCamera.SetActive(false);
         }
 	}
 }

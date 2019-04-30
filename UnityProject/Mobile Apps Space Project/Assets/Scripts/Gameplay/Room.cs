@@ -116,6 +116,10 @@ public class Room : MonoBehaviour {
                 upgradeCosts = Vector3.Scale(baseUpgradeCost, tempCost);
                 IncreaseResources();
             }
+            else
+            {
+                currentlySelected = false;
+            }
         }
         if (isPlanet)
         {

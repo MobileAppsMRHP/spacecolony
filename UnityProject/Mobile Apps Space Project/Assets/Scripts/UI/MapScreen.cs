@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapScreen : MonoBehaviour {
-    public Room[] planets;
+    public MapPlanets[] planets;
     public GameObject planetHighlighter;
     public Camera mainCamera;
 	// Use this for initialization
@@ -22,6 +22,10 @@ public class MapScreen : MonoBehaviour {
                     planetHighlighter.SetActive(true);
                     planetHighlighter.transform.position = planets[i].transform.position;
                     i = planets.Length + 1;
+                }
+                else
+                {
+                    planetHighlighter.SetActive(false);
                 }
             }
         }

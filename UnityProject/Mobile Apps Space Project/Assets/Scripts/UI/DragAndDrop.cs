@@ -90,6 +90,7 @@ public class DragAndDrop : MonoBehaviour
             }
             else
             {
+                transform.position = initialPosition;
                 GameManager.DebugLog("It did none of the collision things?!?", DebugFlags.CollisionOps);
             }
         }

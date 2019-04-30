@@ -29,7 +29,7 @@ public class SettingsButton : MonoBehaviour
         Debug.Log("SettingsButton: Unloading settings screen");
         //SceneManager.LoadScene("00TitleScreen", LoadSceneMode.Single);
         SceneManager.UnloadSceneAsync("02Settings");
-        GameManager.instance.ChangeCurrentScene(0);
+        GameManager.instance.ChangeCurrentScene(2);
         /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
     }
