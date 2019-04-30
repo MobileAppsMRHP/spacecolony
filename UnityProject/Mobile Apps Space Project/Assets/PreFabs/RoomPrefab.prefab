@@ -88,7 +88,7 @@ MonoBehaviour:
   mainScreen: {fileID: 0}
   isPlanet: 0
   data:
-    RoomLevel: 0
+    RoomLevel: 1
     RoomUniqueIdentifierForDB: '"UNSET_ROOM_IDENTIFIER"'
 --- !u!212 &212310903063762346
 SpriteRenderer:

@@ -139,11 +139,11 @@ MonoBehaviour:
       ProgressToNextLevel: 0
     SkillData:
       SkillPoints: 0
-      Skill_Cooking: 0
-      Skill_Navigation: 0
-      Skill_Medical: 0
-      Skill_Fighting: 0
-      Level: 0
+      Skill_Cooking: 1
+      Skill_Navigation: 1
+      Skill_Medical: 1
+      Skill_Fighting: 1
+      Level: 1
     RoomData:
       CurrentRoomStringForDB: '"NO_ROOM"'
     CrewName: '"FRESH_CREW"'
