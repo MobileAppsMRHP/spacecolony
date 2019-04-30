@@ -206,7 +206,7 @@ public class GameManager : MonoBehaviour
     public string Authenticate()
     {
         string authToken = PlayerPrefs.GetString(Shared.PlayerPrefs_AuthTokenKey, "User1");
-        Debug.Log("PlayerPrefs contains '" + authToken + "'");
+        Debug.Log("PlayerPrefs " + Shared.PlayerPrefs_AuthTokenKey + " contains '" + authToken + "'");
         if (authToken.Equals("")) //deal with empty auth tokens
             authToken = "User1";
         if (authToken.Equals("User1")) //If failed to load an auth token, use default user
@@ -282,8 +282,39 @@ public class GameManager : MonoBehaviour
 
     public System.Collections.IEnumerator NewUserSetup()
     {
-        Debug.LogError("New User Setup method was called, but is not done yet. May corrupt database. Beware.");
+        Debug.LogError("[NewUser] New User Setup method was called, but is not done yet. May corrupt database. Beware.");
         //TODO
+        string FreshRoomJson = "LOADING";
+        yield return FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                // Handle the error...
+                DebugLog("[NewUser] Data retrieval error when prompting for new room structure!", DebugFlags.Critical);
+            }
+            else if (task.IsCompleted)
+            {
+                FreshRoomJson = task.Result.GetRawJsonValue();
+                DebugLog("[NewUser] Recieved new room template: " + FreshRoomJson, DebugFlags.GeneralInfo);
+            }
+            else
+            {
+                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
+                DebugLog("[NewUser] Task error when prompting for new room structure", DebugFlags.Critical);
+            }
+        });
+        if(FreshRoomJson.Equals("LOADING"))
+        {
+            Debug.LogError("[NewUser] Couldn't load new room structure!");
+            yield break;
+        }
+
+        foreach(var thisRoom in Rooms)
+        {
+            DebugLog("[NewUser] Writing room template for " + thisRoom.data.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
+            FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Rooms/" + thisRoom.data.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(FreshRoomJson);
+        }
+
         yield return CreateFreshCrewMember(2);
         resourceManager.NewUserSetupResourcesList();
     }
