@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class MapPlanets : MonoBehaviour {
     public bool currentlySelected;
+    public float resourceNum;
 	// Use this for initialization
 	void Start () {
         currentlySelected = false;
