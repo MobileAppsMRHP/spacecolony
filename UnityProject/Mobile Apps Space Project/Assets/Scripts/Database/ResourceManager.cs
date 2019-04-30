@@ -55,9 +55,9 @@ public class ResourceManager : MonoBehaviour, IFirebaseTimedUpdateable, IProcess
         return resources[key];
     }
 
-    public void DEBUG_SetupResourcesList()
+    public void NewUserSetupResourcesList()
     {
-        GameManager.DebugLog("[DEBUG] Creating demo resources and writing to database...");
+        GameManager.DebugLog("[NewUser] Creating new user resources and writing to database...");
 
         resources.Add(Shared.ResourceTypes.minerals, 5.4f);
         resources.Add(Shared.ResourceTypes.food, 25.5f);
@@ -67,8 +67,8 @@ public class ResourceManager : MonoBehaviour, IFirebaseTimedUpdateable, IProcess
         resources.Add(Shared.ResourceTypes.preciousMetal, 4.2f);
         resources.Add(Shared.ResourceTypes.premiumCurrency, 999.99f);
 
-        GameManager.DebugLog("[DEBUG] Resources count after DEBUG setup: " + resources.Count);
-        GameManager.DebugLog("[DEBUG] Resources JSON to write: " + JsonUtility.ToJson(resources));
+        GameManager.DebugLog("[NewUser] Resources count after DEBUG setup: " + resources.Count);
+        GameManager.DebugLog("[NewUser] Resources JSON to write: " + JsonUtility.ToJson(resources));
 
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Resources").SetRawJsonValueAsync(JsonUtility.ToJson(resources));
 

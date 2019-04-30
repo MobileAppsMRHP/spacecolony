@@ -119,11 +119,13 @@ public class GameManager : MonoBehaviour
     {
         DEBUG_WriteNewCrewTemplate();
         DEBUG_WriteNewRoomTemplate();
+        
 
         DebugLog("Waiting 4 seconds to start delayed actions...");
         yield return new WaitForSeconds(4);
         DebugLog("4 seconds elapsed, running delayed actions.");
         IsDoneLoading = true;
+        //resourceManager.NewUserSetupResourcesList();
         //StartCoroutine("CreateFreshCrewMember", 2);
         StartCoroutine(FirebaseTimedUpdates(10.0f));
         yield return ProcessTimeSinceLastLogon();
@@ -276,6 +278,14 @@ public class GameManager : MonoBehaviour
             }
             DebugLog("Done spawning requested " + count + " fresh crew members.");
         }
+    }
+
+    public System.Collections.IEnumerator NewUserSetup()
+    {
+        Debug.LogError("New User Setup method was called, but is not done yet. May corrupt database. Beware.");
+        //TODO
+        yield return CreateFreshCrewMember(2);
+        resourceManager.NewUserSetupResourcesList();
     }
 
     void DEBUG_WriteNewCrewTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data

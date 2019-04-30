@@ -1,0 +1,123 @@
+{
+  "new-object-templates" : {
+    "crew" : {
+      "CrewName" : "\"FRESH_CREW\"",
+      "RoomData" : {
+        "CurrentRoomStringForDB" : "\"NO_ROOM\""
+      },
+      "SkillData" : {
+        "Level" : 0,
+        "SkillPoints" : 0,
+        "Skill_Cooking" : 0,
+        "Skill_Fighting" : 0,
+        "Skill_Medical" : 0,
+        "Skill_Navigation" : 0
+      },
+      "TimedData" : {
+        "ProgressToNextLevel" : 0
+      }
+    },
+    "possible-crew-names" : [ null, "Pranay", "Mason", "Hannah", "Rob", "Signe Andreasen", "Huan Yü", "Zaid Tannous", "Irena Kociánová", "Amaan", "Jackson Morisset", "Haddas Tewolde", "Mireille Gregoire", "Katharina Freitag", "Søren Kristiansen", "Juanelo Irizarry", "Szôlôssi Evacska", "Sigurósk Jensdóttir", "Vitale Baresi", "Tetsugaku Ishihara", "Ch'Mara D'Ghor", "Sigurd Vea", "جهاندار خانلو", "Frydrych Wieczorek", "Diana Abramova", "Dennis McLean", "Laci Berc", "Mehdi Olsson", "สุยุคฟ้า พาเตาะ", "Hàn Thị Trúc Hoài", "Chris Zickert", "Brody", "Jackson Bobbert Huëz" ],
+    "room" : {
+      "RoomLevel" : 0,
+      "RoomUniqueIdentifierForDB" : "\"UNSET_ROOM_IDENTIFIER\""
+    }
+  },
+  "user-data" : {
+    "User1" : {
+      "Crew" : {
+        "1555603397" : {
+          "CrewName" : "Haddas Tewolde",
+          "RoomData" : {
+            "CurrentRoomStringForDB" : "Room_Debug_Planet"
+          },
+          "SkillData" : {
+            "Level" : 71,
+            "SkillPoints" : 198,
+            "Skill_Cooking" : 1,
+            "Skill_Fighting" : 5,
+            "Skill_Medical" : 4,
+            "Skill_Navigation" : 5
+          },
+          "TimedData" : {
+            "ProgressToNextLevel" : 0.9427270293235779
+          }
+        },
+        "1555603398" : {
+          "CrewName" : "Tetsugaku Ishihara",
+          "RoomData" : {
+            "CurrentRoomStringForDB" : "Room_Debug_Energy"
+          },
+          "SkillData" : {
+            "Level" : 81,
+            "SkillPoints" : 156,
+            "Skill_Cooking" : 31,
+            "Skill_Fighting" : 14,
+            "Skill_Medical" : 17,
+            "Skill_Navigation" : 25
+          },
+          "TimedData" : {
+            "ProgressToNextLevel" : 6.762671947479248
+          }
+        },
+        "1556292799" : {
+          "CrewName" : "Mason Harrsch",
+          "RoomData" : {
+            "CurrentRoomStringForDB" : "Room_Debug_Water"
+          },
+          "SkillData" : {
+            "Level" : 16,
+            "SkillPoints" : 48,
+            "Skill_Cooking" : 0,
+            "Skill_Fighting" : 0,
+            "Skill_Medical" : 0,
+            "Skill_Navigation" : 0
+          },
+          "TimedData" : {
+            "ProgressToNextLevel" : 38.862266540527344
+          }
+        }
+      },
+      "EpochTimeLastLogon" : 1556591138,
+      "ResourceAverages" : {
+        "keys" : [ 0, 1, 2, 3, 4, 5, 6 ],
+        "values" : [ 0, 0, 0, 0, 89.1192855834961, 0, 0 ]
+      },
+      "Resources" : {
+        "keys" : [ 0, 1, 2, 3, 4, 5, 6 ],
+        "values" : [ 5.400000095367432, 25.5, 6.300000190734863, 10.699999809265137, 1789.09716796875, 4.199999809265137, 999.989990234375 ]
+      },
+      "Rooms" : {
+        "Room_Debug_Bridge" : {
+          "RoomLevel" : 1,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Bridge"
+        },
+        "Room_Debug_Empty" : {
+          "RoomLevel" : 0,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Empty"
+        },
+        "Room_Debug_Energy" : {
+          "RoomLevel" : 0,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Energy"
+        },
+        "Room_Debug_Food" : {
+          "RoomLevel" : 2,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Food"
+        },
+        "Room_Debug_Mineral" : {
+          "RoomLevel" : 0,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Mineral"
+        },
+        "Room_Debug_Planet" : {
+          "RoomLevel" : 0,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Planet"
+        },
+        "Room_Debug_Water" : {
+          "RoomLevel" : 0,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Water"
+        }
+      },
+      "UserName" : "Demo Person 1"
+    }
+  }
+}
