@@ -35,7 +35,7 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.touchCount == 1)
         {
             selected = true;
             initialPosition = transform.position;
