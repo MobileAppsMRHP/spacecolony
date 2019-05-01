@@ -46,8 +46,9 @@ public class Room : MonoBehaviour {
     public struct DataToSerialize
     {
         public int RoomLevel;
-        public string RoomUniqueIdentifierForDB;
     }
+
+    public string RoomUniqueIdentifierForDB;
 
     public DataToSerialize data;
     // Use this for initialization
@@ -78,10 +79,10 @@ public class Room : MonoBehaviour {
 
     IEnumerator AwaitSetup()
     {
-        GameManager.DebugLog("Room " + data.RoomUniqueIdentifierForDB + " awaiting user string loading to set up rooms...", DebugFlags.GeneralInfo);
+        GameManager.DebugLog("Room " + RoomUniqueIdentifierForDB + " awaiting user string loading to set up rooms...", DebugFlags.GeneralInfo);
         yield return new WaitUntil(() => !GameManager.instance.user_string.Equals("StillLoading"));
-        GameManager.DebugLog("... user string loaded as '" + GameManager.instance.user_string + "', setting up room " + data.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + data.RoomUniqueIdentifierForDB).ValueChanged += HandleValueChanged;
+        GameManager.DebugLog("... user string loaded as '" + GameManager.instance.user_string + "', setting up room " + RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).ValueChanged += HandleValueChanged;
         //DEBUG_WriteMyRoomData();
     }
 	
@@ -100,13 +101,13 @@ public class Room : MonoBehaviour {
                 }
                 else if (hit.collider.name == gameObject.name)
                 {
-                    GameManager.DebugLog("Room " + data.RoomUniqueIdentifierForDB + " selected", DebugFlags.CollisionOps); //log that something was hit by the touch event
+                    GameManager.DebugLog("Room " + RoomUniqueIdentifierForDB + " selected", DebugFlags.CollisionOps); //log that something was hit by the touch event
                     Debug.Log(hit.collider);
                     currentlySelected = true;
                 }
                 else
                 {
-                    GameManager.DebugLog("Room " + data.RoomUniqueIdentifierForDB + " no longer selected", DebugFlags.CollisionOps);
+                    GameManager.DebugLog("Room " + RoomUniqueIdentifierForDB + " no longer selected", DebugFlags.CollisionOps);
                     currentlySelected = false;
                 }
             }
@@ -140,7 +141,7 @@ public class Room : MonoBehaviour {
             return true;
         else
         {
-            GameManager.DebugLog("Too many people in room " + data.RoomUniqueIdentifierForDB + "\tcurrent: " + crewInThisRoom.Count + " limit: " + peopleLimit, DebugFlags.CollisionOps);
+            GameManager.DebugLog("Too many people in room " + RoomUniqueIdentifierForDB + "\tcurrent: " + crewInThisRoom.Count + " limit: " + peopleLimit, DebugFlags.CollisionOps);
             return false;
         }
     }
@@ -174,12 +175,12 @@ public class Room : MonoBehaviour {
                 }
                 else
                 {
-                    GameManager.DebugLog("CrewLocations[" + i + "] is null for room '" + data.RoomUniqueIdentifierForDB + "'!", DebugFlags.CollisionOps);
+                    GameManager.DebugLog("CrewLocations[" + i + "] is null for room '" + RoomUniqueIdentifierForDB + "'!", DebugFlags.CollisionOps);
                 }
             }
             else
             {
-                GameManager.DebugLog("CrewInThisRoom[" + i + "] is null for room '" + data.RoomUniqueIdentifierForDB + "'!", DebugFlags.CollisionOps);
+                GameManager.DebugLog("CrewInThisRoom[" + i + "] is null for room '" + RoomUniqueIdentifierForDB + "'!", DebugFlags.CollisionOps);
             }
         }
     }
@@ -262,7 +263,7 @@ public class Room : MonoBehaviour {
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
         string json = args.Snapshot.GetRawJsonValue();
-        GameManager.DebugLog("Overwrote room " + data.RoomUniqueIdentifierForDB + " with JSON from database: " + json, DebugFlags.DatabaseOps);
+        GameManager.DebugLog("Overwrote room " + RoomUniqueIdentifierForDB + " with JSON from database: " + json, DebugFlags.DatabaseOps);
         object boxedDataCloneForJsonUtility = data; //needs special boxing because https://docs.unity3d.com/ScriptReference/EditorJsonUtility.FromJsonOverwrite.html
         JsonUtility.FromJsonOverwrite(json, boxedDataCloneForJsonUtility);
         data = (DataToSerialize)boxedDataCloneForJsonUtility;
@@ -271,8 +272,8 @@ public class Room : MonoBehaviour {
     public void DEBUG_WriteMyRoomData()
     {
         string json = JsonUtility.ToJson(data);
-        GameManager.DebugLog("[DEBUG] Writing room '" + data.RoomUniqueIdentifierForDB + "' to database. " + json);
-        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + data.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
+        GameManager.DebugLog("[DEBUG] Writing room '" + RoomUniqueIdentifierForDB + "' to database. " + json);
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
     }
 
     /*public void FirebaseUpdate(bool wasTimedUpdate)
