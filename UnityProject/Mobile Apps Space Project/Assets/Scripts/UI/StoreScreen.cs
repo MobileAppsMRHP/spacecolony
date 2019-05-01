@@ -22,12 +22,15 @@ public class StoreScreen : MonoBehaviour {
     public GameObject storeStarter;
     public Text currentCrewNumText;
     public Text crewCostText;
+    public Button buyCrewButton;
     float crewCost;
     float currentCrewNum;
+    float crewMax;
     // Use this for initialization
     void Start () {
         gameManager = GameManager.instance;
         resourceSelected = Shared.ResourceTypes.minerals;
+        crewMax = 16f;
 	}
 	
 	// Update is called once per frame
@@ -62,6 +65,23 @@ public class StoreScreen : MonoBehaviour {
         crewCost = Mathf.Pow(10, currentCrewNum);
         currentCrewNumText.text = "" + currentCrewNum;
         crewCostText.text = "" + crewCost;
+        if (gameManager.GetResource(Shared.ResourceTypes.money) < crewCost)
+        {
+            buyCrewButton.interactable = false;
+            if (currentCrewNum == crewMax)
+            {
+                currentCrewNumText.color = Color.red;
+            }
+            else
+            {
+                currentCrewNumText.color = Color.white;
+            }
+        }
+        else
+        {
+            buyCrewButton.interactable = true;
+            currentCrewNumText.color = Color.white;
+        }
     }
 
     public void StartStoreScreen()
@@ -117,7 +137,7 @@ public class StoreScreen : MonoBehaviour {
 
     public void BuyCrew()
     {
-        if (currentCrewNum < 16f && gameManager.GetResource(Shared.ResourceTypes.money) > crewCost)
+        if (currentCrewNum < crewMax && gameManager.GetResource(Shared.ResourceTypes.money) > crewCost)
         {
             gameManager.CreateNewCrew();
         }
