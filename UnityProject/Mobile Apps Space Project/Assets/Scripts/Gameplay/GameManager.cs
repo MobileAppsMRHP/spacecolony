@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
     private List<IProcessElapsedTime> toProcessElapsedTime;
 
     public static bool IsDoneLoading { get; private set; }
+    public static bool IsNewUser = false;
 
     public string user_string = "StillLoading";
 
@@ -119,11 +120,13 @@ public class GameManager : MonoBehaviour
     {
         DEBUG_WriteNewCrewTemplate();
         DEBUG_WriteNewRoomTemplate();
-        
 
+        //NewUserSetupAsync();
         DebugLog("Waiting 4 seconds to start delayed actions...");
         yield return new WaitForSeconds(4);
         DebugLog("4 seconds elapsed, running delayed actions.");
+        if (IsNewUser)
+            StartCoroutine(CreateFreshCrewMember(Shared.NewUser_StartingCrewCount));
         IsDoneLoading = true;
         //resourceManager.NewUserSetupResourcesList();
         //StartCoroutine("CreateFreshCrewMember", 2);
@@ -144,6 +147,7 @@ public class GameManager : MonoBehaviour
             DebugLog("[TimedUpdate] TimedUpdate #" + counter + " occurring", DebugFlags.DatabaseOpsOnTimer);
             
             FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/EpochTimeLastLogon").SetValueAsync(CurrentEpochTime);
+
             foreach (var item in toFirebasePush)
             {
                 item.FirebaseUpdate(true); //run the update, marking it as a timed update
@@ -213,6 +217,7 @@ public class GameManager : MonoBehaviour
             DebugLog("PlayerPrefs did not contain user auth token. Proceeding with User1 token instead.", DebugFlags.Warning);
         else
             DebugLog("Auth user token: " + authToken, DebugFlags.Auth);
+        //authToken = "TestNewUser";
         return authToken;
     }
 
@@ -280,12 +285,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public System.Collections.IEnumerator NewUserSetup()
+    public async void NewUserSetupAsync()
     {
+        //string user_string = "TestNewUser"; //for testing purposes to avoid writing over user1
         Debug.LogError("[NewUser] New User Setup method was called, but is not done yet. May corrupt database. Beware.");
         //TODO
         string FreshRoomJson = "LOADING";
-        yield return FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").GetValueAsync().ContinueWith(task =>
+        await FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
@@ -306,16 +312,17 @@ public class GameManager : MonoBehaviour
         if(FreshRoomJson.Equals("LOADING"))
         {
             Debug.LogError("[NewUser] Couldn't load new room structure!");
-            yield break;
+            //yield break;
         }
 
         foreach(var thisRoom in Rooms)
         {
-            DebugLog("[NewUser] Writing room template for " + thisRoom.data.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
+            DebugLog("[NewUser] Writing room structure for " + thisRoom.data.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
             FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Rooms/" + thisRoom.data.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(FreshRoomJson);
         }
 
-        yield return CreateFreshCrewMember(2);
+        //CREW SPAWN needs to occut later, so mark as new user so this happens after 4 seconds
+        IsNewUser = true;
         resourceManager.NewUserSetupResourcesList();
     }
 
