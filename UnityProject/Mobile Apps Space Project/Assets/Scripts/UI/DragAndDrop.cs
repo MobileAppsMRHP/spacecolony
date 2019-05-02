@@ -86,13 +86,12 @@ public class DragAndDrop : MonoBehaviour
             else if (collider.tag == "Background") //if it was dropped on a background object, don't move it anywhere.
             {
                 transform.position = initialPosition;
-                GameManager.DebugLog("Collided with background has has room; returning to original room", DebugFlags.CollisionOps);
+                GameManager.DebugLog("Collided with background, has room; returning to original room", DebugFlags.CollisionOps);
             }
             else
             {
-                Debug.Log(collider.tag);
                 transform.position = initialPosition;
-                GameManager.DebugLog("It did none of the collision things?!?", DebugFlags.CollisionOps);
+                GameManager.DebugLog("It did none of the collision things?!? Collided with: '" + collider.tag + "' name: " + collider.transform.parent.gameObject.name, DebugFlags.CollisionOps);
             }
         }
 
