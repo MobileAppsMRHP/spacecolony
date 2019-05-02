@@ -35,7 +35,7 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0) || Input.touchCount == 1)
+        if ((Input.GetMouseButtonDown(0) || Input.touchCount == 1) && inRoom)
         {
             selected = true;
             initialPosition = transform.position;
@@ -83,13 +83,14 @@ public class DragAndDrop : MonoBehaviour
                 inRoom = true;
                 droppedCrew.currentRoom = droppedRoom; //add the crew member to the room's list of the crew it contains
             }
-            else if (collider.tag == "Background" && inRoom) //if it was dropped on a background object, don't move it anywhere.
+            else if (collider.tag == "Background") //if it was dropped on a background object, don't move it anywhere.
             {
                 transform.position = initialPosition;
                 GameManager.DebugLog("Collided with background has has room; returning to original room", DebugFlags.CollisionOps);
             }
             else
             {
+                Debug.Log(collider.tag);
                 transform.position = initialPosition;
                 GameManager.DebugLog("It did none of the collision things?!?", DebugFlags.CollisionOps);
             }
