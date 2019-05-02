@@ -71,7 +71,7 @@ public class DragAndDrop : MonoBehaviour
                     if (oldRoom != null) //if the crew member had an old room...
                         oldRoom.RemovePerson(droppedCrew); //remove the crew member from the room it is currently in
                     GameManager.DebugLog("Moving " + droppedCrew.CrewName + " (" + droppedCrew.identifier + ") into room " + droppedRoom, DebugFlags.CollisionOps);
-                    droppedCrew.AllData.RoomData.CurrentRoomStringForDB = droppedRoom.data.RoomUniqueIdentifierForDB;
+                    droppedCrew.AllData.RoomData.CurrentRoomStringForDB = droppedRoom.RoomUniqueIdentifierForDB;
                     droppedCrew.DatabaseUpdateRoomData();
                     
                 }

@@ -296,7 +296,7 @@ public class GameManager : MonoBehaviour
             else if (task.IsCompleted)
             {
                 FreshRoomJson = task.Result.GetRawJsonValue();
-                DebugLog("[NewUser] Recieved new room template: " + FreshRoomJson, DebugFlags.GeneralInfo);
+                DebugLog("[NewUser] Received new room template: " + FreshRoomJson, DebugFlags.GeneralInfo);
             }
             else
             {
@@ -312,11 +312,11 @@ public class GameManager : MonoBehaviour
 
         foreach(var thisRoom in Rooms)
         {
-            DebugLog("[NewUser] Writing room structure for " + thisRoom.data.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
-            await FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Rooms/" + thisRoom.data.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(FreshRoomJson);
+            DebugLog("[NewUser] Writing room structure for " + thisRoom.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
+            await FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Rooms/" + thisRoom.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(FreshRoomJson);
         }
 
-        //CREW SPAWN needs to occut later, so mark as new user so this happens after 4 seconds
+        //CREW SPAWN needs to occur later, so mark as new user so this happens after 4 seconds
         IsNewUser = true;
         resourceManager.NewUserSetupResourcesList();
     }

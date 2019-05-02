@@ -287,7 +287,7 @@ public class Crew : MonoBehaviour, IFirebaseTimedUpdateable, IProcessElapsedTime
         }
         foreach (var item in GameManager.instance.Rooms)//search rooms list for the room in question
         {
-            if (item.data.RoomUniqueIdentifierForDB.Equals(roomStringToMoveTo))
+            if (item.RoomUniqueIdentifierForDB.Equals(roomStringToMoveTo))
             {
                 roomToMoveCrewTo = item;
                 break;
