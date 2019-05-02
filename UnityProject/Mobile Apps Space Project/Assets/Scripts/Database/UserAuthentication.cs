@@ -82,7 +82,7 @@ public class UserAuthentication : MonoBehaviour
         if (doneStarting)
         {
             if (auth == null)
-                DebugLog("An instance of UserAuthentication exists (" + this.ToString() + "), but does not have an initialized Auth!");
+                DebugLog("An instance of UserAuthentication exists (" + this.ToString() + "), but does not have an initialized Auth!\nIf you see this, reload the app.");
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.Quit();
@@ -603,27 +603,27 @@ public class UserAuthentication : MonoBehaviour
             controlsScrollViewVector =
                 GUILayout.BeginScrollView(controlsScrollViewVector);
             GUILayout.BeginVertical();
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Email:", GUILayout.Width(Screen.width * 0.20f));
+            //GUILayout.BeginHorizontal();
+            GUILayout.Label("Email", GUILayout.Width(Screen.width * 0.20f));
             email = GUILayout.TextField(email);
-            GUILayout.EndHorizontal();
+            //GUILayout.EndHorizontal();
 
-            GUILayout.Space(20);
+            GUILayout.Space(10);
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Password:", GUILayout.Width(Screen.width * 0.20f));
+            //GUILayout.BeginHorizontal();
+            GUILayout.Label("Password", GUILayout.Width(Screen.width * 0.20f));
             password = usePasswordInput ? GUILayout.PasswordField(password, '*') :
                 GUILayout.TextField(password);
-            GUILayout.EndHorizontal();
+            //GUILayout.EndHorizontal();
 
             GUILayout.Space(20);
 
-            GUILayout.BeginHorizontal();
+            /*GUILayout.BeginHorizontal();
             GUILayout.Label("Display Name:", GUILayout.Width(Screen.width * 0.20f));
             displayName = GUILayout.TextField(displayName);
-            GUILayout.EndHorizontal();
+            GUILayout.EndHorizontal();*/
 
-            GUILayout.Space(20);
+            //GUILayout.Space(20);
 
             /*GUILayout.BeginHorizontal();
             GUILayout.Label("Phone Number:", GUILayout.Width(Screen.width * 0.20f));
