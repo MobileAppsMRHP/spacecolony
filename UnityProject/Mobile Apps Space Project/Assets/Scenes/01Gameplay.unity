@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3049,7 +3049,7 @@ Prefab:
     - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
       propertyPath: RoomUniqueIdentifierForDB
-      value: Room_Debug_Food
+      value: Room_Debug_Mineral
       objectReference: {fileID: 0}
     - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
@@ -3970,7 +3970,7 @@ Prefab:
     - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
       propertyPath: RoomUniqueIdentifierForDB
-      value: Room_Debug_Food
+      value: Room_Debug_Energy
       objectReference: {fileID: 0}
     - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
@@ -4809,9 +4809,9 @@ MonoBehaviour:
   currentlySelected: 0
   mainScreen: {fileID: 304703333}
   isPlanet: 1
+  RoomUniqueIdentifierForDB: Room_Debug_Planet
   data:
     RoomLevel: 0
-    RoomUniqueIdentifierForDB: Room_Debug_Planet
 --- !u!61 &501744077
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -16242,7 +16242,7 @@ Prefab:
     - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
       propertyPath: RoomUniqueIdentifierForDB
-      value: Room_Debug_Food
+      value: Room_Debug_Empty
       objectReference: {fileID: 0}
     - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
