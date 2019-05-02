@@ -2614,7 +2614,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.999998
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2669,7 +2669,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zoomMin: 1
-  zoomMax: 5
+  zoomMax: 4
   zoomRate: 0.1
   isZooming: 0
   isMapScreen: 0
@@ -2996,11 +2996,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4320559095048214, guid: bd2f677e44b68554d8c944514f898132, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2.199
+      value: -1.83
       objectReference: {fileID: 0}
     - target: {fileID: 4320559095048214, guid: bd2f677e44b68554d8c944514f898132, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.337
+      value: 0.19
       objectReference: {fileID: 0}
     - target: {fileID: 4320559095048214, guid: bd2f677e44b68554d8c944514f898132, type: 2}
       propertyPath: m_LocalPosition.z

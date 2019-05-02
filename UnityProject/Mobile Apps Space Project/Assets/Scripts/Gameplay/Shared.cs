@@ -7,6 +7,7 @@ public static class Shared {
     //consider the user to have been logged off after this much delta time has passed
     public static readonly float ProcessElapsedTime_ConsiderLoggedOff = 20.0f; // 20 seconds
     public static readonly string PlayerPrefs_AuthTokenKey = "UserAuthToken";
+    public static readonly int NewUser_StartingCrewCount = 2;
 
     public enum Roles
     {
