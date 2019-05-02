@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 // FROM https://github.com/PimDeWitte/UnityMainThreadDispatcher --- READ THERE
+// Added thow exception when enqueueing something when there isn't an instance
 
 using UnityEngine;
 using System.Collections;
@@ -43,7 +44,9 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 	/// </summary>
 	/// <param name="action">IEnumerator function that will be executed from the main thread.</param>
 	public void Enqueue(IEnumerator action) {
-		lock (_executionQueue) {
+        if (!Exists())
+            throw new Exception("UnityMainThreadDispatcher did not have an instance when an action was enqueed.");
+        lock (_executionQueue) {
 			_executionQueue.Enqueue (() => {
 				StartCoroutine (action);
 			});
@@ -56,6 +59,8 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 	/// <param name="action">function that will be executed from the main thread.</param>
 	public void Enqueue(Action action)
 	{
+        if (!Exists())
+            throw new Exception("UnityMainThreadDispatcher did not have an instance when an action was enqueed.");
 		Enqueue(ActionWrapper(action));
 	}
 	IEnumerator ActionWrapper(Action a)

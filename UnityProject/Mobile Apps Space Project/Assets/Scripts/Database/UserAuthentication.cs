@@ -23,7 +23,8 @@ public class UserAuthentication : MonoBehaviour
     protected string displayName = "";
     protected string phoneNumber = "";
     protected string receivedCode = "";
-    protected string token = "";
+    protected string token = ""; //unused?
+    protected string userUID = "";
     // Whether to sign in / link or re authentication *and* fetch user profile data.
     protected bool signInAndFetchProfile = true;
     // Flag set when a token is being fetched.  This is used to avoid printing the token
@@ -226,6 +227,8 @@ public class UserAuthentication : MonoBehaviour
                 DebugLog("Signed in " + user.UserId);
                 displayName = user.DisplayName ?? "";
                 DisplayDetailedUserInfo(user, 1);
+                //userUID = auth.CurrentUser.UserId;
+                //Debug.LogError("UserID: " + userUID);
             }
         }
     }
@@ -481,7 +484,7 @@ public class UserAuthentication : MonoBehaviour
             DebugLog("Not signed in, unable to get token.");
             yield break;
         }
-        DebugLog("Fetching user token");
+        //DebugLog("Fetching user token");
         fetchingToken = true;
         yield return auth.CurrentUser.TokenAsync(false).ContinueWith(task =>
         {
@@ -489,14 +492,14 @@ public class UserAuthentication : MonoBehaviour
             if (LogTaskCompletion(task, "User token fetch"))
             {
                 token = task.Result;
-                DebugLog("Token Set to " + token);
-                Debug.Log("Writing to PlayerPrefs at " + Shared.PlayerPrefs_AuthTokenKey + ", " + token + "'");
+                /*DebugLog("Writing to PlayerPrefs at " + Shared.PlayerPrefs_AuthTokenKey + ", " + token + "'");
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
                     PlayerPrefs.SetString(Shared.PlayerPrefs_AuthTokenKey, token);
                     PlayerPrefs.Save();
-                    Debug.Log("Done with enqueued playerprefs changes");
-                });
+
+                    Debug.Log("Done with enqueued playerprefs changes: " + PlayerPrefs.GetString(Shared.PlayerPrefs_AuthTokenKey));
+                });*/
                 
             }
         });
@@ -684,13 +687,32 @@ public class UserAuthentication : MonoBehaviour
         yield return SigninWithEmailCredentialAsync();
         Debug.Log("Attempted sign in");
         yield return new WaitForSeconds(2.0f); //TODO: Figure out why the sign in task isn't actually awaited. This wait for seconds is an ugly bandaid
-        yield return GetUserToken();
-        Debug.Log("Attempted token");
-        yield return new WaitForSeconds(5.0f);
+        //yield return GetUserToken();
+        yield return WriteUserID();
+        Debug.Log("Attempted to write UserUID");
+        //yield return new WaitForSeconds(5.0f);
         DisableUI();
         SceneManager.LoadScene("01Gameplay", LoadSceneMode.Single);
         /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
+    }
+
+    System.Collections.IEnumerator WriteUserID()
+    {
+        if (auth.CurrentUser == null)
+        {
+            DebugLog("Not signed in, unable to get token.");
+            yield break;
+        }
+        
+        DebugLog("Writing to PlayerPrefs at " + Shared.PlayerPrefs_AuthTokenKey + ", " + auth.CurrentUser.UserId + "'");
+        UnityMainThreadDispatcher.Instance().Enqueue(() =>
+        {
+            PlayerPrefs.SetString(Shared.PlayerPrefs_AuthTokenKey, auth.CurrentUser.UserId);
+            PlayerPrefs.Save();
+
+            Debug.Log("Done with enqueued playerprefs changes: " + PlayerPrefs.GetString(Shared.PlayerPrefs_AuthTokenKey));
+        });
     }
 
     // Overridable function to allow additional controls to be added.
