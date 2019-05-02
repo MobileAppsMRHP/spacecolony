@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         PrintEnabledDebugs();
-        StartCoroutine("DebugDelayedStart");
+        StartCoroutine(DebugDelayedStart());
 
         DisplayLoadingScreen();
 
@@ -86,14 +86,9 @@ public class GameManager : MonoBehaviour
         resourceManager = gameObject.AddComponent(typeof(ResourceManager)) as ResourceManager;
         //resourceManager.DEBUG_SetupResourcesList();
         
-
-        LoadCrew();
-
-
+        LoadCrew(); //NEEDS TO OCCUR AFTER NEW USER SETUP
 
         HideLoadingScreen();
-
-        
     }
 
     // Use this for initialization
@@ -318,7 +313,7 @@ public class GameManager : MonoBehaviour
         foreach(var thisRoom in Rooms)
         {
             DebugLog("[NewUser] Writing room structure for " + thisRoom.data.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
-            FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Rooms/" + thisRoom.data.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(FreshRoomJson);
+            await FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Rooms/" + thisRoom.data.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(FreshRoomJson);
         }
 
         //CREW SPAWN needs to occut later, so mark as new user so this happens after 4 seconds

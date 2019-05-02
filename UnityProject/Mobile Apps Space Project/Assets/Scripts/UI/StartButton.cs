@@ -7,12 +7,17 @@ using UnityEngine.SceneManagement;
 public class StartButton : MonoBehaviour {
     //protected bool loggedIn;
     //protected static UserAuthentication auth;
+
+    private static readonly bool DEBUG_Erase_PlayerPrefs = true;
+
     // Use this for initialization
     void Start () {
-        //auth = gameObject.AddComponent<UserAuthentication>();
-        Debug.Log("DEBUG: Erasing playerprefs");
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
+        if (DEBUG_Erase_PlayerPrefs)
+        {
+            Debug.Log("DEBUG: Erasing playerprefs");
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+        }
     }
 
     public void ChangeScreen()

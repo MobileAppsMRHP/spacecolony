@@ -1,0 +1,232 @@
+{
+  "new-object-templates" : {
+    "crew" : {
+      "CrewName" : "\"FRESH_CREW\"",
+      "RoomData" : {
+        "CurrentRoomStringForDB" : "\"NO_ROOM\""
+      },
+      "SkillData" : {
+        "Level" : 1,
+        "SkillPoints" : 0,
+        "Skill_Cooking" : 1,
+        "Skill_Fighting" : 1,
+        "Skill_Medical" : 1,
+        "Skill_Navigation" : 1
+      },
+      "TimedData" : {
+        "ProgressToNextLevel" : 0
+      }
+    },
+    "possible-crew-names" : [ null, "Pranay", "Mason", "Hannah", "Rob", "Signe Andreasen", "Huan Yü", "Zaid Tannous", "Irena Kociánová", "Amaan", "Jackson Morisset", "Haddas Tewolde", "Mireille Gregoire", "Katharina Freitag", "Søren Kristiansen", "Juanelo Irizarry", "Szôlôssi Evacska", "Sigurósk Jensdóttir", "Vitale Baresi", "Tetsugaku Ishihara", "Ch'Mara D'Ghor", "Sigurd Vea", "جهاندار خانلو", "Frydrych Wieczorek", "Diana Abramova", "Dennis McLean", "Laci Berc", "Mehdi Olsson", "สุยุคฟ้า พาเตาะ", "Hàn Thị Trúc Hoài", "Chris Zickert", "Brody", "Jackson Bobbert Huëz" ],
+    "room" : {
+      "RoomLevel" : 1
+    }
+  },
+  "user-data" : {
+    "TestNewUser" : {
+      "Crew" : {
+        "1556726343" : {
+          "CrewName" : "Mireille Gregoire",
+          "RoomData" : {
+            "CurrentRoomStringForDB" : "\"NO_ROOM\""
+          },
+          "SkillData" : {
+            "Level" : 1,
+            "SkillPoints" : 0,
+            "Skill_Cooking" : 1,
+            "Skill_Fighting" : 1,
+            "Skill_Medical" : 1,
+            "Skill_Navigation" : 1
+          },
+          "TimedData" : {
+            "ProgressToNextLevel" : 0
+          }
+        },
+        "1556726344" : {
+          "CrewName" : "Signe Andreasen",
+          "RoomData" : {
+            "CurrentRoomStringForDB" : "\"NO_ROOM\""
+          },
+          "SkillData" : {
+            "Level" : 1,
+            "SkillPoints" : 0,
+            "Skill_Cooking" : 1,
+            "Skill_Fighting" : 1,
+            "Skill_Medical" : 1,
+            "Skill_Navigation" : 1
+          },
+          "TimedData" : {
+            "ProgressToNextLevel" : 0
+          }
+        }
+      },
+      "EpochTimeLastLogon" : 1556726438,
+      "ResourceAverages" : {
+        "keys" : [ 0, 1, 2, 3, 4, 5, 6 ],
+        "values" : [ 0, 0, 0, 0, 0, 0, 0 ]
+      },
+      "Resources" : {
+        "keys" : [ 0, 1, 2, 3, 4, 5, 6 ],
+        "values" : [ 5.400000095367432, 25.5, 6.300000190734863, 10.699999809265137, 7.099999904632568, 4.199999809265137, 999.989990234375 ]
+      },
+      "Rooms" : {
+        "Room_Debug_Bridge" : {
+          "RoomLevel" : 1,
+          "RoomUniqueIdentifierForDB" : "\"UNSET_ROOM_IDENTIFIER\""
+        },
+        "Room_Debug_Empty" : {
+          "RoomLevel" : 1,
+          "RoomUniqueIdentifierForDB" : "\"UNSET_ROOM_IDENTIFIER\""
+        },
+        "Room_Debug_Energy" : {
+          "RoomLevel" : 1,
+          "RoomUniqueIdentifierForDB" : "\"UNSET_ROOM_IDENTIFIER\""
+        },
+        "Room_Debug_Food" : {
+          "RoomLevel" : 1,
+          "RoomUniqueIdentifierForDB" : "\"UNSET_ROOM_IDENTIFIER\""
+        },
+        "Room_Debug_Mineral" : {
+          "RoomLevel" : 1,
+          "RoomUniqueIdentifierForDB" : "\"UNSET_ROOM_IDENTIFIER\""
+        },
+        "Room_Debug_Planet" : {
+          "RoomLevel" : 1,
+          "RoomUniqueIdentifierForDB" : "\"UNSET_ROOM_IDENTIFIER\""
+        },
+        "Room_Debug_Water" : {
+          "RoomLevel" : 1,
+          "RoomUniqueIdentifierForDB" : "\"UNSET_ROOM_IDENTIFIER\""
+        }
+      }
+    },
+    "User1" : {
+      "Crew" : {
+        "1555603397" : {
+          "CrewName" : "Haddas Tewolde",
+          "RoomData" : {
+            "CurrentRoomStringForDB" : "Room_Debug_Planet"
+          },
+          "SkillData" : {
+            "Level" : 95,
+            "SkillPoints" : 265,
+            "Skill_Cooking" : 3,
+            "Skill_Fighting" : 6,
+            "Skill_Medical" : 5,
+            "Skill_Navigation" : 6
+          },
+          "TimedData" : {
+            "ProgressToNextLevel" : 65.22435760498047
+          }
+        },
+        "1555603398" : {
+          "CrewName" : "Tetsugaku Ishihara",
+          "RoomData" : {
+            "CurrentRoomStringForDB" : "Room_Debug_Bridge"
+          },
+          "SkillData" : {
+            "Level" : 108,
+            "SkillPoints" : 237,
+            "Skill_Cooking" : 31,
+            "Skill_Fighting" : 14,
+            "Skill_Medical" : 17,
+            "Skill_Navigation" : 25
+          },
+          "TimedData" : {
+            "ProgressToNextLevel" : 21.596277236938477
+          }
+        },
+        "1556292799" : {
+          "CrewName" : "Mason Harrsch",
+          "RoomData" : {
+            "CurrentRoomStringForDB" : "Room_Debug_Food"
+          },
+          "SkillData" : {
+            "Level" : 41,
+            "SkillPoints" : 123,
+            "Skill_Cooking" : 0,
+            "Skill_Fighting" : 0,
+            "Skill_Medical" : 0,
+            "Skill_Navigation" : 0
+          },
+          "TimedData" : {
+            "ProgressToNextLevel" : 85.22173309326172
+          }
+        },
+        "1556725255" : {
+          "CrewName" : "Jackson Bobbert Huëz",
+          "RoomData" : {
+            "CurrentRoomStringForDB" : "Room_Debug_Empty"
+          },
+          "SkillData" : {
+            "Level" : 1,
+            "SkillPoints" : 0,
+            "Skill_Cooking" : 1,
+            "Skill_Fighting" : 1,
+            "Skill_Medical" : 1,
+            "Skill_Navigation" : 1
+          },
+          "TimedData" : {
+            "ProgressToNextLevel" : 0
+          }
+        },
+        "1556725267" : {
+          "CrewName" : "Sigurd Vea",
+          "RoomData" : {
+            "CurrentRoomStringForDB" : "Room_Debug_Empty"
+          },
+          "SkillData" : {
+            "Level" : 1,
+            "SkillPoints" : 0,
+            "Skill_Cooking" : 1,
+            "Skill_Fighting" : 1,
+            "Skill_Medical" : 1,
+            "Skill_Navigation" : 1
+          },
+          "TimedData" : {
+            "ProgressToNextLevel" : 0
+          }
+        }
+      },
+      "EpochTimeLastLogon" : 1556836553,
+      "ResourceAverages" : {
+        "keys" : [ 0, 1, 2, 3, 4, 5, 6 ],
+        "values" : [ 233.46249389648438, 0, 0, 0, 0, 0, 0 ]
+      },
+      "Resources" : {
+        "keys" : [ 0, 1, 2, 3, 4, 5, 6 ],
+        "values" : [ 163333.296875, 25.5, 6.300000190734863, 24025.69921875, 1023.8570556640625, 4.199999809265137, 999.989990234375 ]
+      },
+      "Rooms" : {
+        "Room_Debug_Bridge" : {
+          "RoomLevel" : 1,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Bridge"
+        },
+        "Room_Debug_Empty" : {
+          "RoomLevel" : 0,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Empty"
+        },
+        "Room_Debug_Energy" : {
+          "RoomLevel" : 0,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Energy"
+        },
+        "Room_Debug_Food" : {
+          "RoomLevel" : 2,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Food"
+        },
+        "Room_Debug_Mineral" : {
+          "RoomLevel" : 0,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Mineral"
+        },
+        "Room_Debug_Planet" : {
+          "RoomLevel" : 0,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Planet"
+        },
+        "Room_Debug_Water" : {
+          "RoomLevel" : 0,
+          "RoomUniqueIdentifierForDB" : "Room_Debug_Water"
+        }
+      }
+    }
+  }
+}
