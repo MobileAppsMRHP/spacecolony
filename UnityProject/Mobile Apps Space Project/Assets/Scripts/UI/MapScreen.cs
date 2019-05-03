@@ -14,10 +14,12 @@ public class MapScreen : MonoBehaviour {
 
     public GameObject ship;
 
+    private bool debug = false;
+
     // Use this for initialization
     void Start () {
         gameManager = GameManager.instance;
-        if (false) //DEBUG
+        if (debug) //DEBUG
         {
             selectedPlanet = debug_test_planet;
             GoToPlanet();
@@ -54,6 +56,8 @@ public class MapScreen : MonoBehaviour {
 
     public void GoToPlanet()
     {
+        //move ship to this planet
+        ship.transform.position = new Vector3(selectedPlanet.transform.position.x, selectedPlanet.transform.position.y, selectedPlanet.transform.position.z);
         Debug.Log("Moving to planet type " + (Shared.RoomTypes)selectedPlanet.resourceNum);
         //gameManager.Rooms[6].RoomType = (Shared.RoomTypes)selectedPlanet.resourceNum;
         Firebase.Database.FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/CurrentPlanet").SetValueAsync(selectedPlanet.resourceNum);
