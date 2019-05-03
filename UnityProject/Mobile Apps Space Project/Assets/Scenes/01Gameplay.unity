@@ -5020,7 +5020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peopleLimit: 10
-  roomLevel: 0
+  roomLevel: 1
   crewInThisRoom: []
   crewLocations:
   - {fileID: 2002119378}
@@ -5040,7 +5040,7 @@ MonoBehaviour:
   isPlanet: 1
   RoomUniqueIdentifierForDB: Room_Debug_Planet
   data:
-    RoomLevel: 0
+    RoomLevel: 1
 --- !u!61 &501744077
 BoxCollider2D:
   m_ObjectHideFlags: 0
