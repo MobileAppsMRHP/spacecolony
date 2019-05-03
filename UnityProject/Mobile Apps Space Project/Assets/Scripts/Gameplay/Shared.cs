@@ -8,6 +8,7 @@ public static class Shared {
     public static readonly float ProcessElapsedTime_ConsiderLoggedOff = 20.0f; // 20 seconds
     public static readonly string PlayerPrefs_AuthTokenKey = "UserUID";
     public static readonly int NewUser_StartingCrewCount = 2;
+    public static readonly string NewUser_HasSetupRunYesPhrase = "Yes";
 
     public enum Roles
     {

@@ -73,22 +73,15 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         PrintEnabledDebugs();
-        StartCoroutine(DebugDelayedStart());
-
         DisplayLoadingScreen();
 
         toFirebasePush = new List<IFirebaseTimedUpdateable>();
         toProcessElapsedTime = new List<IProcessElapsedTime>();
         running_on = Application.platform;
         DebugLog("Running on a " + running_on, DebugFlags.GeneralInfo);
-        user_string = Authenticate();
-
         resourceManager = gameObject.AddComponent(typeof(ResourceManager)) as ResourceManager;
-        //resourceManager.DEBUG_SetupResourcesList();
-        
-        LoadCrew(); //NEEDS TO OCCUR AFTER NEW USER SETUP
-
-        HideLoadingScreen();
+        StartCoroutine(StartupCoroutine());
+        //continues in coroutine
     }
 
     // Use this for initialization
@@ -111,25 +104,126 @@ public class GameManager : MonoBehaviour
         CurrentEpochTime = (int)(System.DateTime.UtcNow - EpochStart).TotalSeconds;
     }
 
-    System.Collections.IEnumerator DebugDelayedStart()
+    System.Collections.IEnumerator StartupCoroutine()
     {
-        DEBUG_WriteNewCrewTemplate();
-        DEBUG_WriteNewRoomTemplate();
+        //DEBUG_WriteNewCrewTemplate();
+        //DEBUG_WriteNewRoomTemplate();
+        //resourceManager.DEBUG_SetupResourcesList();
+
+        Authenticate();
+
+        yield return new WaitForSecondsRealtime(1);
+        //give delay for room data to load in
+
+        LoadCrew();
 
         //NewUserSetupAsync();
-        DebugLog("Waiting 4 seconds to start delayed actions...");
-        yield return new WaitForSeconds(4);
-        DebugLog("4 seconds elapsed, running delayed actions.");
-        if (IsNewUser)
-            StartCoroutine(CreateFreshCrewMember(Shared.NewUser_StartingCrewCount));
-        IsDoneLoading = true;
-        //resourceManager.NewUserSetupResourcesList();
-        //StartCoroutine("CreateFreshCrewMember", 2);
+        DebugLog("Waiting to start delayed actions...");
+        yield return new WaitForSecondsRealtime(2);
+        DebugLog("... Time elapsed, running delayed actions.");
+
         StartCoroutine(FirebaseTimedUpdates(10.0f));
         yield return ProcessTimeSinceLastLogon();
         resourceManager.StartAveragesProcessing();
 
+        IsDoneLoading = true;
+        HideLoadingScreen();
     }
+
+    public void Authenticate()
+    {
+        string authToken = PlayerPrefs.GetString(Shared.PlayerPrefs_AuthTokenKey, "User1");
+        Debug.Log("PlayerPrefs " + Shared.PlayerPrefs_AuthTokenKey + " contains '" + authToken + "'");
+        if (authToken.Equals("")) //deal with empty auth tokens
+            authToken = "User1";
+        if (authToken.Equals("User1")) //If failed to load an auth token, use default user
+            DebugLog("PlayerPrefs did not contain user auth token. Proceeding with User1 token instead.", DebugFlags.Warning);
+        else
+            DebugLog("Auth user token: " + authToken, DebugFlags.Auth);
+
+        //authToken = "TestNewUser"; //uncomment this line to override for testing
+        user_string = authToken;
+
+        FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/HasSetupRun").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                // Handle the error...
+                DebugLog("Data retrieval error when prompting for crew data!", DebugFlags.Critical);
+            }
+            else if (task.IsCompleted)
+            {
+                string data = task.Result.ToString(); //task.result.Value.toString() causes silent error when value is not present
+                Debug.Log("HasSetupRun: " + data);
+                if (!data.Equals("DataSnapshot { key = HasSetupRun, value = " + Shared.NewUser_HasSetupRunYesPhrase + " }")) //workaround for not present detection
+                {
+                    Debug.Log("Running new user setup");
+                    UnityMainThreadDispatcher.Instance().Enqueue(() => 
+                    {
+                        StartCoroutine(CreateFreshCrewMember(Shared.NewUser_StartingCrewCount));
+                    });
+                    foreach (var thisRoom in Rooms)
+                    {
+                        thisRoom.NewUser_WriteMyRoomData();
+                    }
+                    resourceManager.NewUserSetupResourcesList();
+
+
+                    FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/HasSetupRun").SetValueAsync(Shared.NewUser_HasSetupRunYesPhrase);
+                }
+                else
+                {
+                    Debug.Log("No need to run new user setup");
+                }
+            }
+            else
+            {
+                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
+                DebugLog("Task error when prompting for crew data", DebugFlags.Critical);
+            }
+        });
+    }
+
+    /*public async void NewUserSetupAsync()
+    {
+        //string user_string = "TestNewUser"; //for testing purposes to avoid writing over user1
+        Debug.LogError("[NewUser] New User Setup method was called, but is not done yet. May corrupt database. Beware.");
+        //TODO
+        string FreshRoomJson = "LOADING";
+        await FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                // Handle the error...
+                DebugLog("[NewUser] Data retrieval error when prompting for new room structure!", DebugFlags.Critical);
+            }
+            else if (task.IsCompleted)
+            {
+                FreshRoomJson = task.Result.GetRawJsonValue();
+                DebugLog("[NewUser] Received new room template: " + FreshRoomJson, DebugFlags.GeneralInfo);
+            }
+            else
+            {
+                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
+                DebugLog("[NewUser] Task error when prompting for new room structure", DebugFlags.Critical);
+            }
+        });
+        if(FreshRoomJson.Equals("LOADING"))
+        {
+            Debug.LogError("[NewUser] Couldn't load new room structure!");
+            //yield break;
+        }
+
+        foreach(var thisRoom in Rooms)
+        {
+            DebugLog("[NewUser] Writing room structure for " + thisRoom.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
+            await FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Rooms/" + thisRoom.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(FreshRoomJson);
+        }
+
+        //CREW SPAWN needs to occur later, so mark as new user so this happens after 4 seconds
+        IsNewUser = true;
+        resourceManager.NewUserSetupResourcesList();
+    }*/
 
     System.Collections.IEnumerator FirebaseTimedUpdates(float waitTimeSeconds)
     {
@@ -202,20 +296,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public string Authenticate()
-    {
-        string authToken = PlayerPrefs.GetString(Shared.PlayerPrefs_AuthTokenKey, "User1");
-        Debug.Log("PlayerPrefs " + Shared.PlayerPrefs_AuthTokenKey + " contains '" + authToken + "'");
-        if (authToken.Equals("")) //deal with empty auth tokens
-            authToken = "User1";
-        if (authToken.Equals("User1")) //If failed to load an auth token, use default user
-            DebugLog("PlayerPrefs did not contain user auth token. Proceeding with User1 token instead.", DebugFlags.Warning);
-        else
-            DebugLog("Auth user token: " + authToken, DebugFlags.Auth);
-        //authToken = "TestNewUser";
-        return authToken;
-    }
-
     void LoadCrew()
     {
         Crew.BuildRandomNameList();
@@ -278,47 +358,6 @@ public class GameManager : MonoBehaviour
             }
             DebugLog("Done spawning requested " + count + " fresh crew members.");
         }
-    }
-
-    public async void NewUserSetupAsync()
-    {
-        //string user_string = "TestNewUser"; //for testing purposes to avoid writing over user1
-        Debug.LogError("[NewUser] New User Setup method was called, but is not done yet. May corrupt database. Beware.");
-        //TODO
-        string FreshRoomJson = "LOADING";
-        await FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").GetValueAsync().ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-            {
-                // Handle the error...
-                DebugLog("[NewUser] Data retrieval error when prompting for new room structure!", DebugFlags.Critical);
-            }
-            else if (task.IsCompleted)
-            {
-                FreshRoomJson = task.Result.GetRawJsonValue();
-                DebugLog("[NewUser] Received new room template: " + FreshRoomJson, DebugFlags.GeneralInfo);
-            }
-            else
-            {
-                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
-                DebugLog("[NewUser] Task error when prompting for new room structure", DebugFlags.Critical);
-            }
-        });
-        if(FreshRoomJson.Equals("LOADING"))
-        {
-            Debug.LogError("[NewUser] Couldn't load new room structure!");
-            //yield break;
-        }
-
-        foreach(var thisRoom in Rooms)
-        {
-            DebugLog("[NewUser] Writing room structure for " + thisRoom.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
-            await FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Rooms/" + thisRoom.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(FreshRoomJson);
-        }
-
-        //CREW SPAWN needs to occur later, so mark as new user so this happens after 4 seconds
-        IsNewUser = true;
-        resourceManager.NewUserSetupResourcesList();
     }
 
     void DEBUG_WriteNewCrewTemplate() //This method overwrites the template in Firebase with the current fresh prefab's data

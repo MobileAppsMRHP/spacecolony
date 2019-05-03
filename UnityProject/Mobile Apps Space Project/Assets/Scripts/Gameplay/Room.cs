@@ -87,7 +87,8 @@ public class Room : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         Vector3 tempCost;
         if (GameManager.IsDoneLoading)
         {
@@ -125,7 +126,6 @@ public class Room : MonoBehaviour {
         if (isPlanet)
         {
             currentlySelected = false;
-
         }
     }
 
@@ -269,10 +269,10 @@ public class Room : MonoBehaviour {
         data = (DataToSerialize)boxedDataCloneForJsonUtility;
     }
 
-    public void DEBUG_WriteMyRoomData()
+    public void NewUser_WriteMyRoomData()
     {
         string json = JsonUtility.ToJson(data);
-        GameManager.DebugLog("[DEBUG] Writing room '" + RoomUniqueIdentifierForDB + "' to database. " + json);
+        GameManager.DebugLog("[NewUser] Writing room '" + RoomUniqueIdentifierForDB + "' to database. " + json);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).SetRawJsonValueAsync(json);
     }
 
