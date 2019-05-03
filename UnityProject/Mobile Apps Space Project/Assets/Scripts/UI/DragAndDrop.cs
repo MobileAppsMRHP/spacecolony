@@ -73,15 +73,21 @@ public class DragAndDrop : MonoBehaviour
                     GameManager.DebugLog("Moving " + droppedCrew.CrewName + " (" + droppedCrew.identifier + ") into room " + droppedRoom, DebugFlags.CollisionOps);
                     droppedCrew.AllData.RoomData.CurrentRoomStringForDB = droppedRoom.RoomUniqueIdentifierForDB;
                     droppedCrew.DatabaseUpdateRoomData();
-                    
+                    droppedRoom.CrewIntoPosition();
+                    droppedCrew.currentRoom = droppedRoom; //add the crew member to the room's list of the crew it contains
                 }
-                else if (!droppedRoom.crewInThisRoom.Contains(droppedCrew))
+                else if (!droppedRoom.crewInThisRoom.Contains(droppedCrew) && !droppedRoom.SpacesAvailable())
                 {
-                    GameManager.DebugLog("Can't enter room for some reason", DebugFlags.CollisionOps);
+                    Debug.Log("Too much people");
+                    transform.position = initialPosition;
                 }
-                droppedRoom.CrewIntoPosition();
+                else if (droppedRoom.crewInThisRoom.Contains(droppedCrew))
+                {
+                    droppedRoom.CrewIntoPosition();
+                    //GameManager.DebugLog("Can't enter room for some reason", DebugFlags.CollisionOps);
+                }
                 inRoom = true;
-                droppedCrew.currentRoom = droppedRoom; //add the crew member to the room's list of the crew it contains
+
             }
             else if (collider.tag == "Background") //if it was dropped on a background object, don't move it anywhere.
             {
