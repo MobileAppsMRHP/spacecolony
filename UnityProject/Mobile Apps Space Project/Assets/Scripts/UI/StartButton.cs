@@ -8,13 +8,13 @@ public class StartButton : MonoBehaviour {
     //protected bool loggedIn;
     //protected static UserAuthentication auth;
 
-    private static readonly bool DEBUG_Erase_PlayerPrefs = true;
+    private static readonly bool DEBUG_Erase_PlayerPrefs = false;
 
     // Use this for initialization
     void Start () {
         if (DEBUG_Erase_PlayerPrefs)
         {
-            Debug.Log("DEBUG: Erasing playerprefs");
+            Debug.Log("DEBUG: Erasing PlayerPrefs");
             PlayerPrefs.DeleteAll();
             PlayerPrefs.Save();
         }

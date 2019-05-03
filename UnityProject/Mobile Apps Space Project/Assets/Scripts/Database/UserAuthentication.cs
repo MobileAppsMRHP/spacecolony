@@ -691,10 +691,19 @@ public class UserAuthentication : MonoBehaviour
         yield return WriteUserID();
         Debug.Log("Attempted to write UserUID");
         //yield return new WaitForSeconds(5.0f);
-        DisableUI();
-        SceneManager.LoadScene("01Gameplay", LoadSceneMode.Single);
-        /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
-        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
+        string temp = PlayerPrefs.GetString(Shared.PlayerPrefs_AuthTokenKey, "NoData");
+        Debug.Log("PlayerPrefs contents before scene swap: " + temp);
+        if (temp.Equals("NoData"))
+        {
+            DebugLog("Could not sign in. Try creating an account first if you haven't already");
+        }
+        else
+        {
+            DisableUI();
+            SceneManager.LoadScene("01Gameplay", LoadSceneMode.Single);
+            /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
+        }
     }
 
     System.Collections.IEnumerator WriteUserID()
