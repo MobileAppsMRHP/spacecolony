@@ -18,7 +18,6 @@ public class Room : MonoBehaviour {
     public GameObject mainScreen;
     List<CrewSkills> crewSkillsResourceMultipliers;
     public bool isPlanet;
-
     //public string RoomUniqueIdentifierForDB;
     Vector3 baseUpgradeCost = new Vector3(50, 50, 50);
     struct CrewSkills
@@ -48,8 +47,20 @@ public class Room : MonoBehaviour {
         public int RoomLevel;
     }
 
+    [System.Serializable]
+    public struct PlanetImages
+    {
+        public Sprite DefaultPlanet;
+        public Sprite FoodPlanet;
+        public Sprite EnergyPlanet;
+        public Sprite MineralPlanet;
+        public Sprite WaterPlanet;
+        
+    }
+
     public string RoomUniqueIdentifierForDB;
 
+    public PlanetImages PlanetImagesData;
     public DataToSerialize data;
     // Use this for initialization
     void Start () {
@@ -287,6 +298,39 @@ public class Room : MonoBehaviour {
             RoomType = (Shared.RoomTypes)System.Enum.Parse(typeof(Shared.RoomTypes), args.Snapshot.Value.ToString());
             GameManager.DebugLog("Planet changed to " + RoomType + "(" + args.Snapshot.Value + ")");
         }
+        UpdateSprite();
+    }
+
+    void UpdateSprite()
+    {
+        Sprite temp = PlanetImagesData.DefaultPlanet;
+        switch (RoomType)
+        {
+            case Shared.RoomTypes.empty:
+                temp = PlanetImagesData.DefaultPlanet;
+                break;
+            case Shared.RoomTypes.bridge:
+                temp = PlanetImagesData.DefaultPlanet;
+                break;
+            case Shared.RoomTypes.energy:
+                temp = PlanetImagesData.EnergyPlanet;
+                break;
+            case Shared.RoomTypes.food:
+                temp = PlanetImagesData.FoodPlanet;
+                break;
+            case Shared.RoomTypes.mineral:
+                temp = PlanetImagesData.MineralPlanet;
+                break;
+            case Shared.RoomTypes.water:
+                temp = PlanetImagesData.WaterPlanet;
+                break;
+            default:
+                Debug.LogError("Unexpected room type when updating planet image!");
+                break;
+        }
+        Debug.Log("Switched planet sprite to " + temp.name);
+        transform.GetComponent<SpriteRenderer>().sprite = temp;
+        
     }
 
     public void NewUser_WriteMyRoomData()
