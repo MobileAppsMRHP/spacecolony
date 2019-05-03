@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selected: 0
-  inRoom: 0
+  inRoom: 1
 --- !u!212 &212572942157471790
 SpriteRenderer:
   m_ObjectHideFlags: 1

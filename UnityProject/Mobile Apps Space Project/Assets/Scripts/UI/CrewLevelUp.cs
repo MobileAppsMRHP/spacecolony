@@ -10,6 +10,7 @@ public class CrewLevelUp : MonoBehaviour {
     public List<Text> crewInfo;
     public Image experienceBar;
     public Image crewImage;
+    public Camera mainCamera;
 	// Use this for initialization
 	void Start () {
         gameManager = GameManager.instance;
@@ -19,6 +20,7 @@ public class CrewLevelUp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        mainCamera.orthographicSize = 1;
         crewInfo[0].text = selectedCrew.CrewName;
         crewInfo[1].text = selectedCrew.AllData.SkillData.Skill_Cooking.ToString();
         crewInfo[2].text = selectedCrew.AllData.SkillData.Skill_Navigation.ToString();
