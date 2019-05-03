@@ -30,10 +30,12 @@ public class MapPlanets : MonoBehaviour {
             {
                 Debug.Log(hit.collider);
                 currentlySelected = true;
+                //move ship to this planet
+                transform.parent.transform.parent.GetChild(0).position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             }
             else
             {
-                Debug.Log("nothin hit");
+                Debug.Log("nothing hit on map screen");
                 currentlySelected = false;
             }
         }
