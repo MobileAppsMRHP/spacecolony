@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 61641564297663824}
   - component: {fileID: 114543948148715002}
   - component: {fileID: 50973051253796186}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CrewMemberPrefab
   m_TagString: Player
   m_Icon: {fileID: 0}
