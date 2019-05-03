@@ -17,7 +17,7 @@ public class MapScreen : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (mainCamera.orthographicSize < 2)
+		if (mainCamera.orthographicSize < 3)
         {
             for (int i=0; i < planets.Length; i++)
             {

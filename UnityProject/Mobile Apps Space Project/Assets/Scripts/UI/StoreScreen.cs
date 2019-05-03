@@ -62,7 +62,7 @@ public class StoreScreen : MonoBehaviour {
                 break;
         }
         currentCrewNum = gameManager.CrewMembers.Count;
-        crewCost = Mathf.Pow(10, currentCrewNum);
+        crewCost = Mathf.Pow(4, currentCrewNum);
         currentCrewNumText.text = "" + currentCrewNum;
         crewCostText.text = "" + crewCost;
         if (gameManager.GetResource(Shared.ResourceTypes.money) < crewCost)
