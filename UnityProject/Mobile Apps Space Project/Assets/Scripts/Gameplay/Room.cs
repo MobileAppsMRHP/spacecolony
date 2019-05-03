@@ -83,6 +83,11 @@ public class Room : MonoBehaviour {
         yield return new WaitUntil(() => !GameManager.instance.user_string.Equals("StillLoading"));
         GameManager.DebugLog("... user string loaded as '" + GameManager.instance.user_string + "', setting up room " + RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
         FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/Rooms/" + RoomUniqueIdentifierForDB).ValueChanged += HandleValueChanged;
+        if(isPlanet)
+        {
+            //Debug.Log("A planet was registered");
+            FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/CurrentPlanet").ValueChanged += HandlePlanetChanged;
+        }
         //DEBUG_WriteMyRoomData();
     }
 	
@@ -267,6 +272,21 @@ public class Room : MonoBehaviour {
         object boxedDataCloneForJsonUtility = data; //needs special boxing because https://docs.unity3d.com/ScriptReference/EditorJsonUtility.FromJsonOverwrite.html
         JsonUtility.FromJsonOverwrite(json, boxedDataCloneForJsonUtility);
         data = (DataToSerialize)boxedDataCloneForJsonUtility;
+    }
+
+    void HandlePlanetChanged(object sender, ValueChangedEventArgs args)
+    {
+        //Debug.LogError("Received planet value " + );
+        if (args.Snapshot.Value == null)
+        {
+            Debug.LogWarning("No planet value received, using mineral planet by default");
+            RoomType = Shared.RoomTypes.mineral;
+        }
+        else
+        {
+            RoomType = (Shared.RoomTypes)System.Enum.Parse(typeof(Shared.RoomTypes), args.Snapshot.Value.ToString());
+            GameManager.DebugLog("Planet changed to " + RoomType + "(" + args.Snapshot.Value + ")");
+        }
     }
 
     public void NewUser_WriteMyRoomData()

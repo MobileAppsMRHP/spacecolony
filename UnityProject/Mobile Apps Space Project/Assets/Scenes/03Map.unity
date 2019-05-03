@@ -113,6 +113,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &98198108 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114409857846673446, guid: 855bbd4c985cca8409f3c765b0d8f80a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1088679402}
+  m_Script: {fileID: 11500000, guid: 4914403ae423edb479569ea155e5ebfc, type: 3}
 --- !u!1 &153544850
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,7 +1208,7 @@ Prefab:
     - target: {fileID: 114409857846673446, guid: 855bbd4c985cca8409f3c765b0d8f80a,
         type: 2}
       propertyPath: resourceNum
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 212457356268731638, guid: 855bbd4c985cca8409f3c765b0d8f80a,
         type: 2}
@@ -1757,6 +1763,11 @@ Prefab:
       propertyPath: resourceNum
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 61180475751239208, guid: 855bbd4c985cca8409f3c765b0d8f80a,
+        type: 2}
+      propertyPath: m_EdgeRadius
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 855bbd4c985cca8409f3c765b0d8f80a, type: 2}
   m_IsPrefabParent: 0
@@ -2264,7 +2275,7 @@ Prefab:
     - target: {fileID: 114409857846673446, guid: 855bbd4c985cca8409f3c765b0d8f80a,
         type: 2}
       propertyPath: resourceNum
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 212457356268731638, guid: 855bbd4c985cca8409f3c765b0d8f80a,
         type: 2}
@@ -2551,7 +2562,7 @@ Prefab:
     - target: {fileID: 114409857846673446, guid: 855bbd4c985cca8409f3c765b0d8f80a,
         type: 2}
       propertyPath: resourceNum
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 212457356268731638, guid: 855bbd4c985cca8409f3c765b0d8f80a,
         type: 2}
@@ -2647,7 +2658,7 @@ Prefab:
     - target: {fileID: 114409857846673446, guid: 855bbd4c985cca8409f3c765b0d8f80a,
         type: 2}
       propertyPath: resourceNum
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 212457356268731638, guid: 855bbd4c985cca8409f3c765b0d8f80a,
         type: 2}
@@ -3991,6 +4002,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1118855914}
   gameManager: {fileID: 0}
   goToPlanetButton: {fileID: 1969157050}
+  debug_test_planet: {fileID: 98198108}
 --- !u!1 &1868269353
 GameObject:
   m_ObjectHideFlags: 0

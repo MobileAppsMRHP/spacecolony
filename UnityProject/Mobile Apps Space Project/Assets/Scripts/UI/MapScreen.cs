@@ -10,9 +10,16 @@ public class MapScreen : MonoBehaviour {
     public GameManager gameManager;
     public Button goToPlanetButton;
     MapPlanets selectedPlanet;
+    public MapPlanets debug_test_planet;
+
 	// Use this for initialization
 	void Start () {
         gameManager = GameManager.instance;
+        if (true) //DEBUG
+        {
+            selectedPlanet = debug_test_planet;
+            GoToPlanet();
+        }
 	}
 	
 	// Update is called once per frame
@@ -45,6 +52,8 @@ public class MapScreen : MonoBehaviour {
 
     public void GoToPlanet()
     {
-        gameManager.Rooms[6].RoomType = (Shared.RoomTypes)selectedPlanet.resourceNum;
+        Debug.Log("Moving to planet type " + (Shared.RoomTypes)selectedPlanet.resourceNum);
+        //gameManager.Rooms[6].RoomType = (Shared.RoomTypes)selectedPlanet.resourceNum;
+        Firebase.Database.FirebaseDatabase.DefaultInstance.GetReference("user-data/" + GameManager.instance.user_string + "/CurrentPlanet").SetValueAsync(selectedPlanet.resourceNum);
     }
 }
