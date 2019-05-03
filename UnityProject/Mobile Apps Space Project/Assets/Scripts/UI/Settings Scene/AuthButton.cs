@@ -24,13 +24,24 @@ public class AuthButton : MonoBehaviour
         if (PlayerPrefs.HasKey(Shared.PlayerPrefs_AuthTokenKey))
         {
             string temp = PlayerPrefs.GetString(Shared.PlayerPrefs_AuthTokenKey);
-            TextElement.text = "Logged in:\n" + temp;
+            TextElement.color = new Color(0f, 255f, 0f);
+            TextElement.text = "Logged in" + temp;
             Debug.Log("AuthButton: Found token in PlayerPrefs: " + temp);
         }
         else
         {
+            TextElement.color = new Color(255f, 0f, 0f);
             TextElement.text = "Not logged in";
             Debug.Log("AuthButton: Did not find auth token in PlayerPrefs");
         }
+    }
+
+    public void LogOut()
+    {
+        TextElement.text = "Exit game to log out";
+        TextElement.color = new Color(255f, 0f, 0f);
+        Debug.Log("AuthButton: Erasing UID for auth");
+        PlayerPrefs.DeleteKey(Shared.PlayerPrefs_AuthTokenKey);
+        PlayerPrefs.Save();
     }
 }
