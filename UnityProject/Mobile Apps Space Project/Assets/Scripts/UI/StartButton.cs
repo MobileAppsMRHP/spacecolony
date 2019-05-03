@@ -6,14 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class StartButton : MonoBehaviour {
     //protected bool loggedIn;
-    //protected static UserAuthentication auth;
-
+    //protected static UserAuthentication auth
     private static readonly bool DEBUG_Erase_PlayerPrefs = false;
-
     // Use this for initialization
     void Start () {
         if (DEBUG_Erase_PlayerPrefs)
-        {
+        { 
             Debug.Log("DEBUG: Erasing PlayerPrefs");
             PlayerPrefs.DeleteAll();
             PlayerPrefs.Save();
@@ -24,6 +22,7 @@ public class StartButton : MonoBehaviour {
     {
         if (PlayerPrefs.HasKey(Shared.PlayerPrefs_AuthTokenKey))
         {
+            
             Debug.Log("PlayerPrefs has a token, going to gameplay screen.");
             SceneManager.LoadScene("01Gameplay", LoadSceneMode.Single);
             /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
