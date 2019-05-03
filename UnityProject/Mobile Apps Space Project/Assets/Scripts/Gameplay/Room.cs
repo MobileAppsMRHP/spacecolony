@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class Room : MonoBehaviour {
 
     public int peopleLimit;
-    public int roomLevel;
+    //public int roomLevel;
     public List<Crew> crewInThisRoom;
     public List<GameObject> crewLocations;
     List<Vector3> UpgradeResourceMultiplier; //mineral, energy, money
@@ -71,7 +71,8 @@ public class Room : MonoBehaviour {
             new Vector3(1.5f, 1.1f, 1.2f), //energy
             new Vector3(1.1f, 1.3f, 1.1f), //food
             new Vector3(1.4f, 1.3f, 1.6f), //minerals
-            new Vector3(1.5f, 1.3f, 1.7f) //water
+            new Vector3(1.5f, 1.3f, 1.7f), //water
+            new Vector3(1f, 1f, 1f) //planet
         };
         crewSkillsResourceMultipliers = new List<CrewSkills>()
         {
@@ -130,7 +131,7 @@ public class Room : MonoBehaviour {
             }
             if (!(RoomType == Shared.RoomTypes.empty))
             {
-                tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType].x, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType].y, roomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType].z, roomLevel));
+                tempCost = new Vector3(Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType].x, data.RoomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType].y, data.RoomLevel), Mathf.Pow(UpgradeResourceMultiplier[(int)RoomType].z, data.RoomLevel));
                 upgradeCosts = Vector3.Scale(baseUpgradeCost, tempCost);
                 IncreaseResources();
             }
@@ -138,10 +139,6 @@ public class Room : MonoBehaviour {
             {
                 currentlySelected = false;
             }
-        }
-        if (isPlanet)
-        {
-            currentlySelected = false;
         }
     }
 
@@ -254,7 +251,7 @@ public class Room : MonoBehaviour {
 
     public void IncreaseLevel()
     {
-        roomLevel++;
+        data.RoomLevel++;
         gameManager.ChangeResource(Shared.ResourceTypes.minerals, -upgradeCosts.x);
         gameManager.ChangeResource(Shared.ResourceTypes.energy, -upgradeCosts.y);
         gameManager.ChangeResource(Shared.ResourceTypes.money, -upgradeCosts.z);
@@ -273,7 +270,7 @@ public class Room : MonoBehaviour {
         {
             sum = sum * 20;
         }
-        return sum * roomLevel/10f * Time.deltaTime;
+        return sum * data.RoomLevel/10f * Time.deltaTime;
     }
 
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
