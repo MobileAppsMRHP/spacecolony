@@ -50,22 +50,31 @@ public class ResourceManager : MonoBehaviour, IFirebaseTimedUpdateable, IProcess
 
     public float ChangeResource(Shared.ResourceTypes key, float deltaValue, bool DONT_CALL_THIS_FROM_ANYWHERE_BUT_GAMEMANAGER_OR_RESOURCEMANAGER)
     {
-        GameManager.DebugLog("The resource " + key.ToString() + " was CHANGED by " + deltaValue, DebugFlags.Resources);
-        resources[key] += deltaValue;
-        return resources[key];
+        if (resources.ContainsKey(key))
+        {
+            GameManager.DebugLog("The resource " + key.ToString() + " was CHANGED by " + deltaValue, DebugFlags.Resources);
+            resources[key] += deltaValue;
+            return resources[key];
+        }
+        else
+        {
+            GameManager.DebugLog("A resource " + key + " was CHANGE requested that was not present in the resources list; returning 0 count.", DebugFlags.Warning);
+            return 0;
+        }
+        
     }
 
     public void NewUserSetupResourcesList()
     {
         GameManager.DebugLog("[NewUser] Creating new user resources and writing to database...");
 
-        resources.Add(Shared.ResourceTypes.minerals, 5.4f);
-        resources.Add(Shared.ResourceTypes.food, 25.5f);
-        resources.Add(Shared.ResourceTypes.water, 6.3f);
-        resources.Add(Shared.ResourceTypes.money, 10.7f);
-        resources.Add(Shared.ResourceTypes.energy, 7.1f);
-        resources.Add(Shared.ResourceTypes.preciousMetal, 4.2f);
-        resources.Add(Shared.ResourceTypes.premiumCurrency, 999.99f);
+        resources.Add(Shared.ResourceTypes.minerals, 100.0f);
+        resources.Add(Shared.ResourceTypes.food, 100.0f);
+        resources.Add(Shared.ResourceTypes.water, 100.0f);
+        resources.Add(Shared.ResourceTypes.money, 100.0f);
+        resources.Add(Shared.ResourceTypes.energy, 100.0f);
+        resources.Add(Shared.ResourceTypes.preciousMetal, 100.0f);
+        resources.Add(Shared.ResourceTypes.premiumCurrency, -1.0f);
 
         GameManager.DebugLog("[NewUser] Resources count after DEBUG setup: " + resources.Count);
         GameManager.DebugLog("[NewUser] Resources JSON to write: " + JsonUtility.ToJson(resources));
