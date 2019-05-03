@@ -32,9 +32,9 @@ public class RoomUpgrade : MonoBehaviour {
         else
         {
             upgradeButton.interactable = true;
-            resourceCosts[0].text = "-" + selectedRoom.upgradeCosts.x.ToString();
-            resourceCosts[1].text = "-" + selectedRoom.upgradeCosts.y.ToString();
-            resourceCosts[2].text = "-" + selectedRoom.upgradeCosts.z.ToString();
+            resourceCosts[0].text = "-" + ((int)selectedRoom.upgradeCosts.x + 1).ToString();
+            resourceCosts[1].text = "-" + ((int)selectedRoom.upgradeCosts.y + 1).ToString();
+            resourceCosts[2].text = "-" + ((int)selectedRoom.upgradeCosts.z + 1).ToString();
             selectedRoomName.text = selectedRoom.RoomType.ToString();
             selectedRoomLevel.text = "L: " + selectedRoom.roomLevel;
             upgradeButton.interactable = selectedRoom.CanIncreaseLevel();

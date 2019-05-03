@@ -1207,6 +1207,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4275157140194850, guid: 855bbd4c985cca8409f3c765b0d8f80a,
     type: 2}
   m_PrefabInternal: {fileID: 527400682}
+--- !u!114 &527400684 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114409857846673446, guid: 855bbd4c985cca8409f3c765b0d8f80a,
+    type: 2}
+  m_PrefabInternal: {fileID: 527400682}
+  m_Script: {fileID: 11500000, guid: 4914403ae423edb479569ea155e5ebfc, type: 3}
 --- !u!1 &550793029
 GameObject:
   m_ObjectHideFlags: 0
@@ -1748,6 +1754,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4275157140194850, guid: 855bbd4c985cca8409f3c765b0d8f80a,
     type: 2}
   m_PrefabInternal: {fileID: 660995338}
+--- !u!114 &660995340 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114409857846673446, guid: 855bbd4c985cca8409f3c765b0d8f80a,
+    type: 2}
+  m_PrefabInternal: {fileID: 660995338}
+  m_Script: {fileID: 11500000, guid: 4914403ae423edb479569ea155e5ebfc, type: 3}
 --- !u!1 &704362687
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,6 +2263,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4275157140194850, guid: 855bbd4c985cca8409f3c765b0d8f80a,
     type: 2}
   m_PrefabInternal: {fileID: 788215678}
+--- !u!114 &788215680 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114409857846673446, guid: 855bbd4c985cca8409f3c765b0d8f80a,
+    type: 2}
+  m_PrefabInternal: {fileID: 788215678}
+  m_Script: {fileID: 11500000, guid: 4914403ae423edb479569ea155e5ebfc, type: 3}
 --- !u!1 &840514930
 GameObject:
   m_ObjectHideFlags: 0
@@ -3885,7 +3903,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planets:
   - {fileID: 1084274901}
-  - {fileID: 190574187}
+  - {fileID: 527400684}
+  - {fileID: 660995340}
+  - {fileID: 788215680}
   planetHighlighter: {fileID: 1601655316}
   mainCamera: {fileID: 1118855914}
   gameManager: {fileID: 0}
