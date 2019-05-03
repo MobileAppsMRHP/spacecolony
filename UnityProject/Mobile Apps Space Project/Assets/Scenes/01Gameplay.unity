@@ -3153,7 +3153,7 @@ Prefab:
     - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
       propertyPath: data.RoomLevel
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 212310903063762346, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
@@ -4074,7 +4074,7 @@ Prefab:
     - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
       propertyPath: data.RoomLevel
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 212310903063762346, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
@@ -9831,7 +9831,7 @@ Prefab:
     - target: {fileID: 114918558709920864, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
       propertyPath: data.RoomLevel
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 212310903063762346, guid: 67c1a16393de4054bada52027b027547,
         type: 2}
