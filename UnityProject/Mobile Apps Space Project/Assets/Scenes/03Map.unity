@@ -3151,6 +3151,11 @@ Transform:
   m_PrefabParentObject: {fileID: 4320559095048214, guid: bd2f677e44b68554d8c944514f898132,
     type: 2}
   m_PrefabInternal: {fileID: 1414209548}
+--- !u!1 &1414209550 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1459596154639456, guid: bd2f677e44b68554d8c944514f898132,
+    type: 2}
+  m_PrefabInternal: {fileID: 1414209548}
 --- !u!1 &1448724812
 GameObject:
   m_ObjectHideFlags: 0
@@ -4003,6 +4008,7 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   goToPlanetButton: {fileID: 1969157050}
   debug_test_planet: {fileID: 98198108}
+  ship: {fileID: 1414209550}
 --- !u!1 &1868269353
 GameObject:
   m_ObjectHideFlags: 0

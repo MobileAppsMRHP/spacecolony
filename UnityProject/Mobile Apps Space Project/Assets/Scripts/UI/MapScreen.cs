@@ -12,10 +12,12 @@ public class MapScreen : MonoBehaviour {
     MapPlanets selectedPlanet;
     public MapPlanets debug_test_planet;
 
-	// Use this for initialization
-	void Start () {
+    public GameObject ship;
+
+    // Use this for initialization
+    void Start () {
         gameManager = GameManager.instance;
-        if (true) //DEBUG
+        if (false) //DEBUG
         {
             selectedPlanet = debug_test_planet;
             GoToPlanet();
