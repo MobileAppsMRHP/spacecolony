@@ -3126,9 +3126,15 @@ MonoBehaviour:
   - {fileID: 870997058}
   experienceBar: {fileID: 69513833}
   crewImage: {fileID: 387755209}
+  mainCamera: {fileID: 304703338}
 --- !u!1 &304703333 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1327161779728228, guid: 0e4e64049e338354d97ea6b676bebdb2,
+    type: 2}
+  m_PrefabInternal: {fileID: 1005890028}
+--- !u!20 &304703338 stripped
+Camera:
+  m_PrefabParentObject: {fileID: 20913352605493658, guid: 0e4e64049e338354d97ea6b676bebdb2,
     type: 2}
   m_PrefabInternal: {fileID: 1005890028}
 --- !u!1001 &320969330

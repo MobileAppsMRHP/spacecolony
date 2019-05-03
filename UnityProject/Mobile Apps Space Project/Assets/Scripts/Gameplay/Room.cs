@@ -195,7 +195,7 @@ public class Room : MonoBehaviour {
                 gameManager.ChangeResource(Shared.ResourceTypes.food, resourceIncrease);
                 break;
             case Shared.RoomTypes.energy:
-                resourceIncrease = CalculateTotalResourceIncrease((int)Shared.RoomTypes.energy); //still need to test this
+                resourceIncrease = CalculateTotalResourceIncrease((int)Shared.RoomTypes.energy); 
                 gameManager.ChangeResource(Shared.ResourceTypes.energy, resourceIncrease);
                 break;
             case Shared.RoomTypes.water:
@@ -257,7 +257,7 @@ public class Room : MonoBehaviour {
         {
             sum = sum * 20;
         }
-        return sum * Time.deltaTime;
+        return sum * roomLevel/10f * Time.deltaTime;
     }
 
     void HandleValueChanged(object sender, ValueChangedEventArgs args)
