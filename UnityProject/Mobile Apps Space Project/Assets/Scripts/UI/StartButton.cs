@@ -20,6 +20,7 @@ public class StartButton : MonoBehaviour {
 
     public void ChangeScreen()
     {
+        GetComponent<AudioSource>().Play();
         if (PlayerPrefs.HasKey(Shared.PlayerPrefs_AuthTokenKey))
         {
             

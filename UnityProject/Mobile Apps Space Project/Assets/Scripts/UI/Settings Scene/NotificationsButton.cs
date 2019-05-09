@@ -16,6 +16,7 @@ public class NotificationsButton : MonoBehaviour {
     public void ButtonPress()
     {
         UpdateButton();
+        GetComponent<AudioSource>().Play();
     }
 
     private void UpdateButton()

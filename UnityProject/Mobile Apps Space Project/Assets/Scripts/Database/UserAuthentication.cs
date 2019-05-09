@@ -643,10 +643,12 @@ public class UserAuthentication : MonoBehaviour
             if (GUILayout.Button("Sign In with Email"))
             {
                 StartCoroutine("SignInEmailCoroutine");
+                PlaySound();
             }
             if (GUILayout.Button("Create User"))
             {
                 CreateUserWithEmailAsync();
+                PlaySound();
             }
             /*if (GUILayout.Button("Reload User"))
             {
@@ -663,10 +665,12 @@ public class UserAuthentication : MonoBehaviour
             if (GUILayout.Button("Sign Out"))
             {
                 SignOut();
+                PlaySound();
             }
             if (GUILayout.Button("Delete User"))
             {
                 DeleteUserAsync();
+                PlaySound();
             }
    
             /*if (GUILayout.Button(String.Format("Fetch Profile on Sign-in {0}",
@@ -679,6 +683,11 @@ public class UserAuthentication : MonoBehaviour
             GUILayout.EndVertical();
             GUILayout.EndScrollView();
         }
+    }
+
+    private void PlaySound()
+    {
+        GetComponent<AudioSource>().Play();
     }
         
     System.Collections.IEnumerator SignInEmailCoroutine()

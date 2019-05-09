@@ -38,6 +38,7 @@ public class AuthButton : MonoBehaviour
 
     public void LogOut()
     {
+        GetComponent<AudioSource>().Play();
         TextElement.text = "Exit game to log out";
         TextElement.color = new Color(255f, 0f, 0f);
         Debug.Log("AuthButton: Erasing UID for auth");
