@@ -727,7 +727,7 @@ Transform:
   m_Children:
   - {fileID: 576785355}
   m_Father: {fileID: 646326663}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &423011304
 GameObject:
@@ -1459,7 +1459,7 @@ Transform:
   m_Children:
   - {fileID: 776918408}
   m_Father: {fileID: 646326663}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &630626783
 GameObject:
@@ -1687,16 +1687,16 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1875688437}
-  - {fileID: 1448724813}
   - {fileID: 2091399739}
   - {fileID: 1868269354}
   - {fileID: 392718976}
   - {fileID: 601144731}
   - {fileID: 840514931}
   - {fileID: 932065909}
+  - {fileID: 1448724813}
   - {fileID: 1969157049}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2355,7 +2355,7 @@ Transform:
   m_Children:
   - {fileID: 475310165}
   m_Father: {fileID: 646326663}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &915436764
 GameObject:
@@ -2473,7 +2473,7 @@ Transform:
   m_Children:
   - {fileID: 1586795445}
   m_Father: {fileID: 646326663}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1004451289
 GameObject:
@@ -3108,7 +3108,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4255623370144354, guid: 44e1ca206d356d540b50a7fe331e25fc, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114643840947000126, guid: 44e1ca206d356d540b50a7fe331e25fc,
         type: 2}
@@ -3205,7 +3205,7 @@ GameObject:
   - component: {fileID: 1448724814}
   - component: {fileID: 1448724817}
   m_Layer: 5
-  m_Name: Game button
+  m_Name: BackToGameButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3223,7 +3223,7 @@ RectTransform:
   m_Children:
   - {fileID: 2089140600}
   m_Father: {fileID: 646326663}
-  m_RootOrder: 1
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3280,17 +3280,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1486294539}
-        m_MethodName: PlayButtonSound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1448724815
@@ -3337,58 +3326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 180896318f8b8644fbbb1ddf6d264c92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &1486294538
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4380888415586964, guid: bf49bab51cfdb4849a47caf004774a57, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380888415586964, guid: bf49bab51cfdb4849a47caf004774a57, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380888415586964, guid: bf49bab51cfdb4849a47caf004774a57, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380888415586964, guid: bf49bab51cfdb4849a47caf004774a57, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380888415586964, guid: bf49bab51cfdb4849a47caf004774a57, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380888415586964, guid: bf49bab51cfdb4849a47caf004774a57, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380888415586964, guid: bf49bab51cfdb4849a47caf004774a57, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380888415586964, guid: bf49bab51cfdb4849a47caf004774a57, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1991149027164184, guid: bf49bab51cfdb4849a47caf004774a57, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: bf49bab51cfdb4849a47caf004774a57, type: 2}
-  m_IsPrefabParent: 0
---- !u!114 &1486294539 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114240072660833228, guid: bf49bab51cfdb4849a47caf004774a57,
-    type: 2}
-  m_PrefabInternal: {fileID: 1486294538}
-  m_Script: {fileID: 11500000, guid: 3de9a6bb3458de844b8e45e38cb4ab94, type: 3}
 --- !u!1 &1526482167
 GameObject:
   m_ObjectHideFlags: 0
@@ -4038,7 +3975,7 @@ Transform:
   - {fileID: 1669626945}
   - {fileID: 550793030}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1742204458
 MonoBehaviour:
@@ -4090,7 +4027,7 @@ Transform:
   m_Children:
   - {fileID: 216480612}
   m_Father: {fileID: 646326663}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1875688436
 GameObject:
@@ -4241,8 +4178,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1486294539}
-        m_MethodName: PlayButtonSound
+      - m_Target: {fileID: 1448724817}
+        m_MethodName: PlaySound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4714,7 +4651,7 @@ RectTransform:
   - {fileID: 153544851}
   - {fileID: 1666044871}
   m_Father: {fileID: 646326663}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

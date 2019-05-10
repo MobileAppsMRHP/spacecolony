@@ -23,6 +23,7 @@ public class SettingsButton : MonoBehaviour
 
     public void CloseMap()
     {
+        PlaySound();
         Debug.Log("SettingsButton: Unloading map scene");
         //SceneManager.LoadScene("01Gameplay", LoadSceneMode.Single);
         SceneManager.UnloadSceneAsync("03Map");
@@ -42,8 +43,12 @@ public class SettingsButton : MonoBehaviour
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
     }
 
-    private void PlaySound()
+    public void PlaySound()
     {
-        GetComponent<AudioSource>().Play();
+        var gm = GameManager.instance;
+        if (gm == null)
+            GetComponent<AudioSource>().Play();
+        else
+            gm.PlayButtonSound();
     }
 }
