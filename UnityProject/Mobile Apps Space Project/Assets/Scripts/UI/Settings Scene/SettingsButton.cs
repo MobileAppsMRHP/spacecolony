@@ -21,6 +21,16 @@ public class SettingsButton : MonoBehaviour
         Application.Quit();
     }
 
+    public void CloseMap()
+    {
+        Debug.Log("SettingsButton: Unloading map scene");
+        //SceneManager.LoadScene("01Gameplay", LoadSceneMode.Single);
+        SceneManager.UnloadSceneAsync("03Map");
+        GameManager.instance.ChangeCurrentScene(2);
+        /*Debug.Log("Unloading scene " + SceneManager.GetActiveScene().name);
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());*/
+    }
+
     public void CloseSettings()
     {
         PlaySound();
