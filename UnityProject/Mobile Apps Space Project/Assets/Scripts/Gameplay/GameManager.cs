@@ -16,7 +16,7 @@ using static UnityEngine.UI.DefaultControls;
     CrewLoadingOps = 128,
     Resources = 256,
     ElapsedTime = 512,
-    option12 = 1024,
+    SoundSystem = 1024,
     option13 = 2048,
     option14 = 4096
 } //16 options with short
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     //7: 
     //255: log EEEEVERYTHING
 
-    public const DebugFlags debugLevelFlags = DebugFlags.CrewLoadingOps | DebugFlags.Critical | DebugFlags.Warning | DebugFlags.DatabaseOps | DebugFlags.DatabaseOpsOnTimer | /*DebugFlags.Resources |*/ DebugFlags.CollisionOps | DebugFlags.GeneralInfo | DebugFlags.ElapsedTime;
+    public const DebugFlags debugLevelFlags = /*DebugFlags.CrewLoadingOps |*/ DebugFlags.Critical | DebugFlags.Warning | DebugFlags.SoundSystem | /*DebugFlags.DatabaseOps | DebugFlags.DatabaseOpsOnTimer |*/ /*DebugFlags.Resources |*/ /*DebugFlags.CollisionOps |*/ DebugFlags.GeneralInfo | DebugFlags.ElapsedTime;
     //add or subtract values from DebugFlags to change what gets printed, or set to short.MaxValue to print everything
     //example debugLevelFlags = DebugFlags.Critical + DebugFlags.Warning + DebugFlags.CollisionOps
 
@@ -70,10 +70,13 @@ public class GameManager : MonoBehaviour
     public readonly static System.DateTime EpochStart = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
     public int CurrentEpochTime { get; private set; }
 
+    public AudioClip ButtonClickSoundEffect;
+    private AudioSource ButtonClickSource;
+
     private void Start()
     {
         PrintEnabledDebugs();
-        DisplayLoadingScreen();
+        //DisplayLoadingScreen();
 
         toFirebasePush = new List<IFirebaseTimedUpdateable>();
         toProcessElapsedTime = new List<IProcessElapsedTime>();
@@ -127,7 +130,7 @@ public class GameManager : MonoBehaviour
         resourceManager.StartAveragesProcessing();
 
         IsDoneLoading = true;
-        HideLoadingScreen();
+        //HideLoadingScreen();
     }
 
     public void Authenticate()
@@ -183,47 +186,6 @@ public class GameManager : MonoBehaviour
             }
         });
     }
-
-    /*public async void NewUserSetupAsync()
-    {
-        //string user_string = "TestNewUser"; //for testing purposes to avoid writing over user1
-        Debug.LogError("[NewUser] New User Setup method was called, but is not done yet. May corrupt database. Beware.");
-        //TODO
-        string FreshRoomJson = "LOADING";
-        await FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").GetValueAsync().ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-            {
-                // Handle the error...
-                DebugLog("[NewUser] Data retrieval error when prompting for new room structure!", DebugFlags.Critical);
-            }
-            else if (task.IsCompleted)
-            {
-                FreshRoomJson = task.Result.GetRawJsonValue();
-                DebugLog("[NewUser] Received new room template: " + FreshRoomJson, DebugFlags.GeneralInfo);
-            }
-            else
-            {
-                //The task neither completed nor failed, this shouldn't happen. Should only be reached if task is canceled?
-                DebugLog("[NewUser] Task error when prompting for new room structure", DebugFlags.Critical);
-            }
-        });
-        if(FreshRoomJson.Equals("LOADING"))
-        {
-            Debug.LogError("[NewUser] Couldn't load new room structure!");
-            //yield break;
-        }
-
-        foreach(var thisRoom in Rooms)
-        {
-            DebugLog("[NewUser] Writing room structure for " + thisRoom.RoomUniqueIdentifierForDB, DebugFlags.GeneralInfo);
-            await FirebaseDatabase.DefaultInstance.GetReference("user-data/" + user_string + "/Rooms/" + thisRoom.RoomUniqueIdentifierForDB).SetRawJsonValueAsync(FreshRoomJson);
-        }
-
-        //CREW SPAWN needs to occur later, so mark as new user so this happens after 4 seconds
-        IsNewUser = true;
-        resourceManager.NewUserSetupResourcesList();
-    }*/
 
     System.Collections.IEnumerator FirebaseTimedUpdates(float waitTimeSeconds)
     {
@@ -372,19 +334,6 @@ public class GameManager : MonoBehaviour
         FirebaseDatabase.DefaultInstance.GetReference("new-object-templates/room").SetRawJsonValueAsync(JsonUtility.ToJson(roomCreator.prefab.data));
     }
 
-    //TODO: make this actually display a loading screen
-    public void DisplayLoadingScreen()
-    {
-        //IsLoading = true;
-
-    }
-
-    //TODO: make this actually display a loading screen
-    public void HideLoadingScreen()
-    {
-        //IsLoading = false;
-    }
-
     public float GetResource(Shared.ResourceTypes resourceToGet)
     {
         if (resourceManager == null)
@@ -426,6 +375,23 @@ public class GameManager : MonoBehaviour
                 DebugLog("" + flag.ToString());
         }
         Debug.Log("=======================================");
+    }
+
+    public void PlayButtonSound()
+    {
+        if(ButtonClickSource == null)
+        {
+            ButtonClickSource = gameObject.AddComponent<AudioSource>();//.playOnAwake = false;
+            ButtonClickSource.playOnAwake = false;
+            if (ButtonClickSoundEffect == null)
+            {
+                DebugLog("No button click sound effect set! Set it in the inspector.", DebugFlags.Warning);
+            }
+            ButtonClickSource.clip = ButtonClickSoundEffect;
+            DebugLog("Added an audio souce to " + name, DebugFlags.SoundSystem);
+        }
+        ButtonClickSource.Play();
+        DebugLog("Attempted to play button sound.", DebugFlags.SoundSystem);
     }
 
     public static void DebugLog(string message, DebugFlags flagLevelToDisplayAt /*byte debugLevelToDisplayAt*/)
