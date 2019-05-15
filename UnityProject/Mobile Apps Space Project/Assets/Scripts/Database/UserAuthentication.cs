@@ -33,7 +33,7 @@ public class UserAuthentication : MonoBehaviour
     // Enable / disable password input box.
     // NOTE: In some versions of Unity the password input box does not work in
     // iOS simulators.
-    public bool usePasswordInput = false;
+    public bool usePasswordInput = true;
     private Vector2 controlsScrollViewVector = Vector2.zero;
     private Vector2 scrollViewVector = Vector2.zero;
     bool UIEnabled = false;
@@ -600,20 +600,27 @@ public class UserAuthentication : MonoBehaviour
     {
         if (UIEnabled)
         {
-            controlsScrollViewVector =
-                GUILayout.BeginScrollView(controlsScrollViewVector);
+            
+            GUIStyle styling =  GUI.skin.GetStyle("Default");
+            //styling.fontStyle = FontStyle.Bold;
+            styling.fontSize = 20;
+
+            GUI.color = Color.white;
+            GUI.backgroundColor = Color.green;
+
+            controlsScrollViewVector = GUILayout.BeginScrollView(controlsScrollViewVector);
             GUILayout.BeginVertical();
             //GUILayout.BeginHorizontal();
-            GUILayout.Label("Email", GUILayout.Width(Screen.width * 0.20f));
-            email = GUILayout.TextField(email);
+            GUILayout.Label("Email", styling, GUILayout.Width(Screen.width * 0.20f), GUILayout.ExpandHeight(true));
+            email = GUILayout.TextField(email, styling, GUILayout.Height(Screen.height * .05f), GUILayout.ExpandHeight(true));
             //GUILayout.EndHorizontal();
 
             GUILayout.Space(10);
 
             //GUILayout.BeginHorizontal();
-            GUILayout.Label("Password", GUILayout.Width(Screen.width * 0.20f));
-            password = usePasswordInput ? GUILayout.PasswordField(password, '*') :
-                GUILayout.TextField(password);
+            GUILayout.Label("Password", GUILayout.Width(Screen.width * 0.5f), GUILayout.ExpandHeight(true));
+            password = usePasswordInput ? GUILayout.PasswordField(password, '*', GUILayout.Height(Screen.height * .2f), GUILayout.ExpandHeight(true)) :
+                GUILayout.TextField(password, GUILayout.Height(Screen.height * .2f), GUILayout.ExpandHeight(true));
             //GUILayout.EndHorizontal();
 
             GUILayout.Space(20);
@@ -640,12 +647,12 @@ public class UserAuthentication : MonoBehaviour
             //GUILayout.Space(20);
 
             
-            if (GUILayout.Button("Sign In with Email"))
+            if (GUILayout.Button("Sign In with Email", GUILayout.Height(Screen.height * .1f), GUILayout.ExpandHeight(true)))
             {
                 StartCoroutine("SignInEmailCoroutine");
                 PlaySound();
             }
-            if (GUILayout.Button("Create User"))
+            if (GUILayout.Button("Create User", GUILayout.Height(Screen.height * .1f), GUILayout.ExpandHeight(true)))
             {
                 CreateUserWithEmailAsync();
                 PlaySound();
@@ -662,12 +669,12 @@ public class UserAuthentication : MonoBehaviour
             {
                 GetUserInfo();
             }*/
-            if (GUILayout.Button("Sign Out"))
+            if (GUILayout.Button("Sign Out", GUILayout.Height(Screen.height * .1f), GUILayout.ExpandHeight(true)))
             {
                 SignOut();
                 PlaySound();
             }
-            if (GUILayout.Button("Delete User"))
+            if (GUILayout.Button("Delete User", GUILayout.Height(Screen.height * .1f), GUILayout.ExpandHeight(true)))
             {
                 DeleteUserAsync();
                 PlaySound();
